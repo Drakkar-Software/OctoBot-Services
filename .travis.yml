@@ -1,0 +1,32 @@
+notifications:
+  email: false
+sudo: enabled
+os: linux
+language: python
+python: 3.7-dev
+install:
+  - python3 -m pip install --upgrade --only-binary=Cython -r requirements.txt -r dev_requirements.txt
+
+matrix:
+  include:
+    - name: "Linux - Python 3 nightly"
+      os: linux
+      python: nightly
+      language: python
+      script:
+        - python3 setup.py install
+
+deploy:
+  - provider: pypi
+    username:
+      secure: S5ISAcVE8p30Csf01UBrOXqUQ4pxj30GKDIqVNafib47BIpW1pWL3SWb3Nl0FMQ4iQ/OkSPrw1nVR2mz0dzhS4SuzYlqV3Rc0ICYBnsy14qnHkVGw2HoVyhIeJ4K+qcFuT6Jjtgh4h/YjlDkHkFJxk8guROyM8qIbZP6NjvmgDuLUFBh58FMRl7jPcGBTFdanCL9me4eweeb3rxQM2fWPCuBLj7MFNaweavF5msI+TJJ9MHgh3CwTgYzg/Xuvuk2b2b1nbMMO9DEY/xoEeynRQKwLl8ahJ6g9e3FxNhmtsdasweN2s6orMDUPiRIZl8WP6/VRo+k+5a5J17HgU+Kr0kMHU4dbKK5mWXkIaz6xr2ydb+HMvCD97Fr+MTSanBjqUwT8k/wuCaSspaZ+gLgr7giAc/2jlNkQxQVdngVHEGISe1MFeRCv1CD0cOAI4ui27Sg0usLtoQwXUiii6vf6yt0Z0TzFNFV1d24L9Kb67OE1uU/y3M9ZYFKmg7KLMuc40reNA2M0hI+lS8DXYTnU0jHv6GXkvLbs8UN57R9hE1s6aaI2LCp9IchhUiX6xdYBn4/oh7FuQYRSF+Ygi/cih4yGrT/ZkIdvqrHV+KriWLk6+W+QaxoRhEBD7i2J9je+IJs/svJC7cs0M9aTNyMYt1A6jVr6wwiftb+B09c/NQ=
+    password:
+      secure: oPo01kCw4wLJDPvBiX0C2QQ+IDMDTq4lDENwA92UbuFK2Uz0x3fTggKenRIBecOiDChnYRe0JOaKGuORmx+UxPIGWtU8b7W1CAUAg3mmd9IlzH/l8d4DwgA+pIb/3wLHDTHWeweo53hTNx6CreyOkPOnshU23f3//ftSm9iHyc3UVLTqZuzAFmK56rhoM6lPsULNGGKYRdOOLxFxfUS8dh6oVRei4h4GYvUT1WWpAJ9IWYyfRTKZVWCZfRgV0M67chHfECCnSaief644THCBb6+7uqNswfqUzo6aD3Sto1wfDGFSaKpMXejOQ8fEIbiJRrvSGs+rIgNBRb+Kl0IMuk2E6EAVH3eTcGF1bqdoGAhWa+6vvwypF3Xbsw0Kt/NkmrIbUQjmT/vx1zdp6DUToPFuVfi7DP2ro6EAagDadgvwsW0K0K7D77w3wCZYI4/ka5kcJCqBXiZqkz9LkJILCfM+3Q3zIHZ75hbojPieROMBUuc8eHf1HQfsQy1FxjInlkbU2ymnXMzglFjwhpXfKVgsHLV2NizHE4pibPeYFIsz3VFyjnZ/AFOwiDAm4COXParwwSqD4mTX352qkLp+Z7S10eyI9pLlvyn9oY7056cEXnEdTbO44Q0ZF9JVT6RfeNxdjxtPZkh7kYdmKG0zZoPPT3shR1vC85rzKRK47dI=
+    skip_existing: true
+    skip_cleanup: true
+    distributions: "sdist"
+    on:
+      repo: Drakkar-Software/OctoBot-Services
+      branch: master
+      tags: true
+      condition: $TRAVIS_OS_NAME = 'linux'
