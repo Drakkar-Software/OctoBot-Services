@@ -1,5 +1,6 @@
-cython
+# Setup requirements
+cython==0.29.14
 
 # Drakkar-Software requirements
-OctoBot-Channels
-OctoBot-Commons
+OctoBot-Channels>=1.3.17, <1.4
+OctoBot-Commons>=1.2.0, <1.3
