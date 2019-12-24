@@ -20,7 +20,7 @@ from logging.config import fileConfig
 
 from octobot_commons.constants import CONFIG_ENABLED_OPTION
 
-from octobot_services.api.services import create_service_factory
+from octobot_services.api.services import create_service_factory, stop_services
 from octobot_services.constants import CONFIG_CATEGORY_SERVICES, CONFIG_REDDIT, CONFIG_TELEGRAM, \
     CONFIG_USERNAMES_WHITELIST, CONFIG_TOKEN, CONFIG_TWITTER, CONFIG_WEB, CONFIG_WEB_PORT, CONFIG_WEB_IP, \
     CONFIG_CHAT_ID, CONFIG_REDDIT_CLIENT_ID, CONFIG_REDDIT_PASSWORD, CONFIG_REDDIT_CLIENT_SECRET, \
@@ -62,7 +62,7 @@ async def _create_services():
         service_list = service_factory.get_available_services()
         backtesting_enabled = False
         for service_class in service_list:
-            service_instance = service_class()
+            service_instance = service_class.instance()
             service_instance.is_backtesting_enabled = backtesting_enabled
             await service_factory.create_service(service_instance)
     except ImportError as e:
@@ -73,8 +73,11 @@ async def _create_services():
 
 if __name__ == '__main__':
     fileConfig("logs/logging_config.ini")
-    logging.info("** Starting services **")
 
+    logging.info("** Starting services **")
     asyncio.run(_create_services())
+
+    logging.info("** Stopping services **")
+    stop_services()
 
     logging.info("** End of services checkup **")

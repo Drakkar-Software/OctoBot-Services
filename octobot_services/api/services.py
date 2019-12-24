@@ -21,5 +21,5 @@ def create_service_factory(config):
     return ServiceFactory(config)
 
 
-def stop_services(config):
-    manager_stop_services(config)
+def stop_services():
+    manager_stop_services()

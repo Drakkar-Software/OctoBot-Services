@@ -18,9 +18,10 @@ from abc import ABCMeta, abstractmethod
 
 from octobot_backtesting.api.backtesting import is_backtesting_enabled
 from octobot_commons.config_util import has_invalid_default_config_value
+from octobot_commons.singleton.singleton_class import Singleton
 
 
-class AbstractService:
+class AbstractService(Singleton):
     __metaclass__ = ABCMeta
 
     BACKTESTING_ENABLED = False

@@ -14,24 +14,19 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 from octobot_services.constants import CONFIG_CATEGORY_SERVICES, CONFIG_SERVICE_INSTANCE
+from octobot_services.services.service_factory import ServiceFactory
 
 
-def stop_services(config):
-    for service_instance in _get_service_instances(config):
+def stop_services():
+    for service_instance in _get_service_instances():
         try:
             service_instance.stop()
         except Exception as e:
             raise e
 
 
-def _get_service_instances(config):
+def _get_service_instances():
     instances = []
-    for services in config[CONFIG_CATEGORY_SERVICES]:
-        if CONFIG_SERVICE_INSTANCE in config[CONFIG_CATEGORY_SERVICES][services]:
-            instance = config[CONFIG_CATEGORY_SERVICES][services][CONFIG_SERVICE_INSTANCE]
-            if isinstance(instance, list):
-                for i in instance:
-                    instances.append(i)
-            else:
-                instances.append(instance)
+    for service_class in ServiceFactory.get_available_services():
+        instances.append(service_class.instance())
     return instances
