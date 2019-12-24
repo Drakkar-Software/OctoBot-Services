@@ -13,21 +13,13 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+from octobot_commons.logging.logging_util import get_logger
 
-from tools.logging.logging_util import get_logger
-from services.Dispatchers.abstract_dispatcher import AbstractDispatcher, DispatcherAbstractClient
-from services.Dispatchers.dispatcher_exception import DispatcherException
+from octobot_services.dispatchers.abstract_dispatcher import DispatcherAbstractClient
+from octobot_services.dispatchers.dispatcher_exception import DispatcherException
 
 
-class DispatcherCreator:
-
-    @staticmethod
-    def create_dispatchers(config, main_async_loop):
-        dispatchers_list = []
-        for dispatcher_class in AbstractDispatcher.__subclasses__():
-            dispatcher_instance = dispatcher_class(config, main_async_loop)
-            dispatchers_list.append(dispatcher_instance)
-        return dispatchers_list
+class DispatcherManager:
 
     @staticmethod
     def bind_to_dispatcher_if_necessary(evaluator_instance, dispatchers_list, symbol, is_evaluator_to_be_used):
@@ -35,15 +27,15 @@ class DispatcherCreator:
         # else warn and pass this evaluator
         if evaluator_instance.has_class_in_parents(DispatcherAbstractClient):
             try:
-                client_found_dispatcher = DispatcherCreator.set_evaluator_dispatcher(evaluator_instance,
+                client_found_dispatcher = DispatcherManager.set_evaluator_dispatcher(evaluator_instance,
                                                                                      dispatchers_list)
                 if not client_found_dispatcher:
-                    get_logger(DispatcherCreator.get_name()).warning(
+                    get_logger(DispatcherManager.get_name()).warning(
                         f"No dispatcher found for evaluator: {evaluator_instance.get_name()} "
                         f"for symbol: {symbol}, evaluator has been disabled.")
                     return True, False
             except DispatcherException as e:
-                get_logger(DispatcherCreator.get_name()).exception(e)
+                get_logger(DispatcherManager.get_name()).exception(e)
                 return True, False
             return True, is_evaluator_to_be_used
         return False, is_evaluator_to_be_used
@@ -56,6 +48,16 @@ class DispatcherCreator:
                 evaluator_dispatcher.register_client(eval_instance)
                 return True
         return False
+
+    @staticmethod
+    def start_dispatchers(dispatcher_list):
+        for thread in dispatcher_list:
+            thread.start()
+
+    @staticmethod
+    def stop_dispatchers(dispatcher_list):
+        for thread in dispatcher_list:
+            thread.stop()
 
     @classmethod
     def get_name(cls):

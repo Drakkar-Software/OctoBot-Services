@@ -16,8 +16,8 @@
 
 import praw
 
-from config import *
-from services.abstract_service import *
+from octobot_services.constants import CONFIG_REDDIT, CONFIG_CATEGORY_SERVICES, CONFIG_SERVICE_INSTANCE
+from octobot_services.services.abstract_service import AbstractService
 
 
 class RedditService(AbstractService):

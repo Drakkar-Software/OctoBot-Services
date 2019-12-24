@@ -16,10 +16,12 @@
 
 import socket
 
-from config import CONFIG_WEB, CONFIG_CATEGORY_SERVICES, CONFIG_ENABLED_OPTION, CONFIG_SERVICE_INSTANCE, \
+from octobot_commons.constants import CONFIG_ENABLED_OPTION
+
+from octobot_services.constants import CONFIG_WEB, CONFIG_CATEGORY_SERVICES, CONFIG_SERVICE_INSTANCE, \
     CONFIG_WEB_IP, CONFIG_WEB_PORT, DEFAULT_SERVER_IP, DEFAULT_SERVER_PORT
-from interfaces.web.web_app import WebApp
-from services import AbstractService
+# from interfaces.web.web_app import WebApp
+from octobot_services.services.abstract_service import AbstractService
 
 
 class WebService(AbstractService):
@@ -76,8 +78,9 @@ class WebService(AbstractService):
         return CONFIG_WEB
 
     async def prepare(self) -> None:
-        self.web_app = WebApp(self.config)
-        self.web_app.start()
+        # self.web_app = WebApp(self.config)
+        # self.web_app.start()
+        pass
 
     @staticmethod
     def get_should_warn():

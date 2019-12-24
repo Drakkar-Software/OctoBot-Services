@@ -14,11 +14,11 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-from config import CONFIG_CATEGORY_SERVICES, CONFIG_TELEGRAM, CONFIG_SERVICE_INSTANCE, CONFIG_TELEGRAM_CHANNEL, \
-    CONFIG_GROUP_MESSAGE, CONFIG_GROUP_MESSAGE_DESCRIPTION, CONFIG_TELEGRAM_ALL_CHANNEL
-from services.Dispatchers.abstract_dispatcher import AbstractDispatcher
-from services.Dispatchers.dispatcher_exception import DispatcherException
-from services import TelegramService
+from octobot_services.constants import CONFIG_CATEGORY_SERVICES, CONFIG_TELEGRAM, CONFIG_SERVICE_INSTANCE, \
+    CONFIG_TELEGRAM_CHANNEL, CONFIG_GROUP_MESSAGE, CONFIG_GROUP_MESSAGE_DESCRIPTION, CONFIG_TELEGRAM_ALL_CHANNEL
+from octobot_services.dispatchers.abstract_dispatcher import AbstractDispatcher
+from octobot_services.dispatchers.dispatcher_exception import DispatcherException
+from octobot_services.services.telegram_service import TelegramService
 
 
 class TelegramDispatcher(AbstractDispatcher):

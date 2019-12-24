@@ -14,7 +14,4 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-from octobot_services.services.reddit_service import *
-from octobot_services.services.telegram_service import *
-from octobot_services.services.twitter_service import *
-from octobot_services.services.web_service import *
+LOGGER_TAG = "ServicesApi"

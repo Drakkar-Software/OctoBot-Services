@@ -20,8 +20,8 @@ import twitter
 from twitter.api import CHARACTER_LIMIT
 from twitter.twitter_utils import calc_expected_status_length
 
-from config import *
-from services.abstract_service import *
+from octobot_services.constants import CONFIG_CATEGORY_SERVICES, CONFIG_SERVICE_INSTANCE, CONFIG_TWITTER
+from octobot_services.services.abstract_service import AbstractService
 
 
 class TwitterService(AbstractService):

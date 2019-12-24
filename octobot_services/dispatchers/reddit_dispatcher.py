@@ -15,13 +15,15 @@
 #  License along with this library.
 
 import time
+
+from octobot_commons.constants import HOURS_TO_SECONDS, DAYS_TO_SECONDS
 from prawcore.exceptions import RequestException, ResponseException, OAuthException, InvalidToken, ServerError
 
-from config import CONFIG_CATEGORY_SERVICES, CONFIG_REDDIT, CONFIG_SERVICE_INSTANCE, CONFIG_REDDIT_SUBREDDITS, \
-    HOURS_TO_SECONDS, DAYS_TO_SECONDS, CONFIG_REDDIT_ENTRY, CONFIG_REDDIT_ENTRY_WEIGHT
+from octobot_services.constants import CONFIG_CATEGORY_SERVICES, CONFIG_REDDIT, CONFIG_SERVICE_INSTANCE, \
+    CONFIG_REDDIT_SUBREDDITS, CONFIG_REDDIT_ENTRY, CONFIG_REDDIT_ENTRY_WEIGHT
 
-from services.Dispatchers.abstract_dispatcher import AbstractDispatcher
-from services import RedditService
+from octobot_services.dispatchers.abstract_dispatcher import AbstractDispatcher
+from octobot_services.services import RedditService
 
 
 class RedditDispatcher(AbstractDispatcher):

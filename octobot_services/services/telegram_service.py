@@ -18,11 +18,12 @@ import telegram
 from telegram.ext import Updater, MessageHandler, Filters  # , Dispatcher
 import logging
 
-from config import CONFIG_TOKEN, CONFIG_USERNAMES_WHITELIST, CONFIG_CATEGORY_SERVICES, CONFIG_TELEGRAM, \
-    CONFIG_SERVICE_INSTANCE, MESSAGE_PARSE_MODE, CONFIG_INTERFACES_TELEGRAM, CONFIG_INTERFACES, CONFIG_ENABLED_OPTION
-from interfaces.bots.telegram.bot import TelegramApp
-from services.abstract_service import AbstractService
-from tools.logging.logging_util import set_logging_level
+from octobot_commons.constants import CONFIG_ENABLED_OPTION
+from octobot_commons.logging.logging_util import set_logging_level
+from octobot_services.constants import CONFIG_TOKEN, CONFIG_USERNAMES_WHITELIST, CONFIG_CATEGORY_SERVICES, CONFIG_TELEGRAM, \
+    CONFIG_SERVICE_INSTANCE, MESSAGE_PARSE_MODE, CONFIG_INTERFACES
+# from interfaces.bots.telegram.bot import TelegramApp
+from octobot_services.services.abstract_service import AbstractService
 
 
 class TelegramService(AbstractService):
@@ -75,10 +76,12 @@ class TelegramService(AbstractService):
         if not self.telegram_app:
             if not self.telegram_updater:
                 self.telegram_updater = Updater(
-                    token=self.config[CONFIG_CATEGORY_SERVICES][CONFIG_TELEGRAM][CONFIG_TOKEN])
+                    self.config[CONFIG_CATEGORY_SERVICES][CONFIG_TELEGRAM][CONFIG_TOKEN],
+                    use_context=True
+                )
 
-            if TelegramApp.is_enabled(self.config):
-                self.telegram_app = TelegramApp(self.config, self)
+            # if TelegramApp.is_enabled(self.config):
+            #     self.telegram_app = TelegramApp(self.config, self)
 
         set_logging_level(self.LOGGERS, logging.WARNING)
 
@@ -136,9 +139,9 @@ class TelegramService(AbstractService):
     @staticmethod
     def _check_enabled_option(config):
         return CONFIG_INTERFACES in config \
-            and CONFIG_INTERFACES_TELEGRAM in config[CONFIG_INTERFACES] \
-            and CONFIG_ENABLED_OPTION in config[CONFIG_INTERFACES][CONFIG_INTERFACES_TELEGRAM] \
-            and config[CONFIG_INTERFACES][CONFIG_INTERFACES_TELEGRAM][CONFIG_ENABLED_OPTION] \
+            and CONFIG_TELEGRAM in config[CONFIG_INTERFACES] \
+            and CONFIG_ENABLED_OPTION in config[CONFIG_INTERFACES][CONFIG_TELEGRAM] \
+            and config[CONFIG_INTERFACES][CONFIG_TELEGRAM][CONFIG_ENABLED_OPTION] \
             and CONFIG_CATEGORY_SERVICES in config \
             and CONFIG_TELEGRAM in config[CONFIG_CATEGORY_SERVICES]
 

@@ -13,8 +13,20 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+from octobot_commons.logging.logging_util import get_logger
 
-from octobot_services.services.reddit_service import *
-from octobot_services.services.telegram_service import *
-from octobot_services.services.twitter_service import *
-from octobot_services.services.web_service import *
+from octobot_services.dispatchers.abstract_dispatcher import AbstractDispatcher
+
+
+class DispatcherFactory:
+    def __init__(self, config, main_async_loop):
+        self.logger = get_logger(self.__class__.__name__)
+        self.config = config
+        self.main_async_loop = main_async_loop
+
+    def create_all(self):
+        dispatchers_list = []
+        for dispatcher_class in AbstractDispatcher.__subclasses__():
+            dispatcher_instance = dispatcher_class(self.config, self.main_async_loop)
+            dispatchers_list.append(dispatcher_instance)
+        return dispatchers_list

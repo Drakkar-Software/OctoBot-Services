@@ -14,7 +14,7 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-from .Dispatchers import *
+from .dispatchers import *
 from .services import *
 
 PROJECT_NAME = "OctoBot-Services"

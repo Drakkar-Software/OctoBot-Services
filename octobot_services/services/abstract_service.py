@@ -16,8 +16,8 @@
 
 from abc import ABCMeta, abstractmethod
 
-from backtesting import backtesting_enabled
-from tools.config_manager import ConfigManager
+from octobot_backtesting.api.backtesting import is_backtesting_enabled
+from octobot_commons.config_util import has_invalid_default_config_value
 
 
 class AbstractService:
@@ -64,7 +64,7 @@ class AbstractService:
 
     @classmethod
     def should_be_ready(cls, config):
-        on_backtesting = backtesting_enabled(config)
+        on_backtesting = is_backtesting_enabled(config)
         return not on_backtesting or (on_backtesting and cls.BACKTESTING_ENABLED)
 
     # Used to provide a new logger for this particular indicator
@@ -116,7 +116,7 @@ class AbstractService:
 
     def check_required_config(self, config):
         return all(key in config for key in self.get_required_config()) and \
-            not ConfigManager.has_invalid_default_config_value(*(config[key] for key in self.get_required_config()))
+            not has_invalid_default_config_value(*(config[key] for key in self.get_required_config()))
 
     def log_connection_error_message(self, e):
         self.logger.error(f"{self.get_name()} is failing to connect, please check your internet connection: {e}")

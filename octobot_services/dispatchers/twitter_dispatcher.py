@@ -16,10 +16,10 @@
 
 import twitter
 
-from config import CONFIG_CATEGORY_SERVICES, CONFIG_TWITTERS_ACCOUNTS, CONFIG_SERVICE_INSTANCE, CONFIG_TWITTER, \
-    CONFIG_TWITTERS_HASHTAGS, CONFIG_TWEET, CONFIG_TWEET_DESCRIPTION
-from services.Dispatchers.abstract_dispatcher import AbstractDispatcher
-from services import TwitterService
+from octobot_services.constants import CONFIG_CATEGORY_SERVICES, CONFIG_TWITTERS_ACCOUNTS, CONFIG_SERVICE_INSTANCE, \
+    CONFIG_TWITTER, CONFIG_TWITTERS_HASHTAGS, CONFIG_TWEET, CONFIG_TWEET_DESCRIPTION
+from octobot_services.dispatchers.abstract_dispatcher import AbstractDispatcher
+from octobot_services.services.twitter_service import TwitterService
 
 
 class TwitterDispatcher(AbstractDispatcher):
