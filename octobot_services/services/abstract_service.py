@@ -25,12 +25,25 @@ class AbstractService(Singleton):
     __metaclass__ = ABCMeta
 
     BACKTESTING_ENABLED = False
+    _has_been_created = False
 
     def __init__(self):
         super().__init__()
         self.logger = None
         self.config = None
-        self.enabled = True
+        self._created = True
+        self._healthy = False
+
+    @classmethod
+    def set_has_been_created(cls, value):
+        cls._has_been_created = value
+
+    @classmethod
+    def get_has_been_created(cls):
+        return cls._has_been_created
+
+    def is_healthy(self):
+        return self._healthy
 
     @classmethod
     def get_name(cls):
@@ -76,9 +89,10 @@ class AbstractService(Singleton):
     def set_config(self, config):
         self.config = config
 
-    # If this service is enabled
-    def get_is_enabled(self, config):
-        return self.enabled
+    # Override this method to perform additional checks
+    @staticmethod
+    def get_is_enabled(config):
+        return True
 
     # implement locally if the service has thread(s) to stop
     def stop(self):
@@ -123,7 +137,7 @@ class AbstractService(Singleton):
         self.logger.error(f"{self.get_name()} is failing to connect, please check your internet connection: {e}")
 
     async def say_hello(self):
-        message, success = self.get_successful_startup_message()
-        if success:
+        message, self._healthy = self.get_successful_startup_message()
+        if self._healthy:
             self.logger.info(message)
-        return success
+        return self._healthy
