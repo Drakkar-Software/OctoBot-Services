@@ -13,3 +13,5 @@ praw==6.4.0
 python-telegram-bot==12.2.0
 # Twitter
 Python-Twitter==3.5
+# Web
+flask==1.1.1

@@ -20,7 +20,7 @@ from logging.config import fileConfig
 
 from octobot_commons.constants import CONFIG_ENABLED_OPTION
 
-from octobot_services.api.services import create_service_factory, stop_services
+from octobot_services.api.services import create_service_factory, stop_services, get_available_services
 from octobot_services.constants import CONFIG_CATEGORY_SERVICES, CONFIG_REDDIT, CONFIG_TELEGRAM, \
     CONFIG_USERNAMES_WHITELIST, CONFIG_TOKEN, CONFIG_TWITTER, CONFIG_WEB, CONFIG_WEB_PORT, CONFIG_WEB_IP, \
     CONFIG_CHAT_ID, CONFIG_REDDIT_CLIENT_ID, CONFIG_REDDIT_PASSWORD, CONFIG_REDDIT_CLIENT_SECRET, \
@@ -58,13 +58,11 @@ config = {
 async def _create_services():
     try:
         import tentacles
-        service_factory = create_service_factory(config)
-        service_list = service_factory.get_available_services()
+        service_list = get_available_services()
         backtesting_enabled = False
         for service_class in service_list:
-            service_instance = service_class.instance()
-            service_instance.is_backtesting_enabled = backtesting_enabled
-            await service_factory.create_service(service_instance)
+            service_factory = create_service_factory(config)
+            await service_factory.create_or_get_service(service_class, backtesting_enabled)
     except ImportError as e:
         logging.error("Error: tentacle architecture doesn't exist in running directory, to run this test file please "
                       "add a tentacle folder containing services tentacles in running directory.")

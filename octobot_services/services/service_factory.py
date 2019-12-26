@@ -25,10 +25,6 @@ class ServiceFactory:
         self.logger = get_logger(self.__class__.__name__)
         self.config = config
 
-    @staticmethod
-    def get_available_services():
-        return [service_class for service_class in AbstractService.__subclasses__()]
-
     async def create_or_get_service(self, service_class, backtesting_enabled):
         """
         create_or_get_service will create a service instance if it doesn't exist, check the existing one otherwise
@@ -36,7 +32,7 @@ class ServiceFactory:
         :return: True if the created service is working properly, False otherwise
         """
         service_instance = service_class()
-        if service_class.has_already_been_created():
+        if service_class.get_has_been_created():
             return service_instance.is_healthy()
         else:
             service_instance.is_backtesting_enabled = backtesting_enabled
@@ -63,4 +59,4 @@ class ServiceFactory:
 
     @staticmethod
     def has_already_been_created(service_class):
-        return service_class.has_already_been_created()
+        return service_class.get_has_been_created()

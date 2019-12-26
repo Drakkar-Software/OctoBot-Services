@@ -13,21 +13,8 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from octobot_services.util.service_util import get_available_services
-from octobot_services.constants import CONFIG_CATEGORY_SERVICES, CONFIG_SERVICE_INSTANCE
-from octobot_services.services.service_factory import ServiceFactory
+from octobot_services.services.abstract_service import AbstractService
 
 
-def stop_services():
-    for service_instance in _get_service_instances():
-        try:
-            service_instance.stop()
-        except Exception as e:
-            raise e
-
-
-def _get_service_instances():
-    instances = []
-    for service_class in get_available_services():
-        instances.append(service_class.instance())
-    return instances
+def get_available_services():
+    return [service_class for service_class in AbstractService.__subclasses__()]
