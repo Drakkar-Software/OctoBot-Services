@@ -17,13 +17,13 @@ from octobot_services.managers.dispatcher_manager import DispatcherManager
 from octobot_services.dispatchers.dispatcher_factory import DispatcherFactory
 
 
-def create_dispatcher_factory(config, main_async_loop):
+def create_dispatcher_factory(config, main_async_loop) -> DispatcherFactory:
     return DispatcherFactory(config, main_async_loop)
 
 
-def start_dispatchers(dispatchers):
+def start_dispatchers(dispatchers) -> None:
     DispatcherManager.start_dispatchers(dispatchers)
 
 
-def stop_dispatchers(dispatchers):
+def stop_dispatchers(dispatchers) -> None:
     DispatcherManager.stop_dispatchers(dispatchers)

@@ -18,13 +18,13 @@ from octobot_services.services.service_factory import ServiceFactory
 from octobot_services.util.service_util import get_available_services as util_get_available_services
 
 
-def get_available_services():
+def get_available_services() -> list:
     return util_get_available_services()
 
 
-def create_service_factory(config):
+def create_service_factory(config) -> ServiceFactory:
     return ServiceFactory(config)
 
 
-def stop_services():
+def stop_services() -> None:
     manager_stop_services()
