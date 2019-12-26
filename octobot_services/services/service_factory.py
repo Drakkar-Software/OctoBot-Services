@@ -31,7 +31,7 @@ class ServiceFactory:
         :param service_class: the class of the service to create
         :return: True if the created service is working properly, False otherwise
         """
-        service_instance = service_class()
+        service_instance = service_class.instance()
         if service_class.get_has_been_created():
             return service_instance.is_healthy()
         else:
