@@ -31,14 +31,14 @@ class AbstractServiceUser:
         self.config = config
         self.paused = False
 
-    async def initialize(self, backtesting_enabled):
+    async def initialize(self, backtesting_enabled) -> bool:
         # init associated service if not already init
         service_list = get_available_services()
         if self.REQUIRED_SERVICE:
             if self.REQUIRED_SERVICE in service_list:
                 service_factory = ServiceFactory(self.config)
                 if await service_factory.create_or_get_service(self.REQUIRED_SERVICE, backtesting_enabled):
-                    await self._post_initialize()
+                    return await self._post_initialize()
                 else:
                     self.get_logger().error(f"Impossible to start {self.get_name()}: required service "
                                             f"is not available.")
@@ -46,10 +46,11 @@ class AbstractServiceUser:
                 self.get_logger().error(f"Required service {self.REQUIRED_SERVICE} is not an available service")
         elif self.REQUIRED_SERVICE is None:
             self.get_logger().error(f"Required service is not set, set it at False if no service is required")
+        return False
 
     # Implement _post_initialize if anything specific has to be done after initialize and before start
-    async def _post_initialize(self):
-        pass
+    async def _post_initialize(self) -> bool:
+        return True
 
     @classmethod
     def get_name(cls):
