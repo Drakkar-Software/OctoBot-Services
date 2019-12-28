@@ -25,6 +25,10 @@ class ServiceFactory:
         self.logger = get_logger(self.__class__.__name__)
         self.config = config
 
+    @staticmethod
+    def get_available_services():
+        return [service_class for service_class in AbstractService.__subclasses__()]
+
     async def create_or_get_service(self, service_class, backtesting_enabled):
         """
         create_or_get_service will create a service instance if it doesn't exist, check the existing one otherwise

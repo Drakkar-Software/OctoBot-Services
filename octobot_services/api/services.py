@@ -15,11 +15,10 @@
 #  License along with this library.
 from octobot_services.managers.service_manager import stop_services as manager_stop_services
 from octobot_services.services.service_factory import ServiceFactory
-from octobot_services.util.service_util import get_available_services as util_get_available_services
 
 
 def get_available_services() -> list:
-    return util_get_available_services()
+    return ServiceFactory.get_available_services()
 
 
 def create_service_factory(config) -> ServiceFactory:

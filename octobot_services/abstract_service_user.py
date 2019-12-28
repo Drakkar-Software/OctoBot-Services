@@ -16,8 +16,6 @@
 from abc import ABCMeta
 
 from octobot_commons.logging.logging_util import get_logger
-
-from octobot_services.util.service_util import get_available_services
 from octobot_services.services.service_factory import ServiceFactory
 
 
@@ -33,7 +31,7 @@ class AbstractServiceUser:
 
     async def initialize(self, backtesting_enabled) -> bool:
         # init associated service if not already init
-        service_list = get_available_services()
+        service_list = ServiceFactory.get_available_services()
         if self.REQUIRED_SERVICE:
             if self.REQUIRED_SERVICE in service_list:
                 service_factory = ServiceFactory(self.config)
