@@ -62,9 +62,13 @@ class AbstractService(Singleton):
     def register_user(self, user_key):
         pass
 
-    # Override this method if a dispatcher is located in this service (ie: TelegramService)
-    def start_dispatcher(self):
+    # Override this method if a service feed is located in this service (ie: TelegramService)
+    def start_service_feed(self):
         pass
+
+    # Override this method to know if an updater is already running
+    def is_running(self):
+        return False
 
     @classmethod
     def get_help_page(cls) -> str:

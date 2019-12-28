@@ -23,6 +23,9 @@ CONFIG_INTERFACES = "interfaces"
 CONFIG_INTERFACES_WEB = "web"
 CONFIG_INTERFACES_TELEGRAM = "telegram"
 
+# Service feeds
+FEED_METADATA = "metadata"
+
 # Telegram
 CONFIG_TELEGRAM = "telegram"
 CONFIG_TOKEN = "token"

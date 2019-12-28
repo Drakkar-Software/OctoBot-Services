@@ -15,5 +15,5 @@
 #  License along with this library.
 
 
-class DispatcherException(Exception):
+class ServiceFeedException(Exception):
     pass

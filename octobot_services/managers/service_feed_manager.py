@@ -13,6 +13,19 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+from octobot_services.service_feeds.abstract_service_feed import AbstractServiceFeed
 
-PROJECT_NAME = "OctoBot-Services"
-VERSION = "0.0.0"  # major.minor.revision
+
+class ServiceFeedManager:
+
+    @staticmethod
+    async def start_service_feed(service_feed: AbstractServiceFeed, backtesting_enabled: bool):
+        if not service_feed.is_running and not service_feed.should_stop:
+            if await service_feed.initialize(backtesting_enabled):
+                service_feed.start()
+                return True
+        return False
+
+    @staticmethod
+    def stop_service_feed(service_feed: AbstractServiceFeed):
+        service_feed.stop()

@@ -1,4 +1,4 @@
-#  Drakkar-Software OctoBot-Services
+#  Drakkar-Software OctoBot-Notifications
 #  Copyright (c) Drakkar-Software, All rights reserved.
 #
 #  This library is free software; you can redistribute it and/or
@@ -13,17 +13,23 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from octobot_services.managers.dispatcher_manager import DispatcherManager
-from octobot_services.dispatchers.dispatcher_factory import DispatcherFactory
+from abc import ABCMeta
+
+from octobot_channels.channels.channel import Channel
+from octobot_channels.producer import Producer
+from octobot_channels.consumer import Consumer
 
 
-def create_dispatcher_factory(config, main_async_loop) -> DispatcherFactory:
-    return DispatcherFactory(config, main_async_loop)
+class ServiceFeedChannelConsumer(Consumer):
+    pass
 
 
-def start_dispatchers(dispatchers) -> None:
-    DispatcherManager.start_dispatchers(dispatchers)
+class AbstractServiceFeedChannelProducer(Producer):
+    pass
 
 
-def stop_dispatchers(dispatchers) -> None:
-    DispatcherManager.stop_dispatchers(dispatchers)
+class AbstractServiceFeedChannel(Channel):
+    __metaclass__ = ABCMeta
+
+    PRODUCER_CLASS = AbstractServiceFeedChannelProducer
+    CONSUMER_CLASS = ServiceFeedChannelConsumer

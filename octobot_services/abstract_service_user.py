@@ -41,7 +41,7 @@ class AbstractServiceUser:
                     return await self._post_initialize()
                 else:
                     self.get_logger().error(f"Impossible to start {self.get_name()}: required service "
-                                            f"is not available.")
+                                            f"{self.REQUIRED_SERVICE.get_name()} is not available.")
             else:
                 self.get_logger().error(f"Required service {self.REQUIRED_SERVICE} is not an available service")
         elif self.REQUIRED_SERVICE is None:
