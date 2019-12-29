@@ -27,7 +27,7 @@ from octobot_services.abstract_service_user import AbstractServiceUser
 from octobot_services.channel.abstract_service_feed import AbstractServiceFeedChannelProducer
 
 
-class AbstractServiceFeed(AbstractServiceUser, threading.Thread, AbstractServiceFeedChannelProducer):
+class AbstractServiceFeed(AbstractServiceUser, AbstractServiceFeedChannelProducer):
     __metaclass__ = ABCMeta
 
     # Override FEED_CHANNEL with a dedicated channel
@@ -38,7 +38,6 @@ class AbstractServiceFeed(AbstractServiceUser, threading.Thread, AbstractService
     REQUIRED_SERVICE_ERROR_MESSAGE = "Required services are not ready, service feed can't start"
 
     def __init__(self, config, main_async_loop):
-        threading.Thread.__init__(self)
         AbstractServiceUser.__init__(self, config)
         AbstractServiceFeedChannelProducer.__init__(self, set_chan(self.FEED_CHANNEL(), None))
         self.feed_config = {}
@@ -105,6 +104,11 @@ class AbstractServiceFeed(AbstractServiceUser, threading.Thread, AbstractService
             self.logger.info("Nothing to monitor, feed is closing.")
             self.is_running = False
 
+    # Override this method if the feed has to be run in a thread using this body:
+    # threading.Thread.start(self)
+    def start(self) -> None:
+        self.run()
+
     def run(self):
         self.logger.info("Starting feed reception ...")
         self.service = self.REQUIRED_SERVICE.instance()
@@ -118,31 +122,3 @@ class AbstractServiceFeed(AbstractServiceUser, threading.Thread, AbstractService
     def stop(self):
         self.should_stop = True
         self.is_running = False
-
-
-# ****** Implementation side ******
-class DispatcherAbstractClient:
-    __metaclass__ = ABCMeta
-
-    def __init__(self):
-        self.dispatcher = None
-
-    @abstractmethod
-    async def receive_notification_data(self, data) -> None:
-        raise NotImplementedError("receive_notification_data not implemented")
-
-    @staticmethod
-    @abstractmethod
-    def get_dispatcher_class():
-        raise NotImplementedError("get_dispatcher_class not implemented")
-
-    # return true if the given notification is relevant for this client
-    @abstractmethod
-    def is_interested_by_this_notification(self, notification_description):
-        raise NotImplementedError("is_interested_by_this_notification not implemented")
-
-    def set_dispatcher(self, dispatcher):
-        self.dispatcher = dispatcher
-
-    def is_client_to_this_dispatcher(self, dispatcher_instance):
-        return self.get_dispatcher_class() == dispatcher_instance.__class__

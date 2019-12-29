@@ -85,14 +85,6 @@ class AbstractService(Singleton):
         on_backtesting = is_backtesting_enabled(config)
         return not on_backtesting or (on_backtesting and cls.BACKTESTING_ENABLED)
 
-    # Used to provide a new logger for this particular indicator
-    def set_logger(self, logger):
-        self.logger = logger
-
-    # Used to provide the global config
-    def set_config(self, config):
-        self.config = config
-
     # Override this method to perform additional checks
     @staticmethod
     def get_is_enabled(config):

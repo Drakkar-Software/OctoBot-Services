@@ -41,8 +41,8 @@ class ServiceFactory:
         else:
             service_instance.is_backtesting_enabled = backtesting_enabled
             service_instance.set_has_been_created(True)
-            service_instance.set_logger(get_logger(service_instance.get_name()))
-            service_instance.set_config(self.config)
+            service_instance.logger = get_logger(service_instance.get_name())
+            service_instance.config = self.config
             if service_instance.has_required_configuration():
                 try:
                     await service_instance.prepare()
