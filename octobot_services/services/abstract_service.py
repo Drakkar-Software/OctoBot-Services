@@ -16,7 +16,6 @@
 
 from abc import ABCMeta, abstractmethod
 
-from octobot_backtesting.api.backtesting import is_backtesting_enabled
 from octobot_commons.config_util import has_invalid_default_config_value
 from octobot_commons.singleton.singleton_class import Singleton
 
@@ -79,11 +78,6 @@ class AbstractService(Singleton):
     @abstractmethod
     def is_setup_correctly(config):
         raise NotImplementedError("is_setup_correctly not implemented")
-
-    @classmethod
-    def should_be_ready(cls, config):
-        on_backtesting = is_backtesting_enabled(config)
-        return not on_backtesting or (on_backtesting and cls.BACKTESTING_ENABLED)
 
     # Override this method to perform additional checks
     @staticmethod
