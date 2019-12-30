@@ -14,20 +14,16 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-from abc import *
-import threading
+from abc import ABCMeta, abstractmethod
 
 from octobot_channels.channels.channel import get_chan, set_chan
-
 from octobot_commons.asyncio_tools import run_coroutine_in_asyncio_loop
-
-
-# ****** Unique dispatcher side ******
+from octobot_commons.singleton.singleton_class import Singleton
 from octobot_services.abstract_service_user import AbstractServiceUser
 from octobot_services.channel.abstract_service_feed import AbstractServiceFeedChannelProducer
 
 
-class AbstractServiceFeed(AbstractServiceUser, AbstractServiceFeedChannelProducer):
+class AbstractServiceFeed(AbstractServiceUser, AbstractServiceFeedChannelProducer, Singleton):
     __metaclass__ = ABCMeta
 
     # Override FEED_CHANNEL with a dedicated channel

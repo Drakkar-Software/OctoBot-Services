@@ -20,11 +20,12 @@ from octobot_channels.producer import Producer
 from octobot_channels.consumer import Consumer
 
 
-class ServiceFeedChannelConsumer(Consumer):
-    pass
+class AbstractServiceFeedChannelConsumer(Consumer):
+    __metaclass__ = ABCMeta
 
 
 class AbstractServiceFeedChannelProducer(Producer):
+    __metaclass__ = ABCMeta
     pass
 
 
@@ -32,4 +33,4 @@ class AbstractServiceFeedChannel(Channel):
     __metaclass__ = ABCMeta
 
     PRODUCER_CLASS = AbstractServiceFeedChannelProducer
-    CONSUMER_CLASS = ServiceFeedChannelConsumer
+    CONSUMER_CLASS = AbstractServiceFeedChannelConsumer

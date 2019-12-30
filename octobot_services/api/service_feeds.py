@@ -22,6 +22,13 @@ def create_service_feed_factory(config, main_async_loop) -> ServiceFeedFactory:
     return ServiceFeedFactory(config, main_async_loop)
 
 
+def get_service_feed(service_feed_class) -> AbstractServiceFeed:
+    try:
+        return service_feed_class.instance()
+    except TypeError:
+        raise RuntimeError(f"can't get {service_feed_class} instance: service feed has not been properly created yet")
+
+
 async def start_service_feed(service_feed: AbstractServiceFeed, backtesting_enabled: bool) -> bool:
     return await ServiceFeedManager.start_service_feed(service_feed, backtesting_enabled)
 

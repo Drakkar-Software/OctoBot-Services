@@ -14,3 +14,7 @@ python-telegram-bot==12.2.0
 Python-Twitter==3.5
 # Web
 flask==1.1.1
+
+# Analysis tools
+newspaper3k==0.2.8
+vaderSentiment==3.2.1

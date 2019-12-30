@@ -31,4 +31,4 @@ class ServiceFeedFactory:
         return get_all_classes_from_parent(AbstractServiceFeed)
 
     def create_service_feed(self, service_feed_class) -> AbstractServiceFeed:
-        return service_feed_class(self.config, self.main_async_loop)
+        return service_feed_class.instance(self.config, self.main_async_loop)
