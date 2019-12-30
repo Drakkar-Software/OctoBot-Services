@@ -67,10 +67,9 @@ class AbstractServiceFeed(AbstractServiceUser, AbstractServiceFeedChannelProduce
     def _initialize(self):
         raise NotImplementedError("_initialize not implemented")
 
-    def _init_chanel(self):
+    async def _init_channel(self):
         channel = get_chan(self.FEED_CHANNEL.get_name())
-        run_coroutine_in_asyncio_loop(channel.register_producer(self),
-                                      self.main_async_loop)
+        await channel.register_producer(self)
 
     # Call _notify_consumers to send data to consumers
     def _notify_consumers(self, data):
@@ -94,7 +93,7 @@ class AbstractServiceFeed(AbstractServiceUser, AbstractServiceFeedChannelProduce
         if self._something_to_watch():
             if should_init:
                 self._initialize()
-                self._init_chanel()
+                run_coroutine_in_asyncio_loop(self._init_channel(), self.main_async_loop)
             if service_level_service_feed_if_any is not None and self.service is not None and not self.service.is_running():
                 self.service.start_service_feed()
             if not self._start_service_feed():
