@@ -22,10 +22,9 @@ class ServiceFeedManager:
     async def start_service_feed(service_feed: AbstractServiceFeed, backtesting_enabled: bool):
         if not service_feed.is_running and not service_feed.should_stop:
             if await service_feed.initialize(backtesting_enabled):
-                service_feed.start()
-                return True
+                return await service_feed.start()
         return False
 
     @staticmethod
-    def stop_service_feed(service_feed: AbstractServiceFeed):
-        service_feed.stop()
+    async def stop_service_feed(service_feed: AbstractServiceFeed):
+        await service_feed.stop()

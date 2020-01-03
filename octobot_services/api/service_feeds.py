@@ -33,5 +33,5 @@ async def start_service_feed(service_feed: AbstractServiceFeed, backtesting_enab
     return await ServiceFeedManager.start_service_feed(service_feed, backtesting_enabled)
 
 
-def stop_service_feed(service_feed: AbstractServiceFeed) -> None:
-    ServiceFeedManager.stop_service_feed(service_feed)
+async def stop_service_feed(service_feed: AbstractServiceFeed) -> None:
+    await ServiceFeedManager.stop_service_feed(service_feed)

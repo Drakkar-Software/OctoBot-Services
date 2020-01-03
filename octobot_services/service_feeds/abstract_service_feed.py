@@ -13,7 +13,7 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-
+import asyncio
 from abc import ABCMeta, abstractmethod
 
 from octobot_channels.channels.channel import get_chan, set_chan
@@ -52,7 +52,7 @@ class AbstractServiceFeed(AbstractServiceUser, AbstractServiceFeedChannelProduce
 
     # Override this method to specify the feed reception process
     @abstractmethod
-    def _start_service_feed(self):
+    async def _start_service_feed(self):
         raise NotImplementedError("start_dispatcher not implemented")
 
     @abstractmethod
@@ -83,37 +83,53 @@ class AbstractServiceFeed(AbstractServiceUser, AbstractServiceFeedChannelProduce
             }
         )
 
-    def _run(self, should_init=True):
+    async def _run(self, should_init=True):
         self.is_running = True
         service_level_service_feed_if_any = self._get_service_layer_service_feed()
         if self._something_to_watch():
             if should_init:
                 self._initialize()
-                run_coroutine_in_asyncio_loop(self._init_channel(), self.main_async_loop)
+                await self._init_channel()
             if service_level_service_feed_if_any is not None and self.service is not None and not self.service.is_running():
-                self.service.start_service_feed()
-            if not self._start_service_feed():
+                await self.service.start_service_feed()
+            if not await self._start_service_feed():
                 self.logger.warning("Nothing can be monitored even though there is something to watch"
                                     ", feed is going closing.")
         else:
             self.logger.info("Nothing to monitor, feed is closing.")
             self.is_running = False
+        return True
 
     # Override this method if the feed has to be run in a thread using this body:
     # threading.Thread.start(self)
-    def start(self) -> None:
-        self.run()
+    async def start(self) -> bool:
+        try:
+            return await self._inner_start()
+        except Exception as e:
+            self.logger.error(f"Service feed start error: {e}")
+            self.logger.exception(e)
+            return False
 
+    # Override this method if the feed has to be run in a thread using this body:
+    # threading.Thread.start(self)
+    # return True
+    async def _inner_start(self) -> bool:
+        return await self._async_run()
+
+    # Called by threading.Thread.start(self) when a service feed is threaded
     def run(self):
+        asyncio.run(self._async_run())
+
+    async def _async_run(self):
         self.logger.info("Starting feed reception ...")
         self.service = self.REQUIRED_SERVICE.instance()
-        self._run()
+        return await self._run()
 
-    def resume(self):
+    async def resume(self) -> bool:
         self.should_stop = False
         self.logger.info("Resuming feed reception ...")
-        self._run(should_init=False)
+        return await self._run(should_init=False)
 
-    def stop(self):
+    async def stop(self):
         self.should_stop = True
         self.is_running = False
