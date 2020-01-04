@@ -13,7 +13,6 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-import asyncio
 from abc import ABCMeta, abstractmethod
 
 from octobot_channels.channels.channel import get_chan, set_chan
@@ -21,9 +20,10 @@ from octobot_commons.asyncio_tools import run_coroutine_in_asyncio_loop
 from octobot_commons.singleton.singleton_class import Singleton
 from octobot_services.abstract_service_user import AbstractServiceUser
 from octobot_services.channel.abstract_service_feed import AbstractServiceFeedChannelProducer
+from octobot_services.util.returning_startable import ReturningStartable
 
 
-class AbstractServiceFeed(AbstractServiceUser, AbstractServiceFeedChannelProducer, Singleton):
+class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServiceFeedChannelProducer, Singleton):
     __metaclass__ = ABCMeta
 
     # Override FEED_CHANNEL with a dedicated channel
@@ -100,27 +100,7 @@ class AbstractServiceFeed(AbstractServiceUser, AbstractServiceFeedChannelProduce
             self.is_running = False
         return True
 
-    # Override this method if the feed has to be run in a thread using this body:
-    # threading.Thread.start(self)
-    async def start(self) -> bool:
-        try:
-            return await self._inner_start()
-        except Exception as e:
-            self.logger.error(f"Service feed start error: {e}")
-            self.logger.exception(e)
-            return False
-
-    # Override this method if the feed has to be run in a thread using this body:
-    # threading.Thread.start(self)
-    # return True
-    async def _inner_start(self) -> bool:
-        return await self._async_run()
-
-    # Called by threading.Thread.start(self) when a service feed is threaded
-    def run(self):
-        asyncio.run(self._async_run())
-
-    async def _async_run(self):
+    async def _async_run(self) -> bool:
         self.logger.info("Starting feed reception ...")
         self.service = self.REQUIRED_SERVICE.instance()
         return await self._run()
