@@ -66,7 +66,6 @@ setup(
     packages=PACKAGES,
     include_package_data=True,
     long_description=DESCRIPTION,
-    include_dirs=[np.get_include()],
     cmdclass={'build_ext': build_ext},
     tests_require=["pytest"],
     test_suite="tests",
