@@ -47,7 +47,7 @@ matrix:
         - provider: pypi
           user: "__token__"
           password:
-            secure: HHlsEgI/sKI1iG5y571xXlokPZN6nwT4wCeG1oLFX6gEJTMnyWDq8wSiqaaIiOMcs6MWA/pQI6wf4yL0a2lXZMiNQIEC+Q64Iln1leNBXbDDsNYXPHPhsb2ZIPkVf2PFFIUCp+7kNQk7+h/5Px3wmoLs2WZbqy2vMHA4fGKwA3/xrwbjovQTJbDkonyZPzPCo30jsbl5jH/IzH1Lv2hn1xK7yS2w3y+iSV9tj2Wchcfz18OAVrb59PgaQptEzlKqujP6Khj6qV+04cTldzYh2Vd0kyYlSxmSN57EKYVyZfUkXCLm/AcJ55YfNwbrGslmPC/0g8rbmlMVGwB9cHQwBLARu3QwJZ7wW1PDiCXvJ2BTbeihh8dzOneGkgwfOe3HXD1F/7zA0I4NOuucPhcyD+EA3XVzFhNSqCOrK1E9D8pMqxn3c08+ORazdcebVojF7OAODxDOt1cldPwRjjflZ2AV6vOpZZvSKq43A9n3aXDnyTmzJF5y/Q1RjdmAgqb/bCchtUQ3COq5RA7BWtYCWnZURWy3lnjBB99G24v3dR2d1L730mjN72AIqx86bvKYU7YEiwz0ZTzlWaSXUjz78I7oDkYHuQwEnEeQ8AdA78+IJU3/lgac2XuRjkVr4MDwfJm52Y1GrayOC+JvFj9axVA6jgKOfk0WSN0qZwsTim8=
+            secure: DWRC6XqJEQInwTQoop6tKPf7E3gHL7a1ZSOrBZdvL40xZG9wc29E4A4VIILJAA4AmWKZMKtz/NKpMgidl/x4pPp1acTIY4AFvdi2FGHwTU+o47/Eq3oLjAzo+nugzAYmdBpVJJ3GBVOQvrJffANuMgM6l2XQxgWGMOX5z8F8v1lSoNDrIpeMpjo0ITabEjlWQ+VT7hEWSxTEq+dghmd0id4m+iXeQVJWeWgeexTuplXvkwTaliSDTlgW4tKrmXitw4tei43BenkZDYWTLqMi2ohSz84b0PNzWplg+u44ojZ9WV/PQdftyvfUfF8a8c75HVeI0qZT/ZzVSuSVGwH1BPtHJ1u7ydLAdCGj2RhPO3xuic/opUHrrCtRssx4DaOlHwITO3U4P8nv9vJa8v6xsgDTvasXOzNlm7FsxWKeXwMzcpvqFqNWFJ7PuBW1cdR4CcNh8O8BYaZtaQdxBpEUWTej0lGP+wp5EOf2bVfSIHq6uLNdpX4tt0cCsXb4LpOGq6KEKwM0WmFwKyzullBNh/f7AD54MoiyGh6Bv65/o345F6tARJbKLKrnLNB870FRhqJB0UNq3/86+iEvoqu8coKLyPpzQaNhrPDOnnsiPhBSV09+/Frc7Wocd3pCXGi/sjk6Oy3zHNVIAcK/0Rywg97Q7GYvqJWpxQfCpr9Wvd8=
           skip_cleanup: true
           skip_existing: true
           distributions: "sdist"
