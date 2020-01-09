@@ -13,3 +13,16 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+
+from octobot_services.api.services import stop_services, get_available_services
+from octobot_services.api.service_feeds import create_service_feed_factory
+
+
+def test_init_services():
+    get_available_services()
+    stop_services()
+
+
+def test_init_service_feeds():
+    factory = create_service_feed_factory({}, None)
+    factory.get_available_service_feeds()

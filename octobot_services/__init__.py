@@ -14,8 +14,5 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-from .Dispatchers import *
-from .services import *
-
 PROJECT_NAME = "OctoBot-Services"
-VERSION = "0.0.0"  # major.minor.revision
+VERSION = "1.0.0"  # major.minor.revision

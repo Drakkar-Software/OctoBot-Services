@@ -14,7 +14,6 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-from .abstract_dispatcher import AbstractDispatcher
-from .reddit_dispatcher import RedditDispatcher
-from .twitter_dispatcher import TwitterDispatcher
-from .telegram_dispatcher import TelegramDispatcher
+
+class ServiceFeedException(Exception):
+    pass

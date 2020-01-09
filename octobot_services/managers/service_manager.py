@@ -13,3 +13,16 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+from octobot_services.services.service_factory import ServiceFactory
+
+
+def stop_services():
+    for service_instance in _get_service_instances():
+        try:
+            service_instance.stop()
+        except Exception as e:
+            raise e
+
+
+def _get_service_instances():
+    return [service_class.instance() for service_class in ServiceFactory.get_available_services()]

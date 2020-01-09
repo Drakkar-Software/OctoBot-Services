@@ -16,20 +16,33 @@
 
 from abc import ABCMeta, abstractmethod
 
-from backtesting import backtesting_enabled
-from tools.config_manager import ConfigManager
+from octobot_commons.config_util import has_invalid_default_config_value
+from octobot_commons.singleton.singleton_class import Singleton
 
 
-class AbstractService:
+class AbstractService(Singleton):
     __metaclass__ = ABCMeta
 
     BACKTESTING_ENABLED = False
+    _has_been_created = False
 
     def __init__(self):
         super().__init__()
         self.logger = None
         self.config = None
-        self.enabled = True
+        self._created = True
+        self._healthy = False
+
+    @classmethod
+    def set_has_been_created(cls, value):
+        cls._has_been_created = value
+
+    @classmethod
+    def get_has_been_created(cls):
+        return cls._has_been_created
+
+    def is_healthy(self):
+        return self._healthy
 
     @classmethod
     def get_name(cls):
@@ -48,9 +61,13 @@ class AbstractService:
     def register_user(self, user_key):
         pass
 
-    # Override this method if a dispatcher is located in this service (ie: TelegramService)
-    def start_dispatcher(self):
+    # Override this method if a service feed is located in this service (ie: TelegramService)
+    def start_service_feed(self):
         pass
+
+    # Override this method to know if an updater is already running
+    def is_running(self):
+        return False
 
     @classmethod
     def get_help_page(cls) -> str:
@@ -62,22 +79,10 @@ class AbstractService:
     def is_setup_correctly(config):
         raise NotImplementedError("is_setup_correctly not implemented")
 
-    @classmethod
-    def should_be_ready(cls, config):
-        on_backtesting = backtesting_enabled(config)
-        return not on_backtesting or (on_backtesting and cls.BACKTESTING_ENABLED)
-
-    # Used to provide a new logger for this particular indicator
-    def set_logger(self, logger):
-        self.logger = logger
-
-    # Used to provide the global config
-    def set_config(self, config):
-        self.config = config
-
-    # If this service is enabled
-    def get_is_enabled(self, config):
-        return self.enabled
+    # Override this method to perform additional checks
+    @staticmethod
+    def get_is_enabled(config):
+        return True
 
     # implement locally if the service has thread(s) to stop
     def stop(self):
@@ -116,13 +121,13 @@ class AbstractService:
 
     def check_required_config(self, config):
         return all(key in config for key in self.get_required_config()) and \
-            not ConfigManager.has_invalid_default_config_value(*(config[key] for key in self.get_required_config()))
+            not has_invalid_default_config_value(*(config[key] for key in self.get_required_config()))
 
     def log_connection_error_message(self, e):
         self.logger.error(f"{self.get_name()} is failing to connect, please check your internet connection: {e}")
 
     async def say_hello(self):
-        message, success = self.get_successful_startup_message()
-        if success:
+        message, self._healthy = self.get_successful_startup_message()
+        if self._healthy:
             self.logger.info(message)
-        return success
+        return self._healthy
