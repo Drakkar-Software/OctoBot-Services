@@ -29,6 +29,9 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
     # Override FEED_CHANNEL with a dedicated channel
     FEED_CHANNEL = None
 
+    # Set IS_BACKTESTING_ENABLED at true if backtesting is possible with this feed
+    IS_BACKTESTING_ENABLED = False
+
     _SLEEPING_TIME_BEFORE_RECONNECT_ATTEMPT_SEC = 10
     DELAY_BETWEEN_STREAMS_QUERIES = 5
     REQUIRED_SERVICE_ERROR_MESSAGE = "Required services are not ready, service feed can't start"
