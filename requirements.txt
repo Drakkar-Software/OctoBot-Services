@@ -18,6 +18,8 @@ flask==1.1.1
 ## websockets
 ### used by flask-socketio (listed here because multiple libs are usable, force this one)
 gevent==1.4.0
+### used by flask-socketio with gevent (listed here because multiple libs are usable, force this one)
+gevent-websocket==0.10.1
 flask-socketio==4.2.1
 
 # Analysis tools
