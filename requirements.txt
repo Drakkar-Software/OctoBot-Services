@@ -13,7 +13,12 @@ python-telegram-bot==12.2.0
 # Twitter
 Python-Twitter==3.5
 # Web
+## http server
 flask==1.1.1
+## websockets
+### used by flask-socketio (listed here because multiple libs are usable, force this one)
+gevent==1.4.0
+flask-socketio==4.2.1
 
 # Analysis tools
 newspaper3k==0.2.8
