@@ -44,8 +44,7 @@ class ReturningStartable:
         except Exception as e:
             class_name = self.__class__.__name__
             logger = get_logger(class_name)
-            logger.error(f"{class_name} start error: {e}")
-            logger.exception(e)
+            logger.exception(e, True, f"{class_name} start error: {e}")
             return False
 
     # Called by threading.Thread.start(self) when a this is threaded
