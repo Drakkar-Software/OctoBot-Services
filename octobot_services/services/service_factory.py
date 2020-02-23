@@ -68,8 +68,7 @@ class ServiceFactory:
             else:
                 self.logger.warning(f"{service.get_name()} initial checkup failed.")
         except Exception as e:
-            self.logger.error(f"{service.get_name()} preparation produced the following error: {e}")
-            self.logger.exception(e)
+            self.logger.exception(e, True, f"{service.get_name()} preparation produced the following error: {e}")
         return False
 
     @staticmethod
