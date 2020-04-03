@@ -1,20 +1,20 @@
 # Setup requirements
-cython==0.29.14
+cython==0.29.16
 
 # Drakkar-Software requirements
-OctoBot-Channels>=1.3.19, <1.4
-OctoBot-Commons>=1.2.1, <1.3
+OctoBot-Channels>=1.3.22, <1.4
+OctoBot-Commons>=1.3.5, <1.4
 
 # Services
 # Reddit
-praw==6.4.0
+praw==6.5.1
 # Telegram
-python-telegram-bot==12.2.0
+python-telegram-bot==12.5.1
 # Twitter
 Python-Twitter==3.5
 # Web
 ## http server
-flask==1.1.1
+flask==1.1.2
 ## websockets
 ### used by flask-socketio (listed here because multiple libs are usable, force this one)
 gevent==1.4.0
@@ -24,4 +24,4 @@ flask-socketio==4.2.1
 
 # Analysis tools
 newspaper3k==0.2.8
-vaderSentiment==3.2.1
+vaderSentiment==3.3.1
