@@ -1,6 +1,3 @@
-# Setup requirements
-cython==0.29.16
-
 # Drakkar-Software requirements
 OctoBot-Channels>=1.3.22, <1.4
 OctoBot-Commons>=1.3.5, <1.4
@@ -9,7 +6,7 @@ OctoBot-Commons>=1.3.5, <1.4
 # Reddit
 praw==6.5.1
 # Telegram
-python-telegram-bot==12.5.1
+python-telegram-bot==12.4.2
 # Twitter
 Python-Twitter==3.5
 # Web

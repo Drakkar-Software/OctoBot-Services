@@ -54,23 +54,6 @@ jobs:
             branch: $DEPLOY_BRANCH
             tags: true
             condition: $TRAVIS_OS_NAME = 'linux'
-        - provider: script
-          script: docker run -it -e PYPI_USERNAME=$PYPI_USERNAME -e PYPI_PASSWORD=$PYPI_PASSWORD -v $(pwd):/project drakkarsoftware/octobot-pypi-deploy:i686 "i686" "cp37-cp37m" "cp37"
-          cleanup: true
-          skip_existing: true
-          on:
-            repo: "$GH_REPO"
-            branch: "$DEPLOY_BRANCH"
-            tags: true
-            condition: "$TRAVIS_OS_NAME = 'linux'"
-        - provider: script
-          script: docker run -it -e PYPI_USERNAME=$PYPI_USERNAME -e PYPI_PASSWORD=$PYPI_PASSWORD -v $(pwd):/project drakkarsoftware/octobot-pypi-deploy:x86_64 "x86_64" "cp37-cp37m" "cp37"
-          cleanup: true
-          on:
-            repo: "$GH_REPO"
-            branch: "$DEPLOY_BRANCH"
-            tags: true
-            condition: "$TRAVIS_OS_NAME = 'linux'"
 
     - name: "OSX - Python 3.7 - Deploy"
       stage: deploy
