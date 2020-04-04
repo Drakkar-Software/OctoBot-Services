@@ -15,37 +15,14 @@
 #  License along with this library.
 # from distutils.extension import Extension
 
-import os
-
-from setuptools import dist
-
-dist.Distribution().fetch_build_eggs(['Cython>=0.29.16'])
-
-try:
-    from Cython.Distutils import build_ext
-    from Cython.Build import cythonize
-except ImportError:
-    # create closure for deferred import
-    def cythonize(*args, **kwargs):
-        from Cython.Build import cythonize
-        return cythonize(*args, **kwargs)
-
-    def build_ext(*args, **kwargs):
-        from Cython.Distutils import build_ext
-        return build_ext(*args, **kwargs)
-
 from setuptools import find_packages
-from setuptools import setup, Extension
+from setuptools import setup
 
 from octobot_services import PROJECT_NAME, VERSION
 
 PACKAGES = find_packages(exclude=["tests"])
 
-packages_list: list = []
-
-ext_modules: list = [
-    Extension(package, [f"{package.replace('.', '/')}.py"])
-    for package in packages_list]
+packages_list = []
 
 # long description from README file
 with open('README.md', encoding='utf-8') as f:
@@ -53,7 +30,6 @@ with open('README.md', encoding='utf-8') as f:
 
 REQUIRED = open('requirements.txt').readlines()
 REQUIRES_PYTHON = '>=3.7'
-CYTHON_DEBUG = False if not os.getenv('CYTHON_DEBUG') else os.getenv('CYTHON_DEBUG')
 
 setup(
     name=PROJECT_NAME,
@@ -66,18 +42,15 @@ setup(
     packages=PACKAGES,
     include_package_data=True,
     long_description=DESCRIPTION,
-    cmdclass={'build_ext': build_ext},
     tests_require=["pytest"],
     test_suite="tests",
     zip_safe=False,
     data_files=[],
     setup_requires=REQUIRED,
-    install_requires=[],
-    ext_modules=ext_modules,
+    install_requires=REQUIRED,
     python_requires=REQUIRES_PYTHON,
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 3.7',
-        'Programming Language :: Cython',
     ],
 )
