@@ -62,7 +62,7 @@ class AbstractService(Singleton):
         pass
 
     # Override this method if a service feed is located in this service (ie: TelegramService)
-    def start_service_feed(self):
+    async def start_service_feed(self):
         pass
 
     # Override this method to know if an updater is already running
