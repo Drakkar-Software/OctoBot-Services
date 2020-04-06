@@ -48,8 +48,8 @@ class AbstractServiceUser(InitializableWithPostAction):
         if await service_factory.create_or_get_service(self.REQUIRED_SERVICE, backtesting_enabled):
             return True
         else:
-            self.get_logger().error(f"Impossible to start {self.get_name()}: required service "
-                                    f"{self.REQUIRED_SERVICE.get_name()} is not available.")
+            self.get_logger().warning(f"Impossible to start {self.get_name()}: required service "
+                                      f"{self.REQUIRED_SERVICE.get_name()} is not available.")
             return False
 
     @classmethod
