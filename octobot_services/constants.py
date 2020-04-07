@@ -44,6 +44,13 @@ CONFIG_WEB_PORT = "port"
 DEFAULT_SERVER_IP = '0.0.0.0'
 DEFAULT_SERVER_PORT = 5001
 
+# Google
+CONFIG_GOOGLE = "google"
+CONFIG_TREND_TOPICS = "trends"
+CONFIG_TREND = "trend"
+CONFIG_TREND_DESCRIPTION = "trend_description"
+CONFIG_TREND_HISTORY_TIME = "relevant_history_months"
+
 # Twitter
 CONFIG_TWITTERS_ACCOUNTS = "accounts"
 CONFIG_TWITTERS_HASHTAGS = "hashtags"

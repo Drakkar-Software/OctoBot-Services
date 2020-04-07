@@ -9,6 +9,8 @@ praw==6.5.1
 python-telegram-bot==12.4.2
 # Twitter
 Python-Twitter==3.5
+# Google
+simplifiedpytrends>=1.1.0
 # Web
 ## http server
 flask==1.1.2

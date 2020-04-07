@@ -42,6 +42,7 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
         self.feed_config = {}
         self.main_async_loop = main_async_loop
         self.service = None
+        self.should_stop = False
 
     # Override update_feed_config if any need in the extending feed
     def update_feed_config(self, config):
@@ -76,6 +77,15 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
             # send notification only if is a notification channel is running
             get_chan(self.FEED_CHANNEL.get_name())
             run_coroutine_in_asyncio_loop(self.feed_send_coroutine(data), self.main_async_loop)
+        except KeyError:
+            self.logger.error("Can't send notification data: no initialized channel found")
+
+    # Call _notify_consumers to send data to consumers
+    async def _async_notify_consumers(self, data):
+        try:
+            # send notification only if is a notification channel is running
+            get_chan(self.FEED_CHANNEL.get_name())
+            await self.feed_send_coroutine(data)
         except KeyError:
             self.logger.error("Can't send notification data: no initialized channel found")
 

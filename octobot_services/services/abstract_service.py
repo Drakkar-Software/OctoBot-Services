@@ -128,6 +128,6 @@ class AbstractService(Singleton):
 
     async def say_hello(self):
         message, self._healthy = self.get_successful_startup_message()
-        if self._healthy:
+        if self._healthy and message:
             self.logger.info(message)
         return self._healthy
