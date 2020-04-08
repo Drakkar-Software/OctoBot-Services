@@ -29,8 +29,8 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
     # Override FEED_CHANNEL with a dedicated channel
     FEED_CHANNEL = None
 
-    # Set IS_BACKTESTING_ENABLED at true if backtesting is possible with this feed
-    IS_BACKTESTING_ENABLED = False
+    # Set simulator class when available in order to use it in backtesting for this feed
+    SIMULATOR_CLASS = None
 
     _SLEEPING_TIME_BEFORE_RECONNECT_ATTEMPT_SEC = 10
     DELAY_BETWEEN_STREAMS_QUERIES = 5
@@ -80,7 +80,7 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
         except KeyError:
             self.logger.error("Can't send notification data: no initialized channel found")
 
-    # Call _notify_consumers to send data to consumers
+    # Call _async_notify_consumers to send data to consumers (same as _notify_consumers but directly from async context)
     async def _async_notify_consumers(self, data):
         try:
             # send notification only if is a notification channel is running
