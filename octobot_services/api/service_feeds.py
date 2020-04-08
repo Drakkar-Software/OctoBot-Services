@@ -29,8 +29,20 @@ def get_service_feed(service_feed_class) -> AbstractServiceFeed:
         raise RuntimeError(f"can't get {service_feed_class} instance: service feed has not been properly created yet")
 
 
+def get_backtesting_service_feed(service_feed_class) -> AbstractServiceFeed:
+    if service_feed_class.SIMULATOR_CLASS is not None:
+        try:
+            return service_feed_class.SIMULATOR_CLASS.instance()
+        except TypeError:
+            raise RuntimeError(f"can't get {service_feed_class.SIMULATOR_CLASS} "
+                               f"instance: service feed has not been properly created yet")
+    else:
+        return None
+
+
 def is_enabled_in_backtesting(service_feed_class) -> bool:
     return service_feed_class.IS_BACKTESTING_ENABLED
+
 
 async def start_service_feed(service_feed: AbstractServiceFeed, backtesting_enabled: bool) -> bool:
     return await ServiceFeedManager.start_service_feed(service_feed, backtesting_enabled)
