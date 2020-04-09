@@ -18,17 +18,26 @@ from octobot_commons.tentacles_management.advanced_manager import get_all_classe
 from octobot_commons.logging.logging_util import get_logger
 
 from octobot_services.service_feeds.abstract_service_feed import AbstractServiceFeed
+from octobot_services.service_feeds.service_feeds import ServiceFeeds
 
 
 class ServiceFeedFactory:
-    def __init__(self, config, main_async_loop):
+    def __init__(self, config, main_async_loop, bot_id):
         self.logger = get_logger(self.__class__.__name__)
         self.config = config
         self.main_async_loop = main_async_loop
+        self.bot_id = bot_id
 
     @staticmethod
-    def get_available_service_feeds() -> list:
-        return get_all_classes_from_parent(AbstractServiceFeed)
+    def get_available_service_feeds(in_backtesting: bool) -> list:
+        feeds = get_all_classes_from_parent(AbstractServiceFeed)
+        if in_backtesting:
+            feeds = [feed.SIMULATOR_CLASS
+                     for feed in feeds
+                     if feed.SIMULATOR_CLASS is not None]
+        return feeds
 
     def create_service_feed(self, service_feed_class) -> AbstractServiceFeed:
-        return service_feed_class.instance(self.config, self.main_async_loop)
+        feed = service_feed_class(self.config, self.main_async_loop, self.bot_id)
+        ServiceFeeds.instance().add_service_feed(self.bot_id, service_feed_class.get_name(), feed)
+        return feed

@@ -24,5 +24,5 @@ def test_init_services():
 
 
 def test_init_service_feeds():
-    factory = create_service_feed_factory({}, None)
-    factory.get_available_service_feeds()
+    factory = create_service_feed_factory({}, None, "")
+    factory.get_available_service_feeds(True)

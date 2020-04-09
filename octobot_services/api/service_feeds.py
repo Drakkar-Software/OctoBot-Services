@@ -16,32 +16,18 @@
 from octobot_services.managers.service_feed_manager import ServiceFeedManager
 from octobot_services.service_feeds.abstract_service_feed import AbstractServiceFeed
 from octobot_services.service_feeds.service_feed_factory import ServiceFeedFactory
+from octobot_services.service_feeds.service_feeds import ServiceFeeds
 
 
-def create_service_feed_factory(config, main_async_loop) -> ServiceFeedFactory:
-    return ServiceFeedFactory(config, main_async_loop)
+def create_service_feed_factory(config, main_async_loop, bot_id) -> ServiceFeedFactory:
+    return ServiceFeedFactory(config, main_async_loop, bot_id)
 
 
-def get_service_feed(service_feed_class) -> AbstractServiceFeed:
+def get_service_feed(service_feed_class, bot_id) -> AbstractServiceFeed:
     try:
-        return service_feed_class.instance()
+        return ServiceFeeds.instance().get_service_feed(bot_id, service_feed_class.get_name())
     except TypeError:
         raise RuntimeError(f"can't get {service_feed_class} instance: service feed has not been properly created yet")
-
-
-def get_backtesting_service_feed(service_feed_class) -> AbstractServiceFeed:
-    if service_feed_class.SIMULATOR_CLASS is not None:
-        try:
-            return service_feed_class.SIMULATOR_CLASS.instance()
-        except TypeError:
-            raise RuntimeError(f"can't get {service_feed_class.SIMULATOR_CLASS} "
-                               f"instance: service feed has not been properly created yet")
-    else:
-        return None
-
-
-def is_enabled_in_backtesting(service_feed_class) -> bool:
-    return service_feed_class.IS_BACKTESTING_ENABLED
 
 
 async def start_service_feed(service_feed: AbstractServiceFeed, backtesting_enabled: bool) -> bool:
@@ -50,3 +36,7 @@ async def start_service_feed(service_feed: AbstractServiceFeed, backtesting_enab
 
 async def stop_service_feed(service_feed: AbstractServiceFeed) -> None:
     await ServiceFeedManager.stop_service_feed(service_feed)
+
+
+async def clear_bot_id_feeds(bot_id: str) -> None:
+    ServiceFeeds.instance().clear_bot_id_feeds(bot_id)
