@@ -23,7 +23,7 @@ from octobot_services.channel.abstract_service_feed import AbstractServiceFeedCh
 from octobot_services.util.returning_startable import ReturningStartable
 
 
-class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServiceFeedChannelProducer, Singleton):
+class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServiceFeedChannelProducer):
     __metaclass__ = ABCMeta
 
     # Override FEED_CHANNEL with a dedicated channel
@@ -36,11 +36,12 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
     DELAY_BETWEEN_STREAMS_QUERIES = 5
     REQUIRED_SERVICE_ERROR_MESSAGE = "Required services are not ready, service feed can't start"
 
-    def __init__(self, config, main_async_loop):
+    def __init__(self, config, main_async_loop, bot_id):
         AbstractServiceUser.__init__(self, config)
         AbstractServiceFeedChannelProducer.__init__(self, set_chan(self.FEED_CHANNEL(), None))
         self.feed_config = {}
         self.main_async_loop = main_async_loop
+        self.bot_id = bot_id
         self.service = None
         self.should_stop = False
 
