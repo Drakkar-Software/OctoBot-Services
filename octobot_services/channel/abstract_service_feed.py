@@ -26,7 +26,6 @@ class AbstractServiceFeedChannelConsumer(Consumer):
 
 class AbstractServiceFeedChannelProducer(Producer):
     __metaclass__ = ABCMeta
-    pass
 
 
 class AbstractServiceFeedChannel(Channel):
