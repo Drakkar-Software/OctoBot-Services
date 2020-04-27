@@ -17,7 +17,6 @@ from abc import ABCMeta, abstractmethod
 
 from octobot_channels.channels.channel import get_chan, set_chan
 from octobot_commons.asyncio_tools import run_coroutine_in_asyncio_loop
-from octobot_commons.singleton.singleton_class import Singleton
 from octobot_services.abstract_service_user import AbstractServiceUser
 from octobot_services.channel.abstract_service_feed import AbstractServiceFeedChannelProducer
 from octobot_services.util.returning_startable import ReturningStartable
