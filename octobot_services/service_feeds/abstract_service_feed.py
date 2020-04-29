@@ -41,7 +41,7 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
         self.feed_config = {}
         self.main_async_loop = main_async_loop
         self.bot_id = bot_id
-        self.service = None
+        self.services = None
         self.should_stop = False
 
     # Override update_feed_config if any need in the extending feed
@@ -103,8 +103,11 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
             if should_init:
                 self._initialize()
                 await self._init_channel()
-            if service_level_service_feed_if_any is not None and self.service is not None and not self.service.is_running():
-                await self.service.start_service_feed()
+            if self.services is not None:
+                for service in self.services:
+                    if service_level_service_feed_if_any is not None \
+                            and not service.is_running():
+                        await service.start_service_feed()
             if not await self._start_service_feed():
                 self.logger.warning("Nothing can be monitored even though there is something to watch"
                                     ", feed is going closing.")
@@ -115,7 +118,7 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
 
     async def _async_run(self) -> bool:
         self.logger.info("Starting feed reception ...")
-        self.service = self.REQUIRED_SERVICE.instance()
+        self.services = [service.instance() for service in self.REQUIRED_SERVICES]
         return await self._run()
 
     async def resume(self) -> bool:
