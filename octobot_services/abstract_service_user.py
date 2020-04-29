@@ -24,7 +24,7 @@ class AbstractServiceUser(InitializableWithPostAction):
     __metaclass__ = ABCMeta
 
     # The service required to run this user
-    REQUIRED_SERVICE = None
+    REQUIRED_SERVICES = None
 
     def __init__(self, config):
         super().__init__()
@@ -34,22 +34,25 @@ class AbstractServiceUser(InitializableWithPostAction):
     async def _initialize_impl(self, backtesting_enabled) -> bool:
         # init associated service if not already init
         service_list = ServiceFactory.get_available_services()
-        if self.REQUIRED_SERVICE:
-            if self.REQUIRED_SERVICE in service_list:
-                return await self._create_or_get_service_instance(backtesting_enabled)
-            else:
-                self.get_logger().error(f"Required service {self.REQUIRED_SERVICE} is not an available service")
-        elif self.REQUIRED_SERVICE is None:
+        if self.REQUIRED_SERVICES:
+            for service in self.REQUIRED_SERVICES:
+                if service in service_list:
+                    if not await self._create_or_get_service_instance(service, backtesting_enabled):
+                        return False
+                else:
+                    self.get_logger().error(f"Required service {self.REQUIRED_SERVICES} is not an available service")
+            return True
+        elif self.REQUIRED_SERVICES is None:
             self.get_logger().error(f"Required service is not set, set it at False if no service is required")
         return False
 
-    async def _create_or_get_service_instance(self, backtesting_enabled):
+    async def _create_or_get_service_instance(self, service, backtesting_enabled):
         service_factory = ServiceFactory(self.config)
-        if await service_factory.create_or_get_service(self.REQUIRED_SERVICE, backtesting_enabled):
+        if await service_factory.create_or_get_service(service, backtesting_enabled):
             return True
         else:
             self.get_logger().warning(f"Impossible to start {self.get_name()}: required service "
-                                      f"{self.REQUIRED_SERVICE.get_name()} is not available.")
+                                      f"{service.get_name()} is not available.")
             return False
 
     @classmethod
