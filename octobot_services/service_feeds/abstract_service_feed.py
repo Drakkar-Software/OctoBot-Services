@@ -117,7 +117,7 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
         return True
 
     async def _async_run(self) -> bool:
-        self.logger.info("Starting feed reception ...")
+        self.logger.info("Initializing feed reception ...")
         self.services = [service.instance() for service in self.REQUIRED_SERVICES]
         return await self._run()
 
