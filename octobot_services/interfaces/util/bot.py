@@ -13,23 +13,34 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from abc import ABCMeta
 
-from octobot_channels.channels.channel import Channel
-from octobot_channels.producer import Producer
-from octobot_channels.consumer import Consumer
+from octobot_services.interfaces.abstract_interface import AbstractInterface
 
 
-class AbstractServiceFeedChannelConsumer(Consumer):
-    __metaclass__ = ABCMeta
+def get_bot_api():
+    return AbstractInterface.bot_api
 
 
-class AbstractServiceFeedChannelProducer(Producer):
-    __metaclass__ = ABCMeta
+def get_exchange_manager_ids():
+    return get_bot_api().get_exchange_manager_ids()
 
 
-class AbstractServiceFeedChannel(Channel):
-    __metaclass__ = ABCMeta
+def get_global_config():
+    return get_bot_api().get_global_config()
 
-    PRODUCER_CLASS = AbstractServiceFeedChannelProducer
-    CONSUMER_CLASS = AbstractServiceFeedChannelConsumer
+
+def get_startup_config():
+    return get_bot_api().get_startup_config()
+
+
+def get_edited_config():
+    return get_bot_api().get_edited_config()
+
+
+def get_startup_tentacles_config():
+    return get_bot_api().get_startup_tentacles_config()
+
+
+def get_edited_tentacles_config():
+    return get_bot_api().get_edited_tentacles_config()
+

@@ -1,4 +1,4 @@
-#  Drakkar-Software OctoBot-Services
+#  Drakkar-Software OctoBot-Notifications
 #  Copyright (c) Drakkar-Software, All rights reserved.
 #
 #  This library is free software; you can redistribute it and/or
@@ -13,23 +13,21 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from abc import ABCMeta
 
-from octobot_channels.channels.channel import Channel
-from octobot_channels.producer import Producer
-from octobot_channels.consumer import Consumer
+import pytest
 
-
-class AbstractServiceFeedChannelConsumer(Consumer):
-    __metaclass__ = ABCMeta
+from octobot_services.api.notification import create_notifier_factory, send_notification, create_notification
 
 
-class AbstractServiceFeedChannelProducer(Producer):
-    __metaclass__ = ABCMeta
+def test_create_notifier_factory():
+    factory = create_notifier_factory({})
+    factory.get_available_notifiers()
 
 
-class AbstractServiceFeedChannel(Channel):
-    __metaclass__ = ABCMeta
+def test_create_notification():
+    create_notification("plop")
 
-    PRODUCER_CLASS = AbstractServiceFeedChannelProducer
-    CONSUMER_CLASS = AbstractServiceFeedChannelConsumer
+
+@pytest.mark.asyncio
+async def test_send_notification():
+    await send_notification(create_notification(""))

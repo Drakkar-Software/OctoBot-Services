@@ -13,23 +13,13 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from abc import ABCMeta
+from octobot_commons.logging.logging_util import get_logger
 
-from octobot_channels.channels.channel import Channel
-from octobot_channels.producer import Producer
-from octobot_channels.consumer import Consumer
-
-
-class AbstractServiceFeedChannelConsumer(Consumer):
-    __metaclass__ = ABCMeta
-
-
-class AbstractServiceFeedChannelProducer(Producer):
-    __metaclass__ = ABCMeta
-
-
-class AbstractServiceFeedChannel(Channel):
-    __metaclass__ = ABCMeta
-
-    PRODUCER_CLASS = AbstractServiceFeedChannelProducer
-    CONSUMER_CLASS = AbstractServiceFeedChannelConsumer
+LOGGER = get_logger(__name__)
+EOL = "\n"
+NO_TRADER_MESSAGE = """OctoBot is either starting or there is no trader is activated in my config/config.json file.
+See https://github.com/Drakkar-Software/OctoBot/wiki if you need help with my configuration."""
+NO_CURRENCIES_MESSAGE = "No cryptocurrencies are in my config/config.json file.\n" \
+                        "See https://github.com/Drakkar-Software/OctoBot/wiki/Configuration#cryptocurrencies " \
+                        "if you need help with my cryptocurrencies configuration."""
+UNAUTHORIZED_USER_MESSAGE = "Hello, I dont talk to strangers."

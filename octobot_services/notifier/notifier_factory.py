@@ -13,23 +13,21 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from abc import ABCMeta
 
-from octobot_channels.channels.channel import Channel
-from octobot_channels.producer import Producer
-from octobot_channels.consumer import Consumer
-
-
-class AbstractServiceFeedChannelConsumer(Consumer):
-    __metaclass__ = ABCMeta
+from octobot_commons.tentacles_management.advanced_manager import get_all_classes_from_parent
+from octobot_commons.tentacles_management.class_inspector import is_abstract_using_inspection_and_class_naming
+from octobot_services.notifier.abstract_notifier import AbstractNotifier
 
 
-class AbstractServiceFeedChannelProducer(Producer):
-    __metaclass__ = ABCMeta
+class NotifierFactory:
+    def __init__(self, config):
+        self.config = config
 
+    @staticmethod
+    def get_available_notifiers():
+        return [notifier_class
+                for notifier_class in get_all_classes_from_parent(AbstractNotifier)
+                if not is_abstract_using_inspection_and_class_naming(notifier_class)]
 
-class AbstractServiceFeedChannel(Channel):
-    __metaclass__ = ABCMeta
-
-    PRODUCER_CLASS = AbstractServiceFeedChannelProducer
-    CONSUMER_CLASS = AbstractServiceFeedChannelConsumer
+    async def create_notifier(self, notifier_class):
+        return notifier_class(self.config)
