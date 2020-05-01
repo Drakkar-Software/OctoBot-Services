@@ -13,23 +13,17 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from abc import ABCMeta
-
-from octobot_channels.channels.channel import Channel
-from octobot_channels.producer import Producer
-from octobot_channels.consumer import Consumer
+from enum import Enum
 
 
-class AbstractServiceFeedChannelConsumer(Consumer):
-    __metaclass__ = ABCMeta
+class NotificationLevel(Enum):
+    DANGER = "danger"
+    WARNING = "warning"
+    INFO = "info"
+    SUCCESS = "success"
 
 
-class AbstractServiceFeedChannelProducer(Producer):
-    __metaclass__ = ABCMeta
-
-
-class AbstractServiceFeedChannel(Channel):
-    __metaclass__ = ABCMeta
-
-    PRODUCER_CLASS = AbstractServiceFeedChannelProducer
-    CONSUMER_CLASS = AbstractServiceFeedChannelConsumer
+class NotificationCategory(Enum):
+    GLOBAL_INFO = "global-info"
+    PRICE_ALERTS = "price-alerts"
+    TRADES = "trades"

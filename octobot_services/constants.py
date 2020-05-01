@@ -74,3 +74,15 @@ CONFIG_REDDIT_CLIENT_ID = "client-id"
 CONFIG_REDDIT_CLIENT_SECRET = "client-secret"
 CONFIG_REDDIT_PASSWORD = "password"
 CONFIG_REDDIT_USERNAME = "username"
+
+# Notifications
+CONFIG_CATEGORY_NOTIFICATION = "notification"
+CONFIG_NOTIFICATION_TYPE = "notification-type"
+
+# Interfaces
+
+PAID_FEES_STR = "Paid fees"
+
+# external resources
+EXTERNAL_RESOURCE_CURRENT_USER_FORM = "current-user-feedback-form"
+EXTERNAL_RESOURCE_PUBLIC_ANNOUNCEMENTS = "public-announcements"

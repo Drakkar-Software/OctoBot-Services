@@ -13,23 +13,16 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from abc import ABCMeta
-
-from octobot_channels.channels.channel import Channel
-from octobot_channels.producer import Producer
-from octobot_channels.consumer import Consumer
 
 
-class AbstractServiceFeedChannelConsumer(Consumer):
-    __metaclass__ = ABCMeta
+async def start_interfaces(interfaces: list):
+    started_interfaces = []
+    for interface in interfaces:
+        if await interface.start():
+            started_interfaces.append(interface)
+    return started_interfaces
 
 
-class AbstractServiceFeedChannelProducer(Producer):
-    __metaclass__ = ABCMeta
-
-
-class AbstractServiceFeedChannel(Channel):
-    __metaclass__ = ABCMeta
-
-    PRODUCER_CLASS = AbstractServiceFeedChannelProducer
-    CONSUMER_CLASS = AbstractServiceFeedChannelConsumer
+async def stop_interfaces(interfaces: list):
+    for interface in interfaces:
+        await interface.stop()

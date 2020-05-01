@@ -13,23 +13,21 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from abc import ABCMeta
-
+from octobot_commons.singleton.singleton_class import Singleton
 from octobot_channels.channels.channel import Channel
 from octobot_channels.producer import Producer
 from octobot_channels.consumer import Consumer
 
 
-class AbstractServiceFeedChannelConsumer(Consumer):
-    __metaclass__ = ABCMeta
+class NotificationChannelConsumer(Consumer):
+    pass
 
 
-class AbstractServiceFeedChannelProducer(Producer):
-    __metaclass__ = ABCMeta
+class NotificationChannelProducer(Producer, Singleton):
+    def __init__(self, channel):
+        Producer.__init__(self, channel)
 
 
-class AbstractServiceFeedChannel(Channel):
-    __metaclass__ = ABCMeta
-
-    PRODUCER_CLASS = AbstractServiceFeedChannelProducer
-    CONSUMER_CLASS = AbstractServiceFeedChannelConsumer
+class NotificationChannel(Channel):
+    PRODUCER_CLASS = NotificationChannelProducer
+    CONSUMER_CLASS = NotificationChannelConsumer

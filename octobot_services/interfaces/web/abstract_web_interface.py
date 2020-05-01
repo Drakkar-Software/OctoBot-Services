@@ -15,21 +15,8 @@
 #  License along with this library.
 from abc import ABCMeta
 
-from octobot_channels.channels.channel import Channel
-from octobot_channels.producer import Producer
-from octobot_channels.consumer import Consumer
+from octobot_services.interfaces.abstract_interface import AbstractInterface
 
 
-class AbstractServiceFeedChannelConsumer(Consumer):
+class AbstractWebInterface(AbstractInterface):
     __metaclass__ = ABCMeta
-
-
-class AbstractServiceFeedChannelProducer(Producer):
-    __metaclass__ = ABCMeta
-
-
-class AbstractServiceFeedChannel(Channel):
-    __metaclass__ = ABCMeta
-
-    PRODUCER_CLASS = AbstractServiceFeedChannelProducer
-    CONSUMER_CLASS = AbstractServiceFeedChannelConsumer
