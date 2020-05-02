@@ -62,7 +62,9 @@ CONFIG_TREND_DESCRIPTION = "trend_description"
 CONFIG_TREND_HISTORY_TIME = "relevant_history_months"
 
 # TradingView
-CONFIG_TRADING_VIEW = "trading_view"
+CONFIG_TRADING_VIEW = "trading-view"
+CONFIG_REQUIRE_TRADING_VIEW_TOKEN = "require-token"
+CONFIG_TRADING_VIEW_TOKEN = "token"
 
 # Twitter
 CONFIG_TWITTERS_ACCOUNTS = "accounts"
