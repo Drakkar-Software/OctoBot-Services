@@ -26,12 +26,12 @@ def get_exchange_managers(bot_api=None, independent_backtesting=None):
         return get_exchange_managers_from_exchange_ids(bot_api.get_exchange_manager_ids())
     elif independent_backtesting is not None:
         try:
-            from octobot_backtesting.api.backtesting import get_independent_backtesting_exchange_manager_ids
+            from octobot.api.backtesting import get_independent_backtesting_exchange_manager_ids
             return get_exchange_managers_from_exchange_ids(
                 get_independent_backtesting_exchange_manager_ids(independent_backtesting))
         except ImportError:
             get_logger("octobot_services/interfaces/util/util.py").error(
-                "get_exchange_managers requires OctoBot-Backtesting package installed")
+                "get_exchange_managers requires OctoBot package installed")
     else:
         return AbstractInterface.get_exchange_managers()
 
