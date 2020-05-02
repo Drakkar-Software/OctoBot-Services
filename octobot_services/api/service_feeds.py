@@ -30,8 +30,8 @@ def get_service_feed(service_feed_class, bot_id) -> AbstractServiceFeed:
         raise RuntimeError(f"can't get {service_feed_class} instance: service feed has not been properly created yet")
 
 
-async def start_service_feed(service_feed: AbstractServiceFeed, backtesting_enabled: bool) -> bool:
-    return await ServiceFeedManager.start_service_feed(service_feed, backtesting_enabled)
+async def start_service_feed(service_feed: AbstractServiceFeed, backtesting_enabled: bool, edited_config: dict) -> bool:
+    return await ServiceFeedManager.start_service_feed(service_feed, backtesting_enabled, edited_config)
 
 
 async def stop_service_feed(service_feed: AbstractServiceFeed) -> None:
