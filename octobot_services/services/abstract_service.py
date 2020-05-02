@@ -16,8 +16,10 @@
 
 from abc import ABCMeta, abstractmethod
 
+from octobot_commons.config_manager import simple_save_config_update
 from octobot_commons.config_util import has_invalid_default_config_value
 from octobot_commons.singleton.singleton_class import Singleton
+from octobot_services.constants import CONFIG_CATEGORY_SERVICES
 
 
 class AbstractService(Singleton):
@@ -30,6 +32,7 @@ class AbstractService(Singleton):
         super().__init__()
         self.logger = None
         self.config = None
+        self.edited_config = None
         self._created = True
         self._healthy = False
 
@@ -146,3 +149,13 @@ class AbstractService(Singleton):
         if self._healthy and message:
             self.logger.info(message)
         return self._healthy
+
+    def save_service_config(self, service_key, service_config):
+        """
+        Save the service's config into the user config file
+        :param service_key: the key of the service config in file
+        :param service_config: the updated config
+        :return: None
+        """
+        self.edited_config[CONFIG_CATEGORY_SERVICES][service_key] = service_config
+        simple_save_config_update(self.edited_config)

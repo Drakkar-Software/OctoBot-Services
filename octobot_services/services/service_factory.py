@@ -29,7 +29,7 @@ class ServiceFactory:
     def get_available_services() -> list:
         return [service_class for service_class in AbstractService.__subclasses__()]
 
-    async def create_or_get_service(self, service_class, backtesting_enabled) -> bool:
+    async def create_or_get_service(self, service_class, backtesting_enabled, edited_config) -> bool:
         """
         create_or_get_service will create a service instance if it doesn't exist, check the existing one otherwise
         :param service_class: the class of the service to create
@@ -39,13 +39,14 @@ class ServiceFactory:
         if service_class.get_has_been_created():
             return service_instance.is_healthy()
         else:
-            return await self._create_service(service_instance, backtesting_enabled)
+            return await self._create_service(service_instance, backtesting_enabled, edited_config)
 
-    async def _create_service(self, service, backtesting_enabled) -> bool:
+    async def _create_service(self, service, backtesting_enabled, edited_config) -> bool:
         service.is_backtesting_enabled = backtesting_enabled
         service.set_has_been_created(True)
         service.logger = get_logger(service.get_name())
         service.config = self.config
+        service.edited_config = edited_config
         if service.has_required_configuration():
             return await self._perform_checkup(service)
         else:

@@ -31,13 +31,13 @@ class AbstractServiceUser(InitializableWithPostAction):
         self.config = config
         self.paused = False
 
-    async def _initialize_impl(self, backtesting_enabled) -> bool:
+    async def _initialize_impl(self, backtesting_enabled, edited_config) -> bool:
         # init associated service if not already init
         service_list = ServiceFactory.get_available_services()
         if self.REQUIRED_SERVICES:
             for service in self.REQUIRED_SERVICES:
                 if service in service_list:
-                    if not await self._create_or_get_service_instance(service, backtesting_enabled):
+                    if not await self._create_or_get_service_instance(service, backtesting_enabled, edited_config):
                         return False
                 else:
                     self.get_logger().error(f"Required service {self.REQUIRED_SERVICES} is not an available service")
@@ -46,9 +46,9 @@ class AbstractServiceUser(InitializableWithPostAction):
             self.get_logger().error(f"Required service is not set, set it at False if no service is required")
         return False
 
-    async def _create_or_get_service_instance(self, service, backtesting_enabled):
+    async def _create_or_get_service_instance(self, service, backtesting_enabled, edited_config):
         service_factory = ServiceFactory(self.config)
-        if await service_factory.create_or_get_service(service, backtesting_enabled):
+        if await service_factory.create_or_get_service(service, backtesting_enabled, edited_config):
             return True
         else:
             self.get_logger().warning(f"Impossible to start {self.get_name()}: required service "

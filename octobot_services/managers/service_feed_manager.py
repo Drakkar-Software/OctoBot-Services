@@ -19,9 +19,9 @@ from octobot_services.service_feeds.abstract_service_feed import AbstractService
 class ServiceFeedManager:
 
     @staticmethod
-    async def start_service_feed(service_feed: AbstractServiceFeed, backtesting_enabled: bool):
+    async def start_service_feed(service_feed: AbstractServiceFeed, backtesting_enabled: bool, edited_config: dict):
         if not service_feed.is_running and not service_feed.should_stop:
-            if await service_feed.initialize(backtesting_enabled):
+            if await service_feed.initialize(backtesting_enabled, edited_config):
                 return await service_feed.start()
         return False
 

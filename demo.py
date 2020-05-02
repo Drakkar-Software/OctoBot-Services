@@ -62,7 +62,7 @@ async def _create_services():
         backtesting_enabled = False
         for service_class in service_list:
             service_factory = create_service_factory(config)
-            await service_factory.create_or_get_service(service_class, backtesting_enabled)
+            await service_factory.create_or_get_service(service_class, backtesting_enabled, {})
     except ImportError as e:
         logging.error("Error: tentacle architecture doesn't exist in running directory, to run this test file please "
                       "add a tentacle folder containing services tentacles in running directory.")
