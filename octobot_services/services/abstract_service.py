@@ -48,14 +48,33 @@ class AbstractService(Singleton):
     def get_name(cls):
         return cls.__name__
 
-    def get_fields_description(self):
+    def get_fields_description(self) -> dict:
+        """
+        :return: the service configuration keys with their description
+        """
         return {}
 
-    def get_default_value(self):
+    def get_default_value(self) -> dict:
+        """
+        :return: the service configuration keys with their default value
+        """
         return {}
 
-    def get_required_config(self):
+    def get_required_config(self) -> list:
+        """
+        :return: the list of required (not optional) configuration keys
+        """
+        return []
+
+    def get_read_only_info(self) -> dict:
         return {}
+
+    @classmethod
+    def get_help_page(cls) -> str:
+        """
+        :return: the url of the help page with this service
+        """
+        return ""
 
     # Override this method if a user is to be registered in this service (ie: TelegramService)
     def register_user(self, user_key):
@@ -68,10 +87,6 @@ class AbstractService(Singleton):
     # Override this method to know if an updater is already running
     def is_running(self):
         return False
-
-    @classmethod
-    def get_help_page(cls) -> str:
-        return ""
 
     # Returns true if all the service has an instance in config
     @staticmethod
