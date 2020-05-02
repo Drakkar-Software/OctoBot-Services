@@ -94,7 +94,7 @@ def _merge_portfolios(base_portfolio, to_merge_portfolio):
                 PORTFOLIO_TOTAL: 0
             }
 
-        base_portfolio[currency][PORTFOLIO_TOTAL] += amounts[PORTFOLIO_TOTAL]
+        base_portfolio[currency][PORTFOLIO_AVAILABLE] += amounts[PORTFOLIO_AVAILABLE]
         base_portfolio[currency][PORTFOLIO_TOTAL] = amounts[PORTFOLIO_TOTAL]
 
 
