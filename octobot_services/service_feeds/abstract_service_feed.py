@@ -127,5 +127,6 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
         return await self._run(should_init=False)
 
     async def stop(self):
-        self.should_stop = True
-        self.is_running = False
+        if self.is_running:
+            self.should_stop = True
+            self.is_running = False

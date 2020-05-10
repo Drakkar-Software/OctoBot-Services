@@ -327,8 +327,7 @@ class AbstractBotInterface(AbstractInterface):
 
     @staticmethod
     def set_command_stop():
-        get_bot_api().stop_tasks()
-        return os._exit(0)
+        get_bot_api().stop_bot()
 
     def set_command_pause(self):
         cancel_all_open_orders()
