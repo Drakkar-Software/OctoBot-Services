@@ -3,5 +3,6 @@
 [![PyPI](https://img.shields.io/pypi/v/OctoBot-Services.svg)](https://pypi.python.org/pypi/OctoBot-Services/)
 [![Build Status](https://api.travis-ci.com/Drakkar-Software/OctoBot-Services.svg?branch=master)](https://travis-ci.com/Drakkar-Software/OctoBot-Services) 
 [![Build Status](https://dev.azure.com/drakkarsoftware/OctoBot-Services/_apis/build/status/Drakkar-Software.OctoBot-Services?branchName=master)](https://dev.azure.com/drakkarsoftware/OctoBot-Services/_build/latest?definitionId=6&branchName=master)
+[![Build Status](https://cloud.drone.io/api/badges/Drakkar-Software/OctoBot-Services/status.svg)](https://cloud.drone.io/Drakkar-Software/OctoBot-Services)
 
 OctoBot services package.

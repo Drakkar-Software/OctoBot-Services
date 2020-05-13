@@ -26,7 +26,7 @@ jobs:
       after_success:
         - if [ $TRAVIS_PULL_REQUEST == "false" ]; then coveralls; fi
 
-    - name: "Linux - Python 3.8-dev - Installed"
+    - name: "Linux amd64 - Python 3.8-dev - Installed"
       stage: test
       os: linux
       python: 3.8-dev
