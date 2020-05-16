@@ -99,7 +99,9 @@ class AbstractBotInterface(AbstractInterface):
                 message += f"{code}- {evaluator.get_name()}{code}{EOL}"
 
             message += f"{EOL}{bold}Strategies:{bold}{EOL}"
-            for strategy in get_evaluator_classes_from_type(EvaluatorMatrixTypes.STRATEGIES.value, get_global_config()):
+            for strategy in get_evaluator_classes_from_type(EvaluatorMatrixTypes.STRATEGIES.value,
+                                                            get_global_config(),
+                                                            tentacle_setup_config):
                 message += f"{code}- {strategy.get_name()}{code}{EOL}"
         except ImportError:
             message += f"{EOL}{bold}Impossible to retrieve evaluation configuration: requires OctoBot-Evaluators " \
