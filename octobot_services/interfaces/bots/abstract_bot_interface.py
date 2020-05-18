@@ -108,7 +108,9 @@ class AbstractBotInterface(AbstractInterface):
                        f"package installed{bold}{EOL}"
 
         message += f"{EOL}{bold}Trading mode:{bold}{EOL}"
-        message += f"{code}- {get_bot_api().get_trading_mode().get_name()}{code}"
+        trading_mode = get_bot_api().get_trading_mode()
+        if trading_mode:
+            message += f"{code}- {trading_mode.get_name()}{code}"
 
         return message
 
@@ -124,7 +126,9 @@ class AbstractBotInterface(AbstractInterface):
                 message += f"{code}- {evaluation[2].capitalize()}: {evaluation[0]}{code}{EOL}"
         if not at_least_one_currency:
             message += f"{code}{NO_CURRENCIES_MESSAGE}{code}{EOL}"
-        message += f"{EOL}{code}My current risk is: {get_risk()}{code}"
+        risk = get_risk()
+        if risk:
+            message += f"{EOL}{code}My current risk is: {get_risk()}{code}"
 
         return message
 

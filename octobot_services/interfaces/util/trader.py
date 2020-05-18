@@ -116,7 +116,10 @@ def set_risk(risk):
 
 
 def get_risk():
-    return get_trader_risk(next(iter(get_exchange_managers())))
+    try:
+        return get_trader_risk(next(iter(get_exchange_managers())))
+    except StopIteration:
+        return None
 
 
 def get_currencies_with_status():
