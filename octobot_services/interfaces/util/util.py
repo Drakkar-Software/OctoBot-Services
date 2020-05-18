@@ -43,3 +43,7 @@ def run_in_bot_main_loop(coroutine, blocking=True):
         threading.Thread(target=get_bot_api().run_in_main_asyncio_loop,
                          args=(coroutine,),
                          name=f"run_in_bot_main_loop {coroutine.__name__}").start()
+
+
+def run_in_bot_async_executor(coroutine):
+    return get_bot_api().run_in_async_executor(coroutine)
