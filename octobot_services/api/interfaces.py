@@ -35,6 +35,12 @@ def is_enabled_in_backtesting(interface_class) -> bool:
     return all(service.BACKTESTING_ENABLED for service in interface_class.REQUIRED_SERVICES)
 
 
+def is_interface_relevant(config, interface_class, backtesting_enabled):
+    return is_enabled(interface_class) and \
+           all(service.get_is_enabled(config) for service in interface_class.REQUIRED_SERVICES) and \
+           (not backtesting_enabled or (backtesting_enabled and is_enabled_in_backtesting(interface_class)))
+
+
 def disable_interfaces(interface_identifier: str) -> int:
     disabled_interfaces = 0
     normalized_identifier = interface_identifier.lower()

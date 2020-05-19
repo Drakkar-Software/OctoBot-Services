@@ -13,20 +13,3 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-
-
-async def start_interfaces(interfaces: list):
-    started_interfaces = []
-    for interface in interfaces:
-        if await interface.start():
-            started_interfaces.append(interface)
-    return started_interfaces
-
-
-async def start_interface(interface):
-    return await interface.start()
-
-
-async def stop_interfaces(interfaces: list):
-    for interface in interfaces:
-        await interface.stop()

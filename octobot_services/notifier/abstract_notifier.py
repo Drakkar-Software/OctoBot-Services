@@ -22,14 +22,15 @@ from octobot_services.constants import CONFIG_CATEGORY_NOTIFICATION, CONFIG_NOTI
 from octobot_services.notification.formated_notifications import OrderCreationNotification, OrderEndNotification
 from octobot_services.notification.notification import Notification
 from octobot_services.abstract_service_user import AbstractServiceUser
+from octobot_services.util.exchange_watcher import ExchangeWatcher
 from octobot_trading.api.exchange import get_exchange_manager_from_exchange_id, get_is_backtesting
-from octobot_trading.api.orders import subscribe_to_order_channels, parse_order_status, get_order_profitability
+from octobot_trading.api.orders import parse_order_status, get_order_profitability, subscribe_to_order_channel
 from octobot_trading.api.profitability import get_profitability_stats
 from octobot_trading.api.trader import is_trader_simulated
 from octobot_trading.enums import OrderStatus, ExchangeConstantsOrderColumns
 
 
-class AbstractNotifier(AbstractServiceUser):
+class AbstractNotifier(AbstractServiceUser, ExchangeWatcher):
     __metaclass__ = ABCMeta
     # Override this key with the identifier of the notifier (used to know if enabled)
     NOTIFICATION_TYPE_KEY = None
@@ -38,10 +39,15 @@ class AbstractNotifier(AbstractServiceUser):
 
     def __init__(self, config):
         AbstractServiceUser.__init__(self, config)
+        ExchangeWatcher.__init__(self)
         self.logger = self.get_logger()
         self.enabled = self.is_enabled(config)
         self.services = None
         self.previous_notifications_by_identifier = {}
+
+    async def register_new_exchange_impl(self, exchange_id):
+        if exchange_id not in self.registered_exchanges_ids:
+            await self._subscribe_to_order_channel(exchange_id)
 
     # Override this method to use a notification when received
     @abstractmethod
@@ -59,7 +65,6 @@ class AbstractNotifier(AbstractServiceUser):
         if await AbstractServiceUser._initialize_impl(self, backtesting_enabled, edited_config):
             self.services = [service.instance() for service in self.REQUIRED_SERVICES]
             await self._create_and_subscribe_to_notification_channel()
-            await self._subscribe_to_order_channels()
             return True
         return False
 
@@ -105,9 +110,9 @@ class AbstractNotifier(AbstractServiceUser):
                 self.previous_notifications_by_identifier.pop(order_identifier)
         await self._notification_callback(notification)
 
-    async def _subscribe_to_order_channels(self):
+    async def _subscribe_to_order_channel(self, exchange_id):
         try:
-            await subscribe_to_order_channels(self._order_notification_callback)
+            await subscribe_to_order_channel(self._order_notification_callback, exchange_id)
         except KeyError:
             self.logger.error("No order channel to subscribe to: impossible to send order notifications")
 

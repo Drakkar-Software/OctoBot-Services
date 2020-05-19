@@ -21,6 +21,9 @@ from octobot_services.notification.notification import Notification
 from octobot_services.notifier.notifier_factory import NotifierFactory
 from octobot_services.enums import NotificationLevel, NotificationCategory
 
+MAX_PENDING_NOTIFICATION = 10
+pending_notifications = []
+
 
 def create_notifier_factory(config) -> NotifierFactory:
     return NotifierFactory(config)
@@ -44,7 +47,18 @@ async def send_notification(notification: Notification) -> None:
             }
         )
     except KeyError:
-        pass
+        if len(pending_notifications) < MAX_PENDING_NOTIFICATION:
+            pending_notifications.append(notification)
+
+
+async def process_pending_notifications():
+    for notification in pending_notifications:
+        await NotificationChannelProducer.instance().send(
+            {
+                "notification": notification
+            }
+        )
+    pending_notifications.clear()
 
 
 def is_enabled_in_config(notifier_class, config) -> bool:
@@ -57,3 +71,10 @@ def get_enable_notifier(notifier) -> bool:
 
 def set_enable_notifier(notifier, enabled) -> None:
     notifier.enabled = enabled
+
+
+def is_notifier_relevant(config, notifier_class, backtesting_enabled):
+    return is_enabled_in_config(notifier_class, config) and \
+           all(service.get_is_enabled(config)
+               for service in notifier_class.REQUIRED_SERVICES) and \
+           not backtesting_enabled
