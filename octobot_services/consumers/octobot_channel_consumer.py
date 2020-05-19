@@ -22,7 +22,7 @@ from octobot_commons.enums import OctoBotChannelSubjects
 from octobot_services.api.service_feeds import start_service_feed
 from octobot_services.managers.interface_manager import start_interface
 
-OCTOBOT_CHANNEL_EVALUATOR_CONSUMER_LOGGER_TAG = "OctoBotChannelServiceConsumer"
+OCTOBOT_CHANNEL_SERVICE_CONSUMER_LOGGER_TAG = "OctoBotChannelServiceConsumer"
 
 
 class OctoBotChannelServiceActions(Enum):
@@ -123,7 +123,7 @@ async def _handle_service_feed_start_notification(bot_id, action, data):
 
 async def _start_service_feed(service_feed, edited_config):
     if not await start_service_feed(service_feed, False, edited_config):
-        get_logger(OCTOBOT_CHANNEL_EVALUATOR_CONSUMER_LOGGER_TAG).error(
+        get_logger(OCTOBOT_CHANNEL_SERVICE_CONSUMER_LOGGER_TAG).error(
             f"Failed to start {service_feed.get_name()}. Evaluators requiring this service feed "
             f"might not work properly")
         return False
