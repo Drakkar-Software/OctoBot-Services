@@ -16,10 +16,11 @@
 from abc import abstractmethod, ABCMeta
 
 from octobot_services.abstract_service_user import AbstractServiceUser
+from octobot_services.util.exchange_watcher import ExchangeWatcher
 from octobot_services.util.returning_startable import ReturningStartable
 
 
-class AbstractInterface(AbstractServiceUser, ReturningStartable):
+class AbstractInterface(AbstractServiceUser, ReturningStartable, ExchangeWatcher):
     __metaclass__ = ABCMeta
     # The service required to run this interface
     REQUIRED_SERVICES = None
@@ -29,6 +30,10 @@ class AbstractInterface(AbstractServiceUser, ReturningStartable):
     project_name = None
     project_version = None
     enabled = True
+
+    def __init__(self, config):
+        AbstractServiceUser.__init__(self, config)
+        ExchangeWatcher.__init__(self)
 
     @staticmethod
     def initialize_global_project_data(bot_api, project_name, project_version):
