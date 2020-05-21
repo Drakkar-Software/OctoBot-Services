@@ -14,7 +14,7 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 from octobot_commons.tentacles_management.class_inspector import is_abstract_using_inspection_and_class_naming
-from octobot_commons.tentacles_management.advanced_manager import get_all_classes_from_parent
+from octobot_commons.tentacles_management.class_inspector import get_all_classes_from_parent
 from octobot_services.interfaces.abstract_interface import AbstractInterface
 
 

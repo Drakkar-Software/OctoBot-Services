@@ -89,18 +89,17 @@ class AbstractBotInterface(AbstractInterface):
             from octobot_evaluators.enums import EvaluatorMatrixTypes
             tentacle_setup_config = get_bot_api().get_tentacles_setup_config()
             message += f"{EOL}{bold}Evaluators:{bold}{EOL}"
-            evaluators = get_evaluator_classes_from_type(EvaluatorMatrixTypes.TA.value, get_global_config(),
+            evaluators = get_evaluator_classes_from_type(EvaluatorMatrixTypes.TA.value,
                                                          tentacle_setup_config)
-            evaluators += get_evaluator_classes_from_type(EvaluatorMatrixTypes.SOCIAL.value, get_global_config(),
+            evaluators += get_evaluator_classes_from_type(EvaluatorMatrixTypes.SOCIAL.value,
                                                           tentacle_setup_config)
-            evaluators += get_evaluator_classes_from_type(EvaluatorMatrixTypes.REAL_TIME.value, get_global_config(),
+            evaluators += get_evaluator_classes_from_type(EvaluatorMatrixTypes.REAL_TIME.value,
                                                           tentacle_setup_config)
             for evaluator in evaluators:
                 message += f"{code}- {evaluator.get_name()}{code}{EOL}"
 
             message += f"{EOL}{bold}Strategies:{bold}{EOL}"
             for strategy in get_evaluator_classes_from_type(EvaluatorMatrixTypes.STRATEGIES.value,
-                                                            get_global_config(),
                                                             tentacle_setup_config):
                 message += f"{code}- {strategy.get_name()}{code}{EOL}"
         except ImportError:
