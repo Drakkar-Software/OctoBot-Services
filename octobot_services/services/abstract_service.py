@@ -150,12 +150,17 @@ class AbstractService(Singleton):
             self.logger.info(message)
         return self._healthy
 
-    def save_service_config(self, service_key, service_config):
+    def save_service_config(self, service_key, service_config, update=False):
         """
         Save the service's config into the user config file
         :param service_key: the key of the service config in file
         :param service_config: the updated config
+        :param update: when true, the service configuration dict will be updated using the new data, it will
+        be replaced otherwise
         :return: None
         """
-        self.edited_config[CONFIG_CATEGORY_SERVICES][service_key] = service_config
+        if update:
+            self.edited_config[CONFIG_CATEGORY_SERVICES][service_key].update(service_config)
+        else:
+            self.edited_config[CONFIG_CATEGORY_SERVICES][service_key] = service_config
         simple_save_config_update(self.edited_config)
