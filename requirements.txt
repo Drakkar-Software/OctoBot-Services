@@ -17,6 +17,11 @@ pyngrok==2.1.4
 # Web
 ## http server
 flask==1.1.2
+## flask user authentication management
+flask-login==0.5.0
+## user form validators
+WTForms==2.3.1
+Flask-WTF==0.14.3
 ## websockets
 ### used by the webhook service and flask-socketio for the web interface
 gevent==1.5.0
