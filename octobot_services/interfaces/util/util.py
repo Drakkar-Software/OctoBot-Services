@@ -18,22 +18,31 @@ import threading
 from octobot_commons.logging.logging_util import get_logger
 from octobot_services.interfaces.abstract_interface import AbstractInterface
 from octobot_services.interfaces.util.bot import get_bot_api
-from octobot_trading.api.exchange import get_exchange_managers_from_exchange_ids
+from octobot_trading.api.exchange import get_exchange_managers_from_exchange_ids, get_trading_exchanges
 
 
-def get_exchange_managers(bot_api=None, independent_backtesting=None):
+def get_exchange_managers(bot_api=None, independent_backtesting=None, trading_exchanges_only=True):
     if bot_api is not None:
-        return get_exchange_managers_from_exchange_ids(bot_api.get_exchange_manager_ids())
+        return _filter_exchange_manager(get_exchange_managers_from_exchange_ids(bot_api.get_exchange_manager_ids()),
+                                        trading_exchanges_only)
     elif independent_backtesting is not None:
         try:
             from octobot.api.backtesting import get_independent_backtesting_exchange_manager_ids
-            return get_exchange_managers_from_exchange_ids(
-                get_independent_backtesting_exchange_manager_ids(independent_backtesting))
+            return _filter_exchange_manager(
+                get_exchange_managers_from_exchange_ids(
+                    get_independent_backtesting_exchange_manager_ids(independent_backtesting)),
+                trading_exchanges_only)
         except ImportError:
             get_logger("octobot_services/interfaces/util/util.py").error(
                 "get_exchange_managers requires OctoBot package installed")
     else:
-        return AbstractInterface.get_exchange_managers()
+        return _filter_exchange_manager(AbstractInterface.get_exchange_managers(), trading_exchanges_only)
+
+
+def _filter_exchange_manager(exchange_managers, trading_exchanges_only):
+    if trading_exchanges_only:
+        return get_trading_exchanges(exchange_managers)
+    return exchange_managers
 
 
 def run_in_bot_main_loop(coroutine, blocking=True):
