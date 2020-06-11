@@ -23,8 +23,9 @@ from octobot_services.notification.formated_notifications import OrderCreationNo
 from octobot_services.notification.notification import Notification
 from octobot_services.abstract_service_user import AbstractServiceUser
 from octobot_services.util.exchange_watcher import ExchangeWatcher
+from octobot_trading.api.channels import subscribe_to_order_channel
 from octobot_trading.api.exchange import get_exchange_manager_from_exchange_id, get_is_backtesting
-from octobot_trading.api.orders import parse_order_status, get_order_profitability, subscribe_to_order_channel
+from octobot_trading.api.orders import parse_order_status, get_order_profitability
 from octobot_trading.api.profitability import get_profitability_stats
 from octobot_trading.api.trader import is_trader_simulated
 from octobot_trading.enums import OrderStatus, ExchangeConstantsOrderColumns
