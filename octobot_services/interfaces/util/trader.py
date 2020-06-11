@@ -134,9 +134,13 @@ def get_currencies_with_status():
             for trading_mode in trading_modes:
                 if get_trading_mode_symbol(trading_mode) == pair:
                     status_explanation, status = get_trading_mode_current_state(trading_mode)
+                    try:
+                        status = round(status, 3)
+                    except TypeError:
+                        pass
                     break
             evaluations_by_exchange_by_pair[pair][get_exchange_manager_id(exchange_manager)] = \
-                [status_explanation.replace("_", " "), status, get_exchange_name(exchange_manager)]
+                [status_explanation.replace("_", " "), status, get_exchange_name(exchange_manager).capitalize()]
     return evaluations_by_exchange_by_pair
 
 
