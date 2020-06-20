@@ -159,7 +159,7 @@ class AbstractService(Singleton):
         be replaced otherwise
         :return: None
         """
-        if update:
+        if update and service_key in self.edited_config[CONFIG_CATEGORY_SERVICES]:
             self.edited_config[CONFIG_CATEGORY_SERVICES][service_key].update(service_config)
         else:
             self.edited_config[CONFIG_CATEGORY_SERVICES][service_key] = service_config
