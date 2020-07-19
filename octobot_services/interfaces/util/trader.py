@@ -16,9 +16,9 @@
 from octobot_commons.logging.logging_util import get_logger
 from octobot_services.interfaces.util.bot import get_bot_api
 from octobot_services.interfaces.util.util import run_in_bot_main_loop, get_exchange_managers
-from octobot_trading.api.exchange import get_trading_pairs, get_exchange_name, force_refresh_orders_and_portfolio, \
-    get_exchange_manager_id
+from octobot_trading.api.exchange import get_trading_pairs, get_exchange_name, get_exchange_manager_id
 from octobot_trading.api.modes import get_trading_modes, get_trading_mode_symbol, get_trading_mode_current_state
+from octobot_trading.api.portfolio import refresh_real_trader_portfolio
 from octobot_trading.api.trader import is_trader_simulated, get_trader_risk, is_trader_enabled, set_trader_risk, \
     set_trading_enabled, sell_all_everything_for_reference_market, \
     sell_currency_for_reference_market, is_trader_enabled_in_config_from_exchange_manager
@@ -35,17 +35,6 @@ def has_real_and_or_simulated_traders():
         else:
             has_real_trader = True
     return has_real_trader, has_simulated_trader
-
-
-def force_real_traders_refresh():
-    at_least_one = False
-    for exchange_manager in get_exchange_managers():
-        if is_trader_enabled(exchange_manager):
-            at_least_one = True
-            run_in_bot_main_loop(force_refresh_orders_and_portfolio(exchange_manager))
-
-    if not at_least_one:
-        raise RuntimeError("no real trader to update.")
 
 
 def sell_all_currencies():
