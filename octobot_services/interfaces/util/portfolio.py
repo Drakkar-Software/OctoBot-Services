@@ -16,7 +16,7 @@
 from octobot_commons.constants import PORTFOLIO_AVAILABLE, PORTFOLIO_TOTAL
 
 from octobot_services.interfaces.util.util import get_exchange_managers, run_in_bot_main_loop
-from octobot_trading.api.portfolio import get_portfolio
+from octobot_trading.api.portfolio import get_portfolio, refresh_real_trader_portfolio
 from octobot_trading.api.profitability import get_current_holdings_values, get_origin_portfolio_value, \
     get_current_portfolio_value
 from octobot_trading.api.trader import is_trader_enabled, is_trader_simulated
@@ -110,3 +110,14 @@ def get_global_portfolio_currencies_amounts():
         _merge_portfolios(real_global_portfolio, portfolio)
 
     return real_global_portfolio, simulated_global_portfolio
+
+
+def trigger_portfolios_refresh():
+    at_least_one = False
+    for exchange_manager in get_exchange_managers():
+        if is_trader_enabled(exchange_manager):
+            at_least_one = True
+            run_in_bot_main_loop(refresh_real_trader_portfolio(exchange_manager))
+
+    if not at_least_one:
+        raise RuntimeError("no real trader to update.")

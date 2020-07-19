@@ -21,10 +21,10 @@ from octobot_services.interfaces.abstract_interface import AbstractInterface
 from octobot_services.interfaces.util.bot import get_global_config, get_bot_api
 from octobot_services.interfaces.util.order import get_all_open_orders, cancel_all_open_orders
 from octobot_services.interfaces.util.portfolio import get_portfolio_current_value, \
-    get_global_portfolio_currencies_amounts
+    get_global_portfolio_currencies_amounts, trigger_portfolios_refresh
 from octobot_services.interfaces.util.profitability import get_global_profitability, get_reference_market
 from octobot_services.interfaces.util.trader import has_real_and_or_simulated_traders, get_currencies_with_status, \
-    get_risk, force_real_traders_refresh, get_trades_history, set_risk, set_enable_trading, get_total_paid_fees, \
+    get_risk, get_trades_history, set_risk, set_enable_trading, get_total_paid_fees, \
     sell_all_currencies, sell_all
 from octobot_trading.api.exchange import get_exchange_names
 from octobot_trading.api.orders import get_order_exchange_name, order_to_dict
@@ -323,8 +323,8 @@ class AbstractBotInterface(AbstractInterface):
             return "Hello, I'm OctoBot, type /help to know my skills."
 
     @staticmethod
-    def set_command_real_traders_refresh():
-        return force_real_traders_refresh()
+    def set_command_portfolios_refresh():
+        return trigger_portfolios_refresh()
 
     @staticmethod
     def set_command_risk(new_risk):
