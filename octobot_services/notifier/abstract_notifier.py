@@ -75,7 +75,7 @@ class AbstractNotifier(AbstractServiceUser, ExchangeWatcher):
         self.logger.debug("Registered as notification consumer")
 
     async def _order_notification_callback(self, exchange, exchange_id, cryptocurrency, symbol, order,
-                                           is_closed, is_updated, is_from_bot):
+                                           is_new, is_from_bot):
         exchange_manager = get_exchange_manager_from_exchange_id(exchange_id)
         # Do not notify on existing pre-start orders
         if is_from_bot and not get_is_backtesting(exchange_manager):
