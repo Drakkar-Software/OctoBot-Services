@@ -15,4 +15,4 @@
 #  License along with this library.
 
 PROJECT_NAME = "OctoBot-Services"
-VERSION = "1.1.18"  # major.minor.revision
+VERSION = "1.1.19"  # major.minor.revision
