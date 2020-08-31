@@ -58,6 +58,7 @@ class AbstractNotifier(AbstractServiceUser, ExchangeWatcher):
     async def _notification_callback(self, notification: Notification = None):
         try:
             if self._is_notification_category_enabled(notification):
+                self.logger.debug(f"Publishing notification: {notification}")
                 await self._handle_notification(notification)
         except Exception as e:
             self.logger.exception(e, True, f"Exception when handling notification: {e}")
@@ -97,10 +98,12 @@ class AbstractNotifier(AbstractServiceUser, ExchangeWatcher):
             self.previous_notifications_by_identifier[order_identifier] = notification
         else:
             is_simulated = is_trader_simulated(exchange_manager)
-            if order_status is OrderStatus.CANCELED:
+            if order_status is OrderStatus.CANCELED or \
+                    (order_status is OrderStatus.CLOSED
+                     and dict_order[ExchangeConstantsOrderColumns.FILLED.value] == 0):
                 notification = OrderEndNotification(linked_notification, None, exchange, [dict_order],
                                                     None, None, None, False, is_simulated)
-            if order_status in (OrderStatus.CLOSED, OrderStatus.FILLED):
+            elif order_status in (OrderStatus.CLOSED, OrderStatus.FILLED):
                 _,  profitability_percent, profitability_diff, _,  _ = get_profitability_stats(exchange_manager)
                 order_profitability = get_order_profitability(exchange_manager,
                                                               dict_order[ExchangeConstantsOrderColumns.ID.value])
