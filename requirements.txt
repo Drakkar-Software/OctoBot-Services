@@ -24,7 +24,7 @@ WTForms==2.3.3
 Flask-WTF==0.14.3
 ## websockets
 ### used by the webhook service and flask-socketio for the web interface
-gevent==1.5.0
+gevent==20.6.2
 ### used by flask-socketio with gevent (listed here because multiple libs are usable, force this one)
 gevent-websocket==0.10.1
 flask-socketio==4.2.1
