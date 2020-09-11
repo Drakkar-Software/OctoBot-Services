@@ -13,7 +13,7 @@ Python-Twitter==3.5
 # Google
 simplifiedpytrends>=1.1.0
 # Ngrok
-pyngrok==2.1.4
+pyngrok==4.1.12
 # Web
 ## http server
 flask==1.1.2
