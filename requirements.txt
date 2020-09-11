@@ -7,7 +7,7 @@ OctoBot-Trading>=1.10.0, <1.11
 # Reddit
 praw==6.5.1
 # Telegram
-python-telegram-bot==12.7.0
+python-telegram-bot==12.8
 # Twitter
 Python-Twitter==3.5
 # Google
