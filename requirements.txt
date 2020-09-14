@@ -31,4 +31,4 @@ flask-socketio==4.2.1
 
 # Analysis tools
 newspaper3k==0.2.8
-vaderSentiment==3.3.1
+vaderSentiment==3.3.2
