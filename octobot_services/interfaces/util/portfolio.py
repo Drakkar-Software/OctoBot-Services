@@ -38,7 +38,7 @@ def get_portfolio_holdings():
     for exchange_manager in get_exchange_managers():
         if is_trader_enabled(exchange_manager):
 
-            trader_currencies_values = run_in_bot_main_loop(get_current_holdings_values(exchange_manager))
+            trader_currencies_values = get_current_holdings_values(exchange_manager)
             if is_trader_simulated(exchange_manager):
                 _merge_portfolio_values(simulated_currency_portfolio, trader_currencies_values)
             else:
