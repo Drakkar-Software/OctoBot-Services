@@ -1,6 +1,6 @@
 # Drakkar-Software requirements
 OctoBot-Channels>=1.4.11, <1.5
-OctoBot-Commons>=1.3.45, <1.4
+OctoBot-Commons>=1.3.45, <1.5
 OctoBot-Trading>=1.10.0, <1.11
 
 # Services
