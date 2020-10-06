@@ -13,21 +13,19 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from octobot_services.interfaces.abstract_interface import AbstractInterface
-from octobot_services.interfaces.interface_factory import InterfaceFactory
-from octobot_services.managers.interface_manager import start_interfaces as manager_start_interfaces, \
-    stop_interfaces as manager_stop_interfaces
+import octobot_services.interfaces as interfaces
+import octobot_services.managers as managers
 
 
 def initialize_global_project_data(bot_api: object, project_name: str, project_version: str) -> None:
-    AbstractInterface.initialize_global_project_data(bot_api, project_name, project_version)
+    interfaces.AbstractInterface.initialize_global_project_data(bot_api, project_name, project_version)
 
 
-def create_interface_factory(config: dict) -> InterfaceFactory:
-    return InterfaceFactory(config)
+def create_interface_factory(config: dict) -> interfaces.InterfaceFactory:
+    return interfaces.InterfaceFactory(config)
 
 
-def is_enabled(interface_class: AbstractInterface) -> bool:
+def is_enabled(interface_class: interfaces.AbstractInterface) -> bool:
     return interface_class.enabled
 
 
@@ -44,7 +42,7 @@ def is_interface_relevant(config, interface_class, backtesting_enabled):
 def disable_interfaces(interface_identifier: str) -> int:
     disabled_interfaces = 0
     normalized_identifier = interface_identifier.lower()
-    for interface_class in InterfaceFactory.get_available_interfaces():
+    for interface_class in interfaces.InterfaceFactory.get_available_interfaces():
         if normalized_identifier in interface_class.__name__.lower():
             interface_class.enabled = False
             disabled_interfaces += 1
@@ -53,8 +51,8 @@ def disable_interfaces(interface_identifier: str) -> int:
 
 # Return the list of started interfaces
 async def start_interfaces(interfaces: list) -> list:
-    return await manager_start_interfaces(interfaces)
+    return await managers.start_interfaces(interfaces)
 
 
 async def stop_interfaces(interfaces: list) -> None:
-    await manager_stop_interfaces(interfaces)
+    await managers.stop_interfaces(interfaces)

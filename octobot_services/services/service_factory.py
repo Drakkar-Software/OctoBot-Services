@@ -14,20 +14,20 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-from octobot_commons.logging.logging_util import get_logger
+import octobot_commons.logging as logging
 
-from octobot_services.constants import CONFIG_CATEGORY_SERVICES, CONFIG_SERVICE_INSTANCE
-from octobot_services.services.abstract_service import AbstractService
+import octobot_services.constants as constants
+import octobot_services.services as services
 
 
 class ServiceFactory:
     def __init__(self, config):
-        self.logger = get_logger(self.__class__.__name__)
+        self.logger = logging.get_logger(self.__class__.__name__)
         self.config = config
 
     @staticmethod
     def get_available_services() -> list:
-        return [service_class for service_class in AbstractService.__subclasses__()]
+        return [service_class for service_class in services.AbstractService.__subclasses__()]
 
     async def create_or_get_service(self, service_class, backtesting_enabled, edited_config) -> bool:
         """
@@ -44,7 +44,7 @@ class ServiceFactory:
     async def _create_service(self, service, backtesting_enabled, edited_config) -> bool:
         service.is_backtesting_enabled = backtesting_enabled
         service.set_has_been_created(True)
-        service.logger = get_logger(service.get_name())
+        service.logger = logging.get_logger(service.get_name())
         service.config = self.config
         service.edited_config = edited_config
         if service.has_required_configuration():
@@ -58,11 +58,11 @@ class ServiceFactory:
     async def _perform_checkup(self, service) -> bool:
         try:
             await service.prepare()
-            if CONFIG_CATEGORY_SERVICES not in self.config:
-                self.config[CONFIG_CATEGORY_SERVICES] = {}
-            if service.get_type() not in self.config[CONFIG_CATEGORY_SERVICES]:
-                self.config[CONFIG_CATEGORY_SERVICES][service.get_type()] = {}
-            self.config[CONFIG_CATEGORY_SERVICES][service.get_type()][CONFIG_SERVICE_INSTANCE] = \
+            if constants.CONFIG_CATEGORY_SERVICES not in self.config:
+                self.config[constants.CONFIG_CATEGORY_SERVICES] = {}
+            if service.get_type() not in self.config[constants.CONFIG_CATEGORY_SERVICES]:
+                self.config[constants.CONFIG_CATEGORY_SERVICES][service.get_type()] = {}
+            self.config[constants.CONFIG_CATEGORY_SERVICES][service.get_type()][constants.CONFIG_SERVICE_INSTANCE] = \
                 service
             if await service.say_hello():
                 return service.is_healthy()

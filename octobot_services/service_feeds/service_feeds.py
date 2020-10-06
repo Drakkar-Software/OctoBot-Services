@@ -13,21 +13,24 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from octobot_commons.singleton.singleton_class import Singleton
-from octobot_services.service_feeds.abstract_service_feed import AbstractServiceFeed
+import typing
+
+import octobot_commons.singleton as singleton
+
+import octobot_services.service_feeds as service_feeds
 
 
-class ServiceFeeds(Singleton):
+class ServiceFeeds(singleton.Singleton):
     def __init__(self):
         self.service_feeds = {}
 
-    def get_service_feed(self, bot_id: str, feed_name: str) -> AbstractServiceFeed:
+    def get_service_feed(self, bot_id: str, feed_name: str) -> typing.Optional[service_feeds.AbstractServiceFeed]:
         try:
             return self.service_feeds[bot_id][feed_name]
         except KeyError:
             return None
 
-    def add_service_feed(self, bot_id: str, feed_name: str, feed: AbstractServiceFeed) -> None:
+    def add_service_feed(self, bot_id: str, feed_name: str, feed: service_feeds.AbstractServiceFeed) -> None:
         if bot_id not in self.service_feeds:
             self.service_feeds[bot_id] = {}
         self.service_feeds[bot_id][feed_name] = feed

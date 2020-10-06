@@ -13,21 +13,22 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from octobot_commons.singleton.singleton_class import Singleton
-from octobot_channels.channels.channel import Channel
-from octobot_channels.producer import Producer
-from octobot_channels.consumer import Consumer
+import octobot_commons.singleton as singleton
+
+import async_channel.channels as channels
+import async_channel.producer as producer
+import async_channel.consumer as consumer
 
 
-class NotificationChannelConsumer(Consumer):
+class NotificationChannelConsumer(consumer.Consumer):
     pass
 
 
-class NotificationChannelProducer(Producer, Singleton):
+class NotificationChannelProducer(producer.Producer, singleton.Singleton):
     def __init__(self, channel):
-        Producer.__init__(self, channel)
+        producer.Producer.__init__(self, channel)
 
 
-class NotificationChannel(Channel):
+class NotificationChannel(channels.Channel):
     PRODUCER_CLASS = NotificationChannelProducer
     CONSUMER_CLASS = NotificationChannelConsumer

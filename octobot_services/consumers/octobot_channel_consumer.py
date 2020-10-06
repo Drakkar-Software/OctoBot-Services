@@ -13,19 +13,21 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from enum import Enum
+import enum 
 
-from octobot_channels.channels.channel_instances import get_chan_at_id
-from octobot_commons.channels_name import OctoBotChannelsName
-from octobot_commons.logging.logging_util import get_logger
-from octobot_commons.enums import OctoBotChannelSubjects
-from octobot_services.api.service_feeds import start_service_feed
-from octobot_services.managers.interface_manager import start_interface
+import async_channel.channels as channels
+
+import octobot_commons.channels_name as channels_name
+import octobot_commons.logging as logging
+import octobot_commons.enums as enums
+
+import octobot_services.api as api
+import octobot_services.managers as managers
 
 OCTOBOT_CHANNEL_SERVICE_CONSUMER_LOGGER_TAG = "OctoBotChannelServiceConsumer"
 
 
-class OctoBotChannelServiceActions(Enum):
+class OctoBotChannelServiceActions(enum.Enum):
     """
     OctoBot Channel consumer supported actions
     """
@@ -37,7 +39,7 @@ class OctoBotChannelServiceActions(Enum):
     EXCHANGE_REGISTRATION = "exchange_registration"
 
 
-class OctoBotChannelServiceDataKeys(Enum):
+class OctoBotChannelServiceDataKeys(enum.Enum):
     """
     OctoBot Channel consumer supported data keys
     """
@@ -60,9 +62,9 @@ async def octobot_channel_callback(bot_id, subject, action, data) -> None:
     :param action: the callback action
     :param data: the callback data
     """
-    if subject == OctoBotChannelSubjects.CREATION.value:
+    if subject == enums.OctoBotChannelSubjects.CREATION.value:
         await _handle_creation(bot_id, action, data)
-    elif subject == OctoBotChannelSubjects.UPDATE.value:
+    elif subject == enums.OctoBotChannelSubjects.UPDATE.value:
         if action == OctoBotChannelServiceActions.EXCHANGE_REGISTRATION.value:
             await _handle_exchange_notification(data)
         elif action == OctoBotChannelServiceActions.START_SERVICE_FEED.value:
@@ -76,14 +78,16 @@ async def _handle_creation(bot_id, action, data):
     to_create_class = data[OctoBotChannelServiceDataKeys.CLASS.value]
     factory = data[OctoBotChannelServiceDataKeys.FACTORY.value]
     if action == OctoBotChannelServiceActions.INTERFACE.value:
-        created_instance = await _create__and_start_interface(factory, to_create_class, edited_config, backtesting_enabled)
+        created_instance = await _create__and_start_interface(factory, to_create_class,
+                                                              edited_config, backtesting_enabled)
     if action == OctoBotChannelServiceActions.NOTIFICATION.value:
         created_instance = await _create_notifier(factory, to_create_class, edited_config, backtesting_enabled)
     if action == OctoBotChannelServiceActions.SERVICE_FEED.value:
         created_instance = await _create_service_feed(factory, to_create_class)
-    await get_chan_at_id(OctoBotChannelsName.OCTOBOT_CHANNEL.value, bot_id).get_internal_producer() \
+    await channels.get_chan_at_id(channels_name.OctoBotChannelsName.OCTOBOT_CHANNEL.value,
+                                  bot_id).get_internal_producer() \
         .send(bot_id=bot_id,
-              subject=OctoBotChannelSubjects.NOTIFICATION.value,
+              subject=enums.OctoBotChannelSubjects.NOTIFICATION.value,
               action=action,
               data={OctoBotChannelServiceDataKeys.INSTANCE.value: created_instance})
 
@@ -91,7 +95,7 @@ async def _handle_creation(bot_id, action, data):
 async def _create__and_start_interface(interface_factory, to_create_class, edited_config, backtesting_enabled):
     interface_instance = await interface_factory.create_interface(to_create_class)
     await interface_instance.initialize(backtesting_enabled, edited_config)
-    return interface_instance if await start_interface(interface_instance) else None
+    return interface_instance if await managers.start_interface(interface_instance) else None
 
 
 async def _create_notifier(factory, to_create_class, edited_config, backtesting_enabled):
@@ -113,17 +117,18 @@ async def _handle_exchange_notification(data):
 async def _handle_service_feed_start_notification(bot_id, action, data):
     service_feed = data[OctoBotChannelServiceDataKeys.INSTANCE.value]
     edited_config = data[OctoBotChannelServiceDataKeys.EDITED_CONFIG.value]
-    await get_chan_at_id(OctoBotChannelsName.OCTOBOT_CHANNEL.value, bot_id).get_internal_producer() \
+    await channels.get_chan_at_id(channels_name.OctoBotChannelsName.OCTOBOT_CHANNEL.value,
+                                  bot_id).get_internal_producer() \
         .send(bot_id=bot_id,
-              subject=OctoBotChannelSubjects.NOTIFICATION.value,
+              subject=enums.OctoBotChannelSubjects.NOTIFICATION.value,
               action=action,
               data={OctoBotChannelServiceDataKeys.SUCCESSFUL_OPERATION.value: await _start_service_feed(service_feed,
                                                                                                         edited_config)})
 
 
 async def _start_service_feed(service_feed, edited_config):
-    if not await start_service_feed(service_feed, False, edited_config):
-        get_logger(OCTOBOT_CHANNEL_SERVICE_CONSUMER_LOGGER_TAG).error(
+    if not await api.start_service_feed(service_feed, False, edited_config):
+        logging.get_logger(OCTOBOT_CHANNEL_SERVICE_CONSUMER_LOGGER_TAG).error(
             f"Failed to start {service_feed.get_name()}. Evaluators requiring this service feed "
             f"might not work properly")
         return False

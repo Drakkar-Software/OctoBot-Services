@@ -14,11 +14,11 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-from abc import abstractmethod, ABCMeta
+import abc 
 
 
 class InitializableWithPostAction:
-    __metaclass__ = ABCMeta
+    __metaclass__ = abc.ABCMeta
 
     def __init__(self):
         self.is_initialized = False
@@ -32,7 +32,7 @@ class InitializableWithPostAction:
             return True
         return False
 
-    @abstractmethod
+    @abc.abstractmethod
     async def _initialize_impl(self, *args) -> bool:
         raise NotImplementedError("initialize_impl not implemented")
 

@@ -13,17 +13,21 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from abc import ABCMeta, abstractmethod
+import abc 
 
-from octobot_channels.channels.channel import get_chan, set_chan
-from octobot_commons.asyncio_tools import run_coroutine_in_asyncio_loop
-from octobot_services.abstract_service_user import AbstractServiceUser
-from octobot_services.channel.abstract_service_feed import AbstractServiceFeedChannelProducer
-from octobot_services.util.returning_startable import ReturningStartable
+import async_channel.channels as channels
+
+import octobot_commons.asyncio_tools as asyncio_tools
+
+import octobot_services.abstract_service_user as abstract_service_user
+import octobot_services.channel as service_channels
+import octobot_services.util as util
 
 
-class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServiceFeedChannelProducer):
-    __metaclass__ = ABCMeta
+class AbstractServiceFeed(abstract_service_user.AbstractServiceUser,
+                          util.ReturningStartable,
+                          service_channels.AbstractServiceFeedChannelProducer):
+    __metaclass__ = abc.ABCMeta
 
     # Override FEED_CHANNEL with a dedicated channel
     FEED_CHANNEL = None
@@ -36,8 +40,8 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
     REQUIRED_SERVICE_ERROR_MESSAGE = "Required services are not ready, service feed can't start"
 
     def __init__(self, config, main_async_loop, bot_id):
-        AbstractServiceUser.__init__(self, config)
-        AbstractServiceFeedChannelProducer.__init__(self, set_chan(self.FEED_CHANNEL(), None))
+        abstract_service_user.AbstractServiceUser.__init__(self, config)
+        service_channels.AbstractServiceFeedChannelProducer.__init__(self, channels.set_chan(self.FEED_CHANNEL(), None))
         self.feed_config = {}
         self.main_async_loop = main_async_loop
         self.bot_id = bot_id
@@ -55,28 +59,28 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
         return None
 
     # Override this method to specify the feed reception process
-    @abstractmethod
+    @abc.abstractmethod
     async def _start_service_feed(self):
         raise NotImplementedError("start_dispatcher not implemented")
 
-    @abstractmethod
+    @abc.abstractmethod
     def _something_to_watch(self):
         raise NotImplementedError("_something_to_watch not implemented")
 
-    @abstractmethod
+    @abc.abstractmethod
     def _initialize(self):
         raise NotImplementedError("_initialize not implemented")
 
     async def _init_channel(self):
-        channel = get_chan(self.FEED_CHANNEL.get_name())
+        channel = channels.get_chan(self.FEED_CHANNEL.get_name())
         await channel.register_producer(self)
 
     # Call _notify_consumers to send data to consumers
     def _notify_consumers(self, data):
         try:
             # send notification only if is a notification channel is running
-            get_chan(self.FEED_CHANNEL.get_name())
-            run_coroutine_in_asyncio_loop(self.feed_send_coroutine(data), self.main_async_loop)
+            channels.get_chan(self.FEED_CHANNEL.get_name())
+            asyncio_tools.run_coroutine_in_asyncio_loop(self.feed_send_coroutine(data), self.main_async_loop)
         except KeyError:
             self.logger.error("Can't send notification data: no initialized channel found")
 
@@ -84,7 +88,7 @@ class AbstractServiceFeed(AbstractServiceUser, ReturningStartable, AbstractServi
     async def _async_notify_consumers(self, data):
         try:
             # send notification only if is a notification channel is running
-            get_chan(self.FEED_CHANNEL.get_name())
+            channels.get_chan(self.FEED_CHANNEL.get_name())
             await self.feed_send_coroutine(data)
         except KeyError:
             self.logger.error("Can't send notification data: no initialized channel found")

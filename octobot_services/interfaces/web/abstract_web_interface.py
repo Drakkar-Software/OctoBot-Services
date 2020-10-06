@@ -13,10 +13,10 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from abc import ABCMeta
+import abc 
 
-from octobot_services.interfaces.abstract_interface import AbstractInterface
+import octobot_services.interfaces as interfaces
 
 
-class AbstractWebInterface(AbstractInterface):
-    __metaclass__ = ABCMeta
+class AbstractWebInterface(interfaces.AbstractInterface):
+    __metaclass__ = abc.ABCMeta

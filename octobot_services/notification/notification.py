@@ -13,14 +13,15 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from octobot_commons.enums import MarkdownFormat
-from octobot_services.enums import NotificationLevel, NotificationCategory
+import octobot_commons.enums as common_enums
+
+import octobot_services.enums as enums
 
 
 class Notification:
     def __init__(self, text: str, title: str, markdown_text: str,
-                 markdown_format: MarkdownFormat,
-                 level: NotificationLevel, category: NotificationCategory,
+                 markdown_format: common_enums.MarkdownFormat,
+                 level: enums.NotificationLevel, category: enums.NotificationCategory,
                  linked_notification):
         self.text = text
         self.markdown_text = markdown_text
