@@ -13,3 +13,23 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+
+from octobot_services.util import initializable_with_post_actions
+from octobot_services.util import exchange_watcher
+from octobot_services.util import returning_startable
+
+from octobot_services.util.initializable_with_post_actions import (
+    InitializableWithPostAction,
+)
+from octobot_services.util.exchange_watcher import (
+    ExchangeWatcher,
+)
+from octobot_services.util.returning_startable import (
+    ReturningStartable,
+)
+
+__all__ = [
+    "InitializableWithPostAction",
+    "ExchangeWatcher",
+    "ReturningStartable",
+]

@@ -13,3 +13,18 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+
+from octobot_services.services import service_factory
+from octobot_services.services import abstract_service
+
+from octobot_services.services.service_factory import (
+    ServiceFactory,
+)
+from octobot_services.services.abstract_service import (
+    AbstractService,
+)
+
+__all__ = [
+    "ServiceFactory",
+    "AbstractService",
+]

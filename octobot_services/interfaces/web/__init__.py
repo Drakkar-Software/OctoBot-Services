@@ -13,3 +13,13 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+
+from octobot_services.interfaces.web import abstract_web_interface
+
+from octobot_services.interfaces.web.abstract_web_interface import (
+    AbstractWebInterface,
+)
+
+__all__ = [
+    "AbstractWebInterface",
+]
