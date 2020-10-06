@@ -13,3 +13,18 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+
+from octobot_services.notifier import notifier_factory
+from octobot_services.notifier import abstract_notifier
+
+from octobot_services.notifier.notifier_factory import (
+    NotifierFactory,
+)
+from octobot_services.notifier.abstract_notifier import (
+    AbstractNotifier,
+)
+
+__all__ = [
+    "NotifierFactory",
+    "AbstractNotifier",
+]

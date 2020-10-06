@@ -13,3 +13,27 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+
+from octobot_services.channel import abstract_service_feed
+from octobot_services.channel import notifications
+
+from octobot_services.channel.abstract_service_feed import (
+    AbstractServiceFeedChannelConsumer,
+    AbstractServiceFeedChannelProducer,
+    AbstractServiceFeedChannel,
+)
+from octobot_services.channel.notifications import (
+    NotificationChannelConsumer,
+    NotificationChannelProducer,
+    NotificationChannel,
+)
+
+__all__ = [
+    "AbstractServiceFeedChannelConsumer",
+    "AbstractServiceFeedChannelProducer",
+    "AbstractServiceFeedChannel",
+    "NotificationChannelConsumer",
+    "NotificationChannelProducer",
+    "NotificationChannel",
+]
+
