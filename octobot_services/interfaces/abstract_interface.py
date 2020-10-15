@@ -13,15 +13,14 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from abc import abstractmethod, ABCMeta
+import abc 
 
-from octobot_services.abstract_service_user import AbstractServiceUser
-from octobot_services.util.exchange_watcher import ExchangeWatcher
-from octobot_services.util.returning_startable import ReturningStartable
+import octobot_services.abstract_service_user as abstract_service_user
+import octobot_services.util as util
 
 
-class AbstractInterface(AbstractServiceUser, ReturningStartable, ExchangeWatcher):
-    __metaclass__ = ABCMeta
+class AbstractInterface(abstract_service_user.AbstractServiceUser, util.ReturningStartable, util.ExchangeWatcher):
+    __metaclass__ = abc.ABCMeta
     # The service required to run this interface
     REQUIRED_SERVICES = None
 
@@ -32,8 +31,8 @@ class AbstractInterface(AbstractServiceUser, ReturningStartable, ExchangeWatcher
     enabled = True
 
     def __init__(self, config):
-        AbstractServiceUser.__init__(self, config)
-        ExchangeWatcher.__init__(self)
+        abstract_service_user.AbstractServiceUser.__init__(self, config)
+        util.ExchangeWatcher.__init__(self)
 
     @staticmethod
     def initialize_global_project_data(bot_api, project_name, project_version):
@@ -44,8 +43,8 @@ class AbstractInterface(AbstractServiceUser, ReturningStartable, ExchangeWatcher
     @staticmethod
     def get_exchange_managers():
         try:
-            from octobot_trading.api.exchange import get_exchange_managers_from_exchange_ids
-            return get_exchange_managers_from_exchange_ids(AbstractInterface.bot_api.get_exchange_manager_ids())
+            import octobot_trading.api as api
+            return api.get_exchange_managers_from_exchange_ids(AbstractInterface.bot_api.get_exchange_manager_ids())
         except ImportError:
             AbstractInterface.get_logger().error("AbstractInterface requires OctoBot-Trading package installed")
 
@@ -53,6 +52,6 @@ class AbstractInterface(AbstractServiceUser, ReturningStartable, ExchangeWatcher
     def is_bot_ready():
         return AbstractInterface.bot_api.is_initialized()
 
-    @abstractmethod
+    @abc.abstractmethod
     async def stop(self):
         raise NotImplementedError(f"stop is not implemented for {self.get_name()}")

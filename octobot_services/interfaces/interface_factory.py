@@ -13,9 +13,9 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from octobot_commons.tentacles_management.class_inspector import is_abstract_using_inspection_and_class_naming
-from octobot_commons.tentacles_management.class_inspector import get_all_classes_from_parent
-from octobot_services.interfaces.abstract_interface import AbstractInterface
+import octobot_commons.tentacles_management as tentacles_management
+
+import octobot_services.interfaces as interfaces
 
 
 class InterfaceFactory:
@@ -25,8 +25,8 @@ class InterfaceFactory:
     @staticmethod
     def get_available_interfaces() -> list:
         return [interface_class
-                for interface_class in get_all_classes_from_parent(AbstractInterface)
-                if not is_abstract_using_inspection_and_class_naming(interface_class)]
+                for interface_class in tentacles_management.get_all_classes_from_parent(interfaces.AbstractInterface)
+                if not tentacles_management.is_abstract_using_inspection_and_class_naming(interface_class)]
 
-    async def create_interface(self, interface_class) -> AbstractInterface:
+    async def create_interface(self, interface_class) -> interfaces.AbstractInterface:
         return interface_class(self.config)

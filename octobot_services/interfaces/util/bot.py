@@ -14,11 +14,11 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-from octobot_services.interfaces.abstract_interface import AbstractInterface
+import octobot_services.interfaces as interfaces
 
 
 def get_bot_api():
-    return AbstractInterface.bot_api
+    return interfaces.AbstractInterface.bot_api
 
 
 def get_exchange_manager_ids():

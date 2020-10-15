@@ -15,44 +15,45 @@
 #  License along with this library.
 import threading
 
-from octobot_commons.logging.logging_util import get_logger
-from octobot_services.interfaces.abstract_interface import AbstractInterface
-from octobot_services.interfaces.util.bot import get_bot_api
-from octobot_trading.api.exchange import get_exchange_managers_from_exchange_ids, get_trading_exchanges
+import octobot_commons.logging as logging
+
+import octobot_trading.api as trading_api
+
+import octobot_services.interfaces as interfaces
 
 
 def get_exchange_managers(bot_api=None, independent_backtesting=None, trading_exchanges_only=True):
     if bot_api is not None:
-        return _filter_exchange_manager(get_exchange_managers_from_exchange_ids(bot_api.get_exchange_manager_ids()),
-                                        trading_exchanges_only)
+        return _filter_exchange_manager(trading_api.get_exchange_managers_from_exchange_ids(
+            bot_api.get_exchange_manager_ids()), trading_exchanges_only)
     elif independent_backtesting is not None:
         try:
-            from octobot.api.backtesting import get_independent_backtesting_exchange_manager_ids
+            import octobot.api as api
             return _filter_exchange_manager(
-                get_exchange_managers_from_exchange_ids(
-                    get_independent_backtesting_exchange_manager_ids(independent_backtesting)),
+                trading_api.get_exchange_managers_from_exchange_ids(
+                    api.get_independent_backtesting_exchange_manager_ids(independent_backtesting)),
                 trading_exchanges_only)
         except ImportError:
-            get_logger("octobot_services/interfaces/util/util.py").error(
+            logging.get_logger("octobot_services/interfaces/util/util.py").error(
                 "get_exchange_managers requires OctoBot package installed")
     else:
-        return _filter_exchange_manager(AbstractInterface.get_exchange_managers(), trading_exchanges_only)
+        return _filter_exchange_manager(interfaces.AbstractInterface.get_exchange_managers(), trading_exchanges_only)
 
 
 def _filter_exchange_manager(exchange_managers, trading_exchanges_only):
     if trading_exchanges_only:
-        return get_trading_exchanges(exchange_managers)
+        return trading_api.get_trading_exchanges(exchange_managers)
     return exchange_managers
 
 
 def run_in_bot_main_loop(coroutine, blocking=True):
     if blocking:
-        return get_bot_api().run_in_main_asyncio_loop(coroutine)
+        return interfaces.get_bot_api().run_in_main_asyncio_loop(coroutine)
     else:
-        threading.Thread(target=get_bot_api().run_in_main_asyncio_loop,
+        threading.Thread(target=interfaces.get_bot_api().run_in_main_asyncio_loop,
                          args=(coroutine,),
                          name=f"run_in_bot_main_loop {coroutine.__name__}").start()
 
 
 def run_in_bot_async_executor(coroutine):
-    return get_bot_api().run_in_async_executor(coroutine)
+    return interfaces.get_bot_api().run_in_async_executor(coroutine)

@@ -14,17 +14,17 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 import asyncio
-from abc import abstractmethod, ABCMeta
+import abc 
 
-from octobot_commons.logging.logging_util import get_logger
+import octobot_commons.logging as logging
 
 
 class ReturningStartable:
-    __metaclass__ = ABCMeta
+    __metaclass__ = abc.ABCMeta
 
     # Override this method with the actions to perform when starting this
     # Called both by async and threaded versions of this (in a threaded new async loop for threaded versions)
-    @abstractmethod
+    @abc.abstractmethod
     async def _async_run(self) -> bool:
         raise NotImplementedError(f"_async_run is not implemented for {self.__class__.__name__}")
 
@@ -43,7 +43,7 @@ class ReturningStartable:
             return await self._inner_start()
         except Exception as e:
             class_name = self.__class__.__name__
-            logger = get_logger(class_name)
+            logger = logging.get_logger(class_name)
             logger.exception(e, True, f"{class_name} start error: {e}")
             return False
 

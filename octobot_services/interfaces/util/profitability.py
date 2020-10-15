@@ -13,11 +13,9 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from octobot_services.interfaces.util.bot import get_global_config
-from octobot_services.interfaces.util.util import get_exchange_managers
-from octobot_trading.api.profitability import get_profitability_stats, get_origin_portfolio_value, \
-    get_reference_market as trading_get_reference_market
-from octobot_trading.api.trader import is_trader_enabled, is_trader_simulated
+import octobot_trading.api as trading_api
+
+import octobot_services.interfaces as interfaces
 
 
 def get_global_profitability():
@@ -31,19 +29,19 @@ def get_global_profitability():
     has_real_trader = False
     has_simulated_trader = False
 
-    for exchange_manager in get_exchange_managers():
-        if is_trader_enabled(exchange_manager):
+    for exchange_manager in interfaces.get_exchange_managers():
+        if trading_api.is_trader_enabled(exchange_manager):
 
             current_value, _, _, market_average_profitability, initial_portfolio_current_profitability = \
-                get_profitability_stats(exchange_manager)
+                trading_api.get_profitability_stats(exchange_manager)
 
-            if is_trader_simulated(exchange_manager):
-                simulated_full_origin_value += get_origin_portfolio_value(exchange_manager)
+            if trading_api.is_trader_simulated(exchange_manager):
+                simulated_full_origin_value += trading_api.get_origin_portfolio_value(exchange_manager)
                 simulated_global_profitability += current_value
                 simulated_no_trade_profitability += initial_portfolio_current_profitability
                 has_simulated_trader = True
             else:
-                real_full_origin_value += get_origin_portfolio_value(exchange_manager)
+                real_full_origin_value += trading_api.get_origin_portfolio_value(exchange_manager)
                 real_global_profitability += current_value
                 real_no_trade_profitability += initial_portfolio_current_profitability
                 has_real_trader = True
@@ -62,4 +60,4 @@ def get_global_profitability():
 
 def get_reference_market() -> str:
     # The reference market is the currency unit of the calculated quantity value
-    return trading_get_reference_market(get_global_config())
+    return trading_api.get_reference_market(interfaces.get_global_config())

@@ -14,15 +14,15 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-from octobot_services.notification import formated_notifications
 from octobot_services.notification import notification
+from octobot_services.notification.notification import (
+    Notification,
+)
+from octobot_services.notification import formated_notifications
 
 from octobot_services.notification.formated_notifications import (
     OrderCreationNotification,
     OrderEndNotification,
-)
-from octobot_services.notification.notification import (
-    Notification,
 )
 
 __all__ = [

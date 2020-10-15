@@ -13,31 +13,30 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from octobot_commons.tentacles_management.class_inspector import get_all_classes_from_parent
+import octobot_commons.tentacles_management as tentacles_management
 
-from octobot_commons.logging.logging_util import get_logger
+import octobot_commons.logging as logging
 
-from octobot_services.service_feeds.abstract_service_feed import AbstractServiceFeed
-from octobot_services.service_feeds.service_feeds import ServiceFeeds
+import octobot_services.service_feeds as service_feeds
 
 
 class ServiceFeedFactory:
     def __init__(self, config, main_async_loop, bot_id):
-        self.logger = get_logger(self.__class__.__name__)
+        self.logger = logging.get_logger(self.__class__.__name__)
         self.config = config
         self.main_async_loop = main_async_loop
         self.bot_id = bot_id
 
     @staticmethod
     def get_available_service_feeds(in_backtesting: bool) -> list:
-        feeds = get_all_classes_from_parent(AbstractServiceFeed)
+        feeds = tentacles_management.get_all_classes_from_parent(service_feeds.AbstractServiceFeed)
         if in_backtesting:
             feeds = [feed.SIMULATOR_CLASS
                      for feed in feeds
                      if feed.SIMULATOR_CLASS is not None]
         return feeds
 
-    def create_service_feed(self, service_feed_class) -> AbstractServiceFeed:
+    def create_service_feed(self, service_feed_class) -> service_feeds.AbstractServiceFeed:
         feed = service_feed_class(self.config, self.main_async_loop, self.bot_id)
-        ServiceFeeds.instance().add_service_feed(self.bot_id, service_feed_class.get_name(), feed)
+        service_feeds.ServiceFeeds.instance().add_service_feed(self.bot_id, service_feed_class.get_name(), feed)
         return feed

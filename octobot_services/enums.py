@@ -13,17 +13,17 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from enum import Enum
+import enum 
 
 
-class NotificationLevel(Enum):
+class NotificationLevel(enum.Enum):
     DANGER = "danger"
     WARNING = "warning"
     INFO = "info"
     SUCCESS = "success"
 
 
-class NotificationCategory(Enum):
+class NotificationCategory(enum.Enum):
     GLOBAL_INFO = "global-info"
     PRICE_ALERTS = "price-alerts"
     TRADES = "trades"
