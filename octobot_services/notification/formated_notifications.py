@@ -13,29 +13,33 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from abc import abstractmethod
+import abc 
 
-from octobot_trading.constants import REAL_TRADER_STR, SIMULATOR_TRADER_STR
-from octobot_commons.enums import MarkdownFormat
-from octobot_commons.pretty_printer import open_order_pretty_printer
-from octobot_services.notification.notification import Notification
-from octobot_services.enums import NotificationLevel, NotificationCategory
+import octobot_commons.enums as common_enums
+import octobot_commons.pretty_printer as pretty_printer
+
+import octobot_trading.constants as constants
+
+import octobot_services.notification as notifications
+import octobot_services.enums as enums
 
 
-class _OrderNotification(Notification):
-    def __init__(self, text, evaluator_notification: Notification):
-        super().__init__("", text, "", MarkdownFormat.IGNORE, NotificationLevel.INFO,
-                         NotificationCategory.TRADES, evaluator_notification)
-
+class _OrderNotification(notifications.Notification):
+    def __init__(self, text, evaluator_notification: notifications.Notification):
+        super().__init__("", text, "",
+                         common_enums.MarkdownFormat.IGNORE,
+                         enums.NotificationLevel.INFO,
+                         enums.NotificationCategory.TRADES,
+                         evaluator_notification)
         self._build_text()
 
-    @abstractmethod
+    @abc.abstractmethod
     def _build_text(self):
         raise NotImplementedError("_build_text is not implemented")
 
 
 class OrderCreationNotification(_OrderNotification):
-    def __init__(self, evaluator_notification: Notification, dict_order: dict, exchange_name: str):
+    def __init__(self, evaluator_notification: notifications.Notification, dict_order: dict, exchange_name: str):
         self.dict_order = dict_order
         self.exchange_name = exchange_name.capitalize()
         super().__init__("Order creation", evaluator_notification)
@@ -43,13 +47,14 @@ class OrderCreationNotification(_OrderNotification):
     def _build_text(self):
         self.text = ""
         self.markdown_text = ""
-        self.text += f"- {open_order_pretty_printer(self.exchange_name, self.dict_order, markdown=False)}"
+        self.text += f"- {pretty_printer.open_order_pretty_printer(self.exchange_name, self.dict_order, markdown=False)}"
         self.markdown_text += \
-            f"- {open_order_pretty_printer(self.exchange_name, self.dict_order, markdown=True)}"
+            f"- {pretty_printer.open_order_pretty_printer(self.exchange_name, self.dict_order, markdown=True)}"
 
 
 class OrderEndNotification(_OrderNotification):
-    def __init__(self, order_previous_notification: Notification, dict_order_filled: dict, exchange_name: str,
+    def __init__(self, order_previous_notification: notifications.Notification,
+                 dict_order_filled: dict, exchange_name: str,
                  dict_orders_canceled: list, trade_profitability: float, portfolio_profitability: float,
                  portfolio_diff: float, add_profitability: bool, is_simulated: bool):
         self.dict_order_filled = dict_order_filled
@@ -65,20 +70,20 @@ class OrderEndNotification(_OrderNotification):
     def _build_text(self):
         self.text = ""
         self.markdown_text = ""
-        trader_type = SIMULATOR_TRADER_STR if self.is_simulated else REAL_TRADER_STR
+        trader_type = constants.SIMULATOR_TRADER_STR if self.is_simulated else constants.REAL_TRADER_STR
         if self.dict_order_filled is not None:
             self.text += f"{trader_type}Order(s) filled : " \
-                         f"\n- {open_order_pretty_printer(self.exchange_name, self.dict_order_filled)}"
-            md_text = open_order_pretty_printer(self.exchange_name, self.dict_order_filled, markdown=True)
+                         f"\n- {pretty_printer.open_order_pretty_printer(self.exchange_name, self.dict_order_filled)}"
+            md_text = pretty_printer.open_order_pretty_printer(self.exchange_name, self.dict_order_filled, markdown=True)
             self.markdown_text += f"*{trader_type}*Order(s) filled : \n-{md_text}"
 
         if self.dict_orders_canceled is not None and self.dict_orders_canceled:
             self.text += f"{trader_type}Order(s) canceled :"
             self.markdown_text += f"*{trader_type}*Order(s) canceled :"
             for dict_order in self.dict_orders_canceled:
-                self.text += f"\n- {open_order_pretty_printer(self.exchange_name, dict_order)}"
+                self.text += f"\n- {pretty_printer.open_order_pretty_printer(self.exchange_name, dict_order)}"
                 self.markdown_text += \
-                    f"\n- {open_order_pretty_printer(self.exchange_name, dict_order, markdown=True)}"
+                    f"\n- {pretty_printer.open_order_pretty_printer(self.exchange_name, dict_order, markdown=True)}"
 
         if self.trade_profitability is not None and self.add_profitability:
             self.text += f"\nTrade profitability : {'+' if self.trade_profitability >= 0 else ''}" \

@@ -13,35 +13,36 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from octobot_channels.channels.channel import get_chan
+import async_channel.channels as channel
 
-from octobot_services.channel.notifications import NotificationChannelProducer, NotificationChannel
-from octobot_commons.enums import MarkdownFormat
-from octobot_services.notification.notification import Notification
-from octobot_services.notifier.notifier_factory import NotifierFactory
-from octobot_services.enums import NotificationLevel, NotificationCategory
+import octobot_commons.enums as common_enums
+
+import octobot_services.channel as channels
+import octobot_services.notification as notifications
+import octobot_services.notifier as notifiers
+import octobot_services.enums as enums
 
 MAX_PENDING_NOTIFICATION = 10
 pending_notifications = []
 
 
-def create_notifier_factory(config) -> NotifierFactory:
-    return NotifierFactory(config)
+def create_notifier_factory(config) -> notifiers.NotifierFactory:
+    return notifiers.NotifierFactory(config)
 
 
 def create_notification(text: str, title="", markdown_text="",
-                        markdown_format: MarkdownFormat = MarkdownFormat.IGNORE,
-                        level: NotificationLevel = NotificationLevel.INFO,
-                        category: NotificationCategory = NotificationCategory.GLOBAL_INFO,
-                        linked_notification=None) -> Notification:
-    return Notification(text, title, markdown_text, markdown_format, level, category, linked_notification)
+                        markdown_format: common_enums.MarkdownFormat = common_enums.MarkdownFormat.IGNORE,
+                        level: enums.NotificationLevel = enums.NotificationLevel.INFO,
+                        category: enums.NotificationCategory = enums.NotificationCategory.GLOBAL_INFO,
+                        linked_notification=None) -> notifications.Notification:
+    return notifications.Notification(text, title, markdown_text, markdown_format, level, category, linked_notification)
 
 
-async def send_notification(notification: Notification) -> None:
+async def send_notification(notification: notifications.Notification) -> None:
     try:
         # send notification only if is a notification channel is running
-        get_chan(NotificationChannel.get_name())
-        await NotificationChannelProducer.instance().send(
+        channel.get_chan(channels.NotificationChannel.get_name())
+        await channels.NotificationChannelProducer.instance().send(
             {
                 "notification": notification
             }
@@ -53,7 +54,7 @@ async def send_notification(notification: Notification) -> None:
 
 async def process_pending_notifications():
     for notification in pending_notifications:
-        await NotificationChannelProducer.instance().send(
+        await channels.NotificationChannelProducer.instance().send(
             {
                 "notification": notification
             }

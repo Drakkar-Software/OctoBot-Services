@@ -15,14 +15,15 @@
 #  License along with this library.
 
 from octobot_services.interfaces import abstract_interface
+from octobot_services.interfaces.abstract_interface import (
+    AbstractInterface,
+)
+
 from octobot_services.interfaces import interface_factory
 from octobot_services.interfaces import bots
 from octobot_services.interfaces import util
 from octobot_services.interfaces import web
 
-from octobot_services.interfaces.abstract_interface import (
-    AbstractInterface,
-)
 from octobot_services.interfaces.interface_factory import (
     InterfaceFactory,
 )

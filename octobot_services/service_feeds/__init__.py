@@ -14,22 +14,24 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-from octobot_services.service_feeds import service_feed_factory
 from octobot_services.service_feeds import abstract_service_feed
-from octobot_services.service_feeds import service_feed_exception
+from octobot_services.service_feeds.abstract_service_feed import (
+    AbstractServiceFeed,
+)
+
 from octobot_services.service_feeds import service_feeds
+from octobot_services.service_feeds.service_feeds import (
+    ServiceFeeds,
+)
+
+from octobot_services.service_feeds import service_feed_factory
+from octobot_services.service_feeds import service_feed_exception
 
 from octobot_services.service_feeds.service_feed_factory import (
     ServiceFeedFactory,
 )
-from octobot_services.service_feeds.abstract_service_feed import (
-    AbstractServiceFeed,
-)
 from octobot_services.service_feeds.service_feed_exception import (
     ServiceFeedException,
-)
-from octobot_services.service_feeds.service_feeds import (
-    ServiceFeeds,
 )
 
 __all__ = [

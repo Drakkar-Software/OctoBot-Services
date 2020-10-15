@@ -13,15 +13,16 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-from abc import ABCMeta
+import abc 
 
-from octobot_commons.logging.logging_util import get_logger
-from octobot_services.services.service_factory import ServiceFactory
-from octobot_services.util.initializable_with_post_actions import InitializableWithPostAction
+import octobot_commons.logging as logging
+
+import octobot_services.services as services
+import octobot_services.util as util
 
 
-class AbstractServiceUser(InitializableWithPostAction):
-    __metaclass__ = ABCMeta
+class AbstractServiceUser(util.InitializableWithPostAction):
+    __metaclass__ = abc.ABCMeta
 
     # The service required to run this user
     REQUIRED_SERVICES = None
@@ -33,7 +34,7 @@ class AbstractServiceUser(InitializableWithPostAction):
 
     async def _initialize_impl(self, backtesting_enabled, edited_config) -> bool:
         # init associated service if not already init
-        service_list = ServiceFactory.get_available_services()
+        service_list = services.ServiceFactory.get_available_services()
         if self.REQUIRED_SERVICES:
             for service in self.REQUIRED_SERVICES:
                 if service in service_list:
@@ -47,7 +48,7 @@ class AbstractServiceUser(InitializableWithPostAction):
         return False
 
     async def _create_or_get_service_instance(self, service, backtesting_enabled, edited_config):
-        service_factory = ServiceFactory(self.config)
+        service_factory = services.ServiceFactory(self.config)
         if await service_factory.create_or_get_service(service, backtesting_enabled, edited_config):
             return True
         else:
@@ -61,4 +62,4 @@ class AbstractServiceUser(InitializableWithPostAction):
 
     @classmethod
     def get_logger(cls):
-        return get_logger(cls.get_name())
+        return logging.get_logger(cls.get_name())

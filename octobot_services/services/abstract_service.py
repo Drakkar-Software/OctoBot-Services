@@ -14,16 +14,17 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-from abc import ABCMeta, abstractmethod
+import abc 
 
-from octobot_commons.config_manager import simple_save_config_update
-from octobot_commons.config_util import has_invalid_default_config_value
-from octobot_commons.singleton.singleton_class import Singleton
-from octobot_services.constants import CONFIG_CATEGORY_SERVICES
+import octobot_commons.config_manager as config_manager
+import octobot_commons.config_util as config_util
+import octobot_commons.singleton as singleton
+
+import octobot_services.constants as constants
 
 
-class AbstractService(Singleton):
-    __metaclass__ = ABCMeta
+class AbstractService(singleton.Singleton):
+    __metaclass__ = abc.ABCMeta
 
     BACKTESTING_ENABLED = False
     _has_been_created = False
@@ -93,7 +94,7 @@ class AbstractService(Singleton):
 
     # Returns true if all the service has an instance in config
     @staticmethod
-    @abstractmethod
+    @abc.abstractmethod
     def is_setup_correctly(config):
         raise NotImplementedError("is_setup_correctly not implemented")
 
@@ -112,34 +113,34 @@ class AbstractService(Singleton):
         return True
 
     # Returns true if all the configuration is available
-    @abstractmethod
+    @abc.abstractmethod
     def has_required_configuration(self):
         raise NotImplementedError("has_required_configuration not implemented")
 
     # Returns the service's endpoint
-    @abstractmethod
+    @abc.abstractmethod
     def get_endpoint(self) -> None:
         raise NotImplementedError("get_endpoint not implemented")
 
     # Called to put in the right service in config
-    @abstractmethod
+    @abc.abstractmethod
     def get_type(self) -> None:
         raise NotImplementedError("get_type not implemented")
 
     # Called after service setup
-    @abstractmethod
+    @abc.abstractmethod
     async def prepare(self) -> None:
         raise NotImplementedError("prepare not implemented")
 
     # Called by say_hello after service is prepared, return relevant service information and a boolean for
     # success or failure
-    @abstractmethod
+    @abc.abstractmethod
     def get_successful_startup_message(self):
         raise NotImplementedError("get_successful_startup_message not implemented")
 
     def check_required_config(self, config):
         return all(key in config for key in self.get_required_config()) and \
-            not has_invalid_default_config_value(*(config[key] for key in self.get_required_config()))
+            not config_util.has_invalid_default_config_value(*(config[key] for key in self.get_required_config()))
 
     def log_connection_error_message(self, e):
         self.logger.error(f"{self.get_name()} is failing to connect, please check your internet connection: {e}")
@@ -159,8 +160,8 @@ class AbstractService(Singleton):
         be replaced otherwise
         :return: None
         """
-        if update and service_key in self.edited_config[CONFIG_CATEGORY_SERVICES]:
-            self.edited_config[CONFIG_CATEGORY_SERVICES][service_key].update(service_config)
+        if update and service_key in self.edited_config[constants.CONFIG_CATEGORY_SERVICES]:
+            self.edited_config[constants.CONFIG_CATEGORY_SERVICES][service_key].update(service_config)
         else:
-            self.edited_config[CONFIG_CATEGORY_SERVICES][service_key] = service_config
-        simple_save_config_update(self.edited_config)
+            self.edited_config[constants.CONFIG_CATEGORY_SERVICES][service_key] = service_config
+        config_manager.simple_save_config_update(self.edited_config)
