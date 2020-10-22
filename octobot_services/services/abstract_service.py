@@ -14,7 +14,7 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-import abc 
+import abc
 
 import octobot_commons.config_manager as config_manager
 import octobot_commons.config_util as config_util

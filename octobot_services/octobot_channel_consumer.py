@@ -13,7 +13,7 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-import enum 
+import enum
 
 import async_channel.channels as channels
 

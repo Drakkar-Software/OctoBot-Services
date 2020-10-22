@@ -13,7 +13,7 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-import abc 
+import abc
 
 import octobot_commons.enums as common_enums
 import octobot_commons.pretty_printer as pretty_printer
