@@ -14,7 +14,7 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 import asyncio
-import abc 
+import abc
 
 import octobot_commons.logging as logging
 

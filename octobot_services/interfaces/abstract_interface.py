@@ -13,7 +13,7 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-import abc 
+import abc
 
 import octobot_services.abstract_service_user as abstract_service_user
 import octobot_services.util as util
