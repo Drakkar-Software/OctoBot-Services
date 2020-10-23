@@ -29,7 +29,8 @@ class InitializableWithPostAction:
             if await self._initialize_impl(*args):
                 await self._post_initialize(args)
                 self.is_initialized = True
-            return True
+                return True
+            return False
         return False
 
     @abc.abstractmethod
