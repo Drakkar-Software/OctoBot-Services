@@ -29,7 +29,7 @@ with open('README.md', encoding='utf-8') as f:
     DESCRIPTION = f.read()
 
 REQUIRED = open('requirements.txt').readlines()
-REQUIRES_PYTHON = '>=3.7'
+REQUIRES_PYTHON = '>=3.8'
 
 setup(
     name=PROJECT_NAME,
@@ -50,7 +50,11 @@ setup(
     install_requires=REQUIRED,
     python_requires=REQUIRES_PYTHON,
     classifiers=[
-        'Development Status :: 4 - Beta',
-        'Programming Language :: Python :: 3.7',
+        'Development Status :: 5 - Production/Stable',
+        'Operating System :: OS Independent',
+        'Operating System :: MacOS :: MacOS X',
+        'Operating System :: Microsoft :: Windows',
+        'Operating System :: POSIX',
+        'Programming Language :: Python :: 3.8',
     ],
 )
