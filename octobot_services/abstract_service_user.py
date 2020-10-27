@@ -52,9 +52,15 @@ class AbstractServiceUser(util.InitializableWithPostAction):
         if await service_factory.create_or_get_service(service, backtesting_enabled, edited_config):
             return True
         else:
-            self.get_logger().warning(f"Impossible to start {self.get_name()}: required service "
-                                      f"{service.get_name()} is not available.")
+            log_func = self.get_logger().debug
+            # log error when the issue is not related to configuration
+            if service.instance().has_required_configuration():
+                log_func = self.get_logger().warning
+            log_func(f"Impossible to start {self.get_name()}: required service {service.get_name()} is not available.")
             return False
+
+    def has_required_services_configuration(self):
+        return all(service.instance().has_required_configuration() for service in self.REQUIRED_SERVICES)
 
     @classmethod
     def get_name(cls):
