@@ -78,8 +78,8 @@ async def _handle_creation(bot_id, action, data):
     to_create_class = data[OctoBotChannelServiceDataKeys.CLASS.value]
     factory = data[OctoBotChannelServiceDataKeys.FACTORY.value]
     if action == OctoBotChannelServiceActions.INTERFACE.value:
-        created_instance = await _create__and_start_interface(factory, to_create_class,
-                                                              edited_config, backtesting_enabled)
+        created_instance = await _create_and_start_interface(factory, to_create_class,
+                                                             edited_config, backtesting_enabled)
     if action == OctoBotChannelServiceActions.NOTIFICATION.value:
         created_instance = await _create_notifier(factory, to_create_class, edited_config, backtesting_enabled)
     if action == OctoBotChannelServiceActions.SERVICE_FEED.value:
@@ -92,7 +92,7 @@ async def _handle_creation(bot_id, action, data):
               data={OctoBotChannelServiceDataKeys.INSTANCE.value: created_instance})
 
 
-async def _create__and_start_interface(interface_factory, to_create_class, edited_config, backtesting_enabled):
+async def _create_and_start_interface(interface_factory, to_create_class, edited_config, backtesting_enabled):
     interface_instance = await interface_factory.create_interface(to_create_class)
     await interface_instance.initialize(backtesting_enabled, edited_config)
     return interface_instance if await managers.start_interface(interface_instance) else None
@@ -128,8 +128,12 @@ async def _handle_service_feed_start_notification(bot_id, action, data):
 
 async def _start_service_feed(service_feed, edited_config):
     if not await api.start_service_feed(service_feed, False, edited_config):
-        logging.get_logger(OCTOBOT_CHANNEL_SERVICE_CONSUMER_LOGGER_TAG).error(
-            f"Failed to start {service_feed.get_name()}. Evaluators requiring this service feed "
-            f"might not work properly")
+        logger = logging.get_logger(OCTOBOT_CHANNEL_SERVICE_CONSUMER_LOGGER_TAG)
+        # log error when the issue is not related to configuration
+        if service_feed.has_required_services_configuration():
+            logger.error(f"Failed to start {service_feed.get_name()}. Evaluators requiring this service feed "
+                         f"might not work properly.")
+        else:
+            logger.debug(f"Impossible to start {service_feed.get_name()}: missing service(s) configuration.")
         return False
     return True
