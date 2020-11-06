@@ -1,0 +1,123 @@
+name: OctoBot-Services-CI
+on: push
+
+jobs:
+  lint:
+    name: ubuntu-latest - Python 3.8 - lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8.x'
+        architecture: 'x64'
+
+    - name: Install dependencies
+      run: pip install --prefer-binary -r dev_requirements.txt -r requirements.txt
+
+#    - name: Black lint
+#      run: black ${{ secrets.PACKAGE_FOLDER }} --diff --check
+
+    - name: Pylint
+      run: |
+        pylint --rcfile=standard.rc ${{ secrets.PACKAGE_FOLDER }}
+        if [ $? -ne 1 ]; then exit 0; fi
+
+  tests:
+    needs: lint
+    name: ${{ matrix.os }}${{ matrix.arch }} - Python 3.8 - tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ macos-latest, windows-latest, ubuntu-latest ]
+        arch: [ x64 ]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8.x'
+        architecture: ${{ matrix.arch }}
+
+    - name: Install dependencies
+      run: pip install --prefer-binary -r dev_requirements.txt -r requirements.txt
+
+    - name: Pytests
+      run: pytest --cov=. --cov-config=.coveragerc --durations=0 -rw tests
+
+    - name: Publish coverage
+      if: matrix.type == 'sources'
+      run: coveralls
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+  build_wheel:
+    needs: tests
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    name: ${{ matrix.os }}-${{ matrix.arch }} - Python 3.8 - deploy
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        arch: [ x64 ]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8.x'
+        architecture: ${{ matrix.arch }}
+
+    - name: Install dependencies
+      run: pip install --prefer-binary -r dev_requirements.txt -r requirements.txt
+
+    - name: Build wheel
+      run: python setup.py bdist_wheel
+
+    - name: Publish package
+      run: |
+        python -m twine upload --repository-url ${{ secrets.PYPI_OFFICIAL_UPLOAD_URL }} -u ${{ secrets.PYPI_USERNAME }} -p ${{ secrets.PYPI_PASSWORD }} --skip-existing dist/*
+
+  build_sdist:
+    needs: tests
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    name: Source distribution - Python 3.8 - deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8.x'
+
+      - name: Install dependencies
+        run: pip install --prefer-binary -r dev_requirements.txt -r requirements.txt
+
+      - name: Build sdist
+        run: python setup.py sdist
+
+      - name: Publish package
+        run: |
+          python -m twine upload --repository-url ${{ secrets.PYPI_OFFICIAL_UPLOAD_URL }} -u ${{ secrets.PYPI_USERNAME }} -p ${{ secrets.PYPI_PASSWORD }} --skip-existing dist/*
+
+  notify:
+    name: Notify
+    runs-on: ubuntu-latest
+    needs:
+      - lint
+      - tests
+      - build_wheel
+      - build_sdist
+    if: ${{ failure() }}
+
+    steps:
+      - name: Notify discord
+        uses: sarisia/actions-status-discord@v1
+        with:
+          status: Failure
+          webhook: ${{ secrets.DISCORD_GITHUB_WEBHOOK }}
