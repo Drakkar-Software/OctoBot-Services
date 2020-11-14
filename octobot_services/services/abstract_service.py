@@ -138,6 +138,18 @@ class AbstractService(singleton.Singleton):
     def get_successful_startup_message(self):
         raise NotImplementedError("get_successful_startup_message not implemented")
 
+    def get_website_url(self) -> str:
+        # Override with the real url
+        return ""
+
+    def get_brand_name(self):
+        return self.get_type()
+
+    def get_logo(self):
+        # Default services logos are fount using https://github.com/edent/SuperTinyIcons
+        # Override to customize this behavior
+        return f"https://raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/{self.get_brand_name()}.svg"
+
     def check_required_config(self, config):
         return all(key in config for key in self.get_required_config()) and \
             not config_util.has_invalid_default_config_value(*(config[key] for key in self.get_required_config()))
