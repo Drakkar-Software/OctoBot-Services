@@ -92,7 +92,7 @@ def _merge_portfolios(base_portfolio, to_merge_portfolio):
             }
 
         base_portfolio[currency][constants.PORTFOLIO_AVAILABLE] += amounts[constants.PORTFOLIO_AVAILABLE]
-        base_portfolio[currency][constants.PORTFOLIO_TOTAL] = amounts[constants.PORTFOLIO_TOTAL]
+        base_portfolio[currency][constants.PORTFOLIO_TOTAL] += amounts[constants.PORTFOLIO_TOTAL]
 
 
 def get_global_portfolio_currencies_amounts():
