@@ -44,7 +44,8 @@ class AbstractNotifier(abstract_service_user.AbstractServiceUser, util.ExchangeW
         self.previous_notifications_by_identifier = {}
 
     async def register_new_exchange_impl(self, exchange_id):
-        if exchange_id not in self.registered_exchanges_ids:
+        # if self.is_initialized is False, this notifier has not been initialized and should not be used
+        if self.is_initialized and exchange_id not in self.registered_exchanges_ids:
             await self._subscribe_to_order_channel(exchange_id)
 
     # Override this method to use a notification when received
