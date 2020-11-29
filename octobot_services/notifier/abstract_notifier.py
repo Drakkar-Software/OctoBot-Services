@@ -147,4 +147,4 @@ class AbstractNotifier(abstract_service_user.AbstractServiceUser, util.ExchangeW
 
     def _is_notification_category_enabled(self, notification):
         return constants.CONFIG_CATEGORY_NOTIFICATION in self.config and \
-               notification.category.value in self.config[constants.CONFIG_CATEGORY_NOTIFICATION]
+               self.config[constants.CONFIG_CATEGORY_NOTIFICATION].get(notification.category.value, True)
