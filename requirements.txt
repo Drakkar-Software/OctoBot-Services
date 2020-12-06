@@ -1,13 +1,13 @@
 # Drakkar-Software requirements
 Async-Channel>=2.0.6, <2.1
-OctoBot-Commons>=1.4.9, <1.5
-OctoBot-Trading>=1.11.14, <1.12
+OctoBot-Commons>=1.4.13, <1.5
+OctoBot-Trading>=1.11.17, <1.12
 
 # Services
 # Reddit
 praw==7.1.0
 # Telegram
-python-telegram-bot==13.0.0
+python-telegram-bot==13.1.0
 # Twitter
 Python-Twitter==3.5
 # Google
@@ -27,7 +27,7 @@ Flask-WTF==0.14.3
 gevent==20.9.0
 ### used by flask-socketio with gevent (listed here because multiple libs are usable, force this one)
 gevent-websocket==0.10.1
-flask-socketio==4.3.1
+flask-socketio==4.3.2
 
 # Analysis tools
 newspaper3k==0.2.8
