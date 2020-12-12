@@ -16,8 +16,7 @@
 
 import abc
 
-import octobot_commons.config_manager as config_manager
-import octobot_commons.config_util as config_util
+import octobot_commons.configuration as configuration
 import octobot_commons.singleton as singleton
 
 import octobot_services.constants as constants
@@ -152,7 +151,7 @@ class AbstractService(singleton.Singleton):
 
     def check_required_config(self, config):
         return all(key in config for key in self.get_required_config()) and \
-            not config_util.has_invalid_default_config_value(*(config[key] for key in self.get_required_config()))
+            not configuration.has_invalid_default_config_value(*(config[key] for key in self.get_required_config()))
 
     def log_connection_error_message(self, e):
         self.logger.error(f"{self.get_name()} is failing to connect, please check your internet connection: {e}")
@@ -172,8 +171,8 @@ class AbstractService(singleton.Singleton):
         be replaced otherwise
         :return: None
         """
-        if update and service_key in self.edited_config[constants.CONFIG_CATEGORY_SERVICES]:
-            self.edited_config[constants.CONFIG_CATEGORY_SERVICES][service_key].update(service_config)
+        if update and service_key in self.edited_config.config[constants.CONFIG_CATEGORY_SERVICES]:
+            self.edited_config.config[constants.CONFIG_CATEGORY_SERVICES][service_key].update(service_config)
         else:
-            self.edited_config[constants.CONFIG_CATEGORY_SERVICES][service_key] = service_config
-        config_manager.simple_save_config_update(self.edited_config)
+            self.edited_config.config[constants.CONFIG_CATEGORY_SERVICES][service_key] = service_config
+        self.edited_config.save()
