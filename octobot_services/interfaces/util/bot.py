@@ -29,12 +29,12 @@ def get_global_config():
     return get_bot_api().get_global_config()
 
 
-def get_startup_config():
-    return get_bot_api().get_startup_config()
+def get_startup_config(dict_only=True):
+    return get_bot_api().get_startup_config(dict_only=dict_only)
 
 
-def get_edited_config():
-    return get_bot_api().get_edited_config()
+def get_edited_config(dict_only=True):
+    return get_bot_api().get_edited_config(dict_only=dict_only)
 
 
 def get_startup_tentacles_config():
