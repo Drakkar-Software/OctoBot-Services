@@ -27,7 +27,7 @@ Flask-WTF==0.14.3
 gevent==20.9.0
 ### used by flask-socketio with gevent (listed here because multiple libs are usable, force this one)
 gevent-websocket==0.10.1
-flask-socketio==4.3.2
+flask-socketio==5.0.0
 
 # Analysis tools
 newspaper3k==0.2.8
