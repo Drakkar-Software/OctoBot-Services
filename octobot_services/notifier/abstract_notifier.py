@@ -14,6 +14,7 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 import abc
+import asyncio
 
 import async_channel.util as channel_creator
 import async_channel.channels as channels
@@ -38,10 +39,12 @@ class AbstractNotifier(abstract_service_user.AbstractServiceUser, util.ExchangeW
     def __init__(self, config):
         abstract_service_user.AbstractServiceUser.__init__(self, config)
         util.ExchangeWatcher.__init__(self)
+        self.executors = None
         self.logger = self.get_logger()
         self.enabled = self.is_enabled(config)
         self.services = None
         self.previous_notifications_by_identifier = {}
+        self.loop = asyncio.get_event_loop()
 
     async def register_new_exchange_impl(self, exchange_id):
         # if self.is_initialized is False, this notifier has not been initialized and should not be used
@@ -53,11 +56,14 @@ class AbstractNotifier(abstract_service_user.AbstractServiceUser, util.ExchangeW
     async def _handle_notification(self, notification: notifications.Notification):
         raise NotImplementedError(f"_handle_notification is not implemented")
 
+    def _send_notification_from_executor(self, notification: notifications.Notification):
+        self.logger.debug(f"Publishing notification: {notification}")
+        asyncio.run(self._handle_notification(notification))
+
     async def _notification_callback(self, notification: notifications.Notification = None):
         try:
             if self._is_notification_category_enabled(notification):
-                self.logger.debug(f"Publishing notification: {notification}")
-                await self._handle_notification(notification)
+                await self.loop.run_in_executor(self.executors, self._send_notification_from_executor, notification)
         except Exception as e:
             self.logger.exception(e, True, f"Exception when handling notification: {e}")
 
