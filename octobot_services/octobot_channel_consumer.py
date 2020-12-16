@@ -52,6 +52,7 @@ class OctoBotChannelServiceDataKeys(enum.Enum):
     SUCCESSFUL_OPERATION = "successful_operation"
     CLASS = "class"
     FACTORY = "factory"
+    EXECUTORS = "executors"
 
 
 async def octobot_channel_callback(bot_id, subject, action, data) -> None:
@@ -81,7 +82,9 @@ async def _handle_creation(bot_id, action, data):
         created_instance = await _create_and_start_interface(factory, to_create_class,
                                                              edited_config, backtesting_enabled)
     if action == OctoBotChannelServiceActions.NOTIFICATION.value:
-        created_instance = await _create_notifier(factory, to_create_class, edited_config, backtesting_enabled)
+        executors = data[OctoBotChannelServiceDataKeys.EXECUTORS.value]
+        created_instance = await _create_notifier(factory, to_create_class, edited_config,
+                                                  backtesting_enabled, executors)
     if action == OctoBotChannelServiceActions.SERVICE_FEED.value:
         created_instance = await _create_service_feed(factory, to_create_class)
     await channels.get_chan_at_id(channels_name.OctoBotChannelsName.OCTOBOT_CHANNEL.value,
@@ -98,8 +101,9 @@ async def _create_and_start_interface(interface_factory, to_create_class, edited
     return interface_instance if await managers.start_interface(interface_instance) else None
 
 
-async def _create_notifier(factory, to_create_class, edited_config, backtesting_enabled):
+async def _create_notifier(factory, to_create_class, edited_config, backtesting_enabled, executors):
     notifier_instance = await factory.create_notifier(to_create_class)
+    notifier_instance.executors = executors
     await notifier_instance.initialize(backtesting_enabled, edited_config)
     return notifier_instance
 
