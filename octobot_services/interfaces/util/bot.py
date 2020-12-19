@@ -44,3 +44,6 @@ def get_startup_tentacles_config():
 def get_edited_tentacles_config():
     return get_bot_api().get_edited_tentacles_config()
 
+
+def set_edited_tentacles_config(config):
+    return get_bot_api().set_edited_tentacles_config(config)

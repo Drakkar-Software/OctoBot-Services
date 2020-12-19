@@ -29,6 +29,7 @@ from octobot_services.interfaces.util.bot import (
     get_edited_config,
     get_startup_tentacles_config,
     get_edited_tentacles_config,
+    set_edited_tentacles_config,
 )
 from octobot_services.interfaces.util.util import (
     get_exchange_managers,
@@ -71,6 +72,7 @@ __all__ = [
     "get_edited_config",
     "get_startup_tentacles_config",
     "get_edited_tentacles_config",
+    "set_edited_tentacles_config",
     "get_exchange_managers",
     "run_in_bot_main_loop",
     "run_in_bot_async_executor",
