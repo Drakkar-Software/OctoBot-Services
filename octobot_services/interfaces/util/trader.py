@@ -20,6 +20,10 @@ import octobot_trading.api as trading_api
 import octobot_services.interfaces as interfaces
 
 
+def has_trader():
+    return trading_api.has_trader(_first_exchange_manager())
+
+
 def has_real_and_or_simulated_traders():
     has_real_trader = False
     has_simulated_trader = False
@@ -35,7 +39,7 @@ def has_real_and_or_simulated_traders():
 def sell_all_currencies():
     orders = []
     for exchange_manager in interfaces.get_exchange_managers():
-        if trading_api.is_trader_enabled(exchange_manager):
+        if trading_api.is_trader_existing_and_enabled(exchange_manager):
             orders += interfaces.run_in_bot_main_loop(
                 trading_api.sell_all_everything_for_reference_market(exchange_manager))
     return orders
@@ -44,7 +48,7 @@ def sell_all_currencies():
 def sell_all(currency):
     orders = []
     for exchange_manager in interfaces.get_exchange_managers():
-        if trading_api.is_trader_enabled(exchange_manager):
+        if trading_api.is_trader_existing_and_enabled(exchange_manager):
             orders += interfaces.run_in_bot_main_loop(
                 trading_api.sell_currency_for_reference_market(exchange_manager, currency))
     return orders
@@ -52,8 +56,9 @@ def sell_all(currency):
 
 def set_enable_trading(enable):
     for exchange_manager in interfaces.get_exchange_managers():
-        if trading_api.is_trader_enabled_in_config_from_exchange_manager(exchange_manager):
-            trading_api.set_trading_enabled(exchange_manager, enable)
+        if trading_api.has_trader(exchange_manager):
+            if trading_api.is_trader_enabled_in_config_from_exchange_manager(exchange_manager):
+                trading_api.set_trading_enabled(exchange_manager, enable)
 
 
 def _merge_trader_fees(current_fees, exchange_manager):
@@ -71,12 +76,11 @@ def get_total_paid_fees(bot=None):
     simulated_trader_fees = None
 
     for exchange_manager in interfaces.get_exchange_managers(bot):
-        if trading_api.is_trader_enabled(exchange_manager):
+        if trading_api.is_trader_existing_and_enabled(exchange_manager):
             if trading_api.is_trader_simulated(exchange_manager):
                 simulated_trader_fees = _merge_trader_fees(simulated_trader_fees, exchange_manager)
             else:
                 real_trader_fees = _merge_trader_fees(real_trader_fees, exchange_manager)
-
     return real_trader_fees, simulated_trader_fees
 
 
@@ -86,25 +90,26 @@ def get_trades_history(bot_api=None, symbol=None, independent_backtesting=None, 
 
     for exchange_manager in interfaces.get_exchange_managers(bot_api=bot_api,
                                                              independent_backtesting=independent_backtesting):
-        if trading_api.is_trader_enabled(exchange_manager):
+        if trading_api.is_trader_existing_and_enabled(exchange_manager):
             if trading_api.is_trader_simulated(exchange_manager):
                 simulated_trades_history += trading_api.get_trade_history(exchange_manager, symbol, since, as_dict)
             else:
                 real_trades_history += trading_api.get_trade_history(exchange_manager, symbol, since, as_dict)
-
     return real_trades_history, simulated_trades_history
 
 
 def set_risk(risk):
     result_risk = None
     for exchange_manager in interfaces.get_exchange_managers():
-        result_risk = trading_api.set_trader_risk(exchange_manager, risk)
+        if trading_api.has_trader(exchange_manager):
+            result_risk = trading_api.set_trader_risk(exchange_manager, risk)
     return result_risk
 
 
 def get_risk():
     try:
-        return trading_api.get_trader_risk(next(iter(interfaces.get_exchange_managers())))
+        return trading_api.get_trader_risk(_first_exchange_manager()) \
+            if trading_api.has_trader(_first_exchange_manager()) else None
     except StopIteration:
         return None
 
@@ -168,3 +173,7 @@ def get_matrix_list():
         for tentacle_type_node in evaluators_api.get_children_list(exchange_node).values():
             _get_tentacles_values(evaluations, tentacle_type_node, exchange)
     return evaluations
+
+
+def _first_exchange_manager():
+    return next(iter(interfaces.get_exchange_managers()))

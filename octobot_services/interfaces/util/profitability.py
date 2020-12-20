@@ -30,7 +30,7 @@ def get_global_profitability():
     has_simulated_trader = False
 
     for exchange_manager in interfaces.get_exchange_managers():
-        if trading_api.is_trader_enabled(exchange_manager):
+        if trading_api.is_trader_existing_and_enabled(exchange_manager):
 
             current_value, _, _, market_average_profitability, initial_portfolio_current_profitability = \
                 trading_api.get_profitability_stats(exchange_manager)
