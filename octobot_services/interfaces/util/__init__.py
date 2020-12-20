@@ -42,6 +42,7 @@ from octobot_services.interfaces.util.order import (
     cancel_all_open_orders,
 )
 from octobot_services.interfaces.util.trader import (
+    has_trader,
     has_real_and_or_simulated_traders,
     sell_all_currencies,
     sell_all,
@@ -79,6 +80,7 @@ __all__ = [
     "get_all_open_orders",
     "cancel_orders",
     "cancel_all_open_orders",
+    "has_trader",
     "has_real_and_or_simulated_traders",
     "sell_all_currencies",
     "sell_all",

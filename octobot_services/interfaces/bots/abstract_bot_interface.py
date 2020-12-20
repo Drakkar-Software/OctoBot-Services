@@ -61,11 +61,14 @@ class AbstractBotInterface(interfaces.AbstractInterface):
         message = f"{bold}My configuration:{bold}{interfaces.EOL}{interfaces.EOL}"
 
         message += f"{bold}Traders: {bold}{interfaces.EOL}"
-        has_real_trader, has_simulated_trader = interfaces.has_real_and_or_simulated_traders()
-        if has_real_trader:
-            message += f"{code}- Real trader{code}{interfaces.EOL}"
-        if has_simulated_trader:
-            message += f"{code}- Simulated trader{code}{interfaces.EOL}"
+        if interfaces.has_trader():
+            has_real_trader, has_simulated_trader = interfaces.has_real_and_or_simulated_traders()
+            if has_real_trader:
+                message += f"{code}- Real trader{code}{interfaces.EOL}"
+            if has_simulated_trader:
+                message += f"{code}- Simulated trader{code}{interfaces.EOL}"
+        else:
+            message += f"{code}- No activated trader{code}{interfaces.EOL}"
 
         message += f"{interfaces.EOL}{bold}Exchanges:{bold}{interfaces.EOL}"
         for exchange_name in trading_api.get_exchange_names():
@@ -92,10 +95,13 @@ class AbstractBotInterface(interfaces.AbstractInterface):
         except ImportError:
             message += f"{interfaces.EOL}{bold}Impossible to retrieve evaluation configuration: requires OctoBot-Evaluators " \
                        f"package installed{bold}{interfaces.EOL}"
-
-        message += f"{interfaces.EOL}{bold}Trading mode:{bold}{interfaces.EOL}"
-        trading_mode = interfaces.get_bot_api().get_trading_mode()
+        try:
+            trading_mode = interfaces.get_bot_api().get_trading_mode()
+        except IndexError:
+            # no activated trader
+            trading_mode = None
         if trading_mode:
+            message += f"{interfaces.EOL}{bold}Trading mode:{bold}{interfaces.EOL}"
             message += f"{code}- {trading_mode.get_name()}{code}"
 
         return message
@@ -115,7 +121,6 @@ class AbstractBotInterface(interfaces.AbstractInterface):
         risk = interfaces.get_risk()
         if risk:
             message += f"{interfaces.EOL}{code}My current risk is: {interfaces.get_risk()}{code}"
-
         return message
 
     @staticmethod

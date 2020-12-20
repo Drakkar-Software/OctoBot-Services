@@ -33,14 +33,13 @@ def get_portfolio_holdings():
     simulated_currency_portfolio = {}
 
     for exchange_manager in interfaces.get_exchange_managers():
-        if trading_api.is_trader_enabled(exchange_manager):
+        if trading_api.is_trader_existing_and_enabled(exchange_manager):
 
             trader_currencies_values = trading_api.get_current_holdings_values(exchange_manager)
             if trading_api.is_trader_simulated(exchange_manager):
                 _merge_portfolio_values(simulated_currency_portfolio, trader_currencies_values)
             else:
                 _merge_portfolio_values(real_currency_portfolio, trader_currencies_values)
-
     return real_currency_portfolio, simulated_currency_portfolio
 
 
@@ -51,7 +50,7 @@ def get_portfolio_current_value():
     has_simulated_trader = False
 
     for exchange_manager in interfaces.get_exchange_managers():
-        if trading_api.is_trader_enabled(exchange_manager):
+        if trading_api.is_trader_existing_and_enabled(exchange_manager):
 
             current_value = trading_api.get_current_portfolio_value(exchange_manager)
 
@@ -74,12 +73,11 @@ def _get_portfolios():
     real_portfolios = []
 
     for exchange_manager in interfaces.get_exchange_managers():
-        if trading_api.is_trader_enabled(exchange_manager):
+        if trading_api.is_trader_existing_and_enabled(exchange_manager):
             if trading_api.is_trader_simulated(exchange_manager):
                 simulated_portfolios.append(trading_api.get_portfolio(exchange_manager))
             else:
                 real_portfolios.append(trading_api.get_portfolio(exchange_manager))
-
     return real_portfolios, simulated_portfolios
 
 
@@ -112,7 +110,7 @@ def get_global_portfolio_currencies_amounts():
 def trigger_portfolios_refresh():
     at_least_one = False
     for exchange_manager in interfaces.get_exchange_managers():
-        if trading_api.is_trader_enabled(exchange_manager):
+        if trading_api.is_trader_existing_and_enabled(exchange_manager):
             at_least_one = True
             interfaces.run_in_bot_main_loop(trading_api.refresh_real_trader_portfolio(exchange_manager))
 
