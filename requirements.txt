@@ -1,7 +1,7 @@
 # Drakkar-Software requirements
 Async-Channel>=2.0.6, <2.1
-OctoBot-Commons>=1.4.13, <1.5
-OctoBot-Trading>=1.11.17, <1.12
+OctoBot-Commons>=1.5.0, <1.6
+OctoBot-Trading>=1.11.20, <1.12
 
 # Services
 # Reddit
