@@ -21,7 +21,10 @@ import octobot_services.interfaces as interfaces
 
 
 def has_trader():
-    return trading_api.has_trader(_first_exchange_manager())
+    try:
+        return trading_api.has_trader(_first_exchange_manager())
+    except StopIteration:
+        return False
 
 
 def has_real_and_or_simulated_traders():
