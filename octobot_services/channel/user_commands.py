@@ -13,21 +13,26 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-import octobot_commons.singleton as singleton
-
 import async_channel.channels as channels
 import async_channel.producer as producer
 import async_channel.consumer as consumer
 
 
-class NotificationChannelConsumer(consumer.Consumer):
+class UserCommandsChannelConsumer(consumer.Consumer):
     pass
 
 
-class NotificationChannelProducer(producer.Producer, singleton.Singleton):
-    pass
+class UserCommandsChannelProducer(producer.Producer):
+    async def send(self, bot_id, subject, action, data=None):
+        for consumer in self.channel.get_consumer_from_filters({"bot_id": bot_id, "subject": subject}):
+            await consumer.queue.put({
+                "bot_id": bot_id,
+                "subject": subject,
+                "action": action,
+                "data": data
+            })
 
 
-class NotificationChannel(channels.Channel):
-    PRODUCER_CLASS = NotificationChannelProducer
-    CONSUMER_CLASS = NotificationChannelConsumer
+class UserCommandsChannel(channels.Channel):
+    PRODUCER_CLASS = UserCommandsChannelProducer
+    CONSUMER_CLASS = UserCommandsChannelConsumer

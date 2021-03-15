@@ -31,6 +31,7 @@ from octobot_services.api.interfaces import (
     is_enabled_in_backtesting,
     is_interface_relevant,
     disable_interfaces,
+    send_user_command,
     start_interfaces,
     stop_interfaces,
 )
@@ -65,6 +66,7 @@ __all__ = [
     "is_enabled_in_backtesting",
     "is_interface_relevant",
     "disable_interfaces",
+    "send_user_command",
     "start_interfaces",
     "stop_interfaces",
     "create_service_feed_factory",
