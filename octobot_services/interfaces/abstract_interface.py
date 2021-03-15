@@ -15,6 +15,10 @@
 #  License along with this library.
 import abc
 
+import octobot_commons.channels_name as channels_names
+import async_channel.util as channel_creator
+import async_channel.channels as channels
+import octobot_services.channel as service_channels
 import octobot_services.abstract_service_user as abstract_service_user
 import octobot_services.util as util
 
@@ -33,6 +37,12 @@ class AbstractInterface(abstract_service_user.AbstractServiceUser, util.Returnin
     def __init__(self, config):
         abstract_service_user.AbstractServiceUser.__init__(self, config)
         util.ExchangeWatcher.__init__(self)
+
+    async def _initialize_impl(self, backtesting_enabled, edited_config) -> bool:
+        if await abstract_service_user.AbstractServiceUser._initialize_impl(self, backtesting_enabled, edited_config):
+            await self._create_user_commands_channel_if_not_existing()
+            return True
+        return False
 
     @staticmethod
     def initialize_global_project_data(bot_api, project_name, project_version):
@@ -55,3 +65,10 @@ class AbstractInterface(abstract_service_user.AbstractServiceUser, util.Returnin
     @abc.abstractmethod
     async def stop(self):
         raise NotImplementedError(f"stop is not implemented for {self.get_name()}")
+
+    @staticmethod
+    async def _create_user_commands_channel_if_not_existing() -> None:
+        try:
+            channels.get_chan(channels_names.OctoBotUserChannelsName.USER_COMMANDS_CHANNEL.value)
+        except KeyError:
+            await channel_creator.create_channel_instance(service_channels.UserCommandsChannel, channels.set_chan)

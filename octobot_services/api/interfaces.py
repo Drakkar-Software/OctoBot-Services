@@ -13,6 +13,8 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+import octobot_commons.channels_name as channels_names
+import async_channel.channels as channels
 import octobot_services.interfaces as interfaces
 import octobot_services.managers as managers
 
@@ -27,6 +29,20 @@ def create_interface_factory(config: dict) -> interfaces.InterfaceFactory:
 
 def is_enabled(interface_class: interfaces.AbstractInterface) -> bool:
     return interface_class.enabled
+
+
+async def send_user_command(bot_id, subject, action, data) -> bool:
+    try:
+        await channels.get_chan(channels_names.OctoBotUserChannelsName.USER_COMMANDS_CHANNEL.value).\
+            get_internal_producer().send(
+                bot_id=bot_id,
+                subject=subject,
+                action=action,
+                data=data
+            )
+        return True
+    except KeyError:
+        return False
 
 
 def is_enabled_in_backtesting(interface_class) -> bool:

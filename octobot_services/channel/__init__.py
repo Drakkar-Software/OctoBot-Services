@@ -27,6 +27,11 @@ from octobot_services.channel.notifications import (
     NotificationChannelProducer,
     NotificationChannel,
 )
+from octobot_services.channel.user_commands import (
+    UserCommandsChannelConsumer,
+    UserCommandsChannelProducer,
+    UserCommandsChannel,
+)
 
 __all__ = [
     "AbstractServiceFeedChannelConsumer",
@@ -35,5 +40,8 @@ __all__ = [
     "NotificationChannelConsumer",
     "NotificationChannelProducer",
     "NotificationChannel",
+    "UserCommandsChannelConsumer",
+    "UserCommandsChannelProducer",
+    "UserCommandsChannel",
 ]
 
