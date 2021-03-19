@@ -23,11 +23,11 @@ jobs:
       run: pip install --prefer-binary -r dev_requirements.txt -r requirements.txt
 
 #    - name: Black lint
-#      run: black ${{ secrets.PACKAGE_FOLDER }} --diff --check
+#      run: black octobot_services --diff --check
 
     - name: Pylint
       run: |
-        pylint --rcfile=standard.rc ${{ secrets.PACKAGE_FOLDER }}
+        pylint --rcfile=standard.rc octobot_services
         if [ $? -ne 1 ]; then exit 0; fi
 
   tests:
