@@ -37,6 +37,17 @@ CONFIG_GROUP_MESSAGE_DESCRIPTION = "group-message-description"
 CONFIG_USERNAMES_WHITELIST = "usernames-whitelist"
 CONFIG_CHAT_ID = "chat-id"
 
+CONFIG_TELEGRAM_API = "telegram-api"
+CONFIG_API = "telegram-api"
+CONFIG_API_HASH = "telegram-api-hash"
+CONFIG_TELEGRAM_PHONE = "telegram-phone"
+CONFIG_TELEGRAM_PASSWORD = "telegram-password"
+CONFIG_MESSAGE_CONTENT = "message-content"
+CONFIG_MESSAGE_SENDER = "message-sender"
+CONFIG_IS_GROUP_MESSAGE = "is-group-message"
+CONFIG_IS_CHANNEL_MESSAGE = "is-channel-message"
+CONFIG_IS_PRIVATE_MESSAGE = "is-private-message"
+
 # Web
 CONFIG_WEB = "web"
 CONFIG_WEB_IP = "ip"
