@@ -47,6 +47,7 @@ CONFIG_MESSAGE_SENDER = "message-sender"
 CONFIG_IS_GROUP_MESSAGE = "is-group-message"
 CONFIG_IS_CHANNEL_MESSAGE = "is-channel-message"
 CONFIG_IS_PRIVATE_MESSAGE = "is-private-message"
+CONFIG_MEDIA_PATH = "media-path"
 
 # Web
 CONFIG_WEB = "web"
