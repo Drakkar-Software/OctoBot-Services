@@ -12,7 +12,7 @@ telethon==1.21.1
 # Twitter
 Python-Twitter==3.5
 # Google
-simplifiedpytrends>=1.1.0
+simplifiedpytrends>=1.1.2
 # Ngrok
 pyngrok==5.0.5
 # Web
