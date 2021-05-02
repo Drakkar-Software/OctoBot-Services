@@ -5,9 +5,9 @@ OctoBot-Trading>=1.12.0, <1.13
 
 # Services
 # Reddit
-praw==7.1.0
+asyncpraw==7.2.0
 # Telegram
-python-telegram-bot==13.1.0
+python-telegram-bot==13.5.0
 telethon==1.21.1
 # Twitter
 Python-Twitter==3.5
@@ -25,7 +25,7 @@ WTForms==2.3.3
 Flask-WTF==0.14.3
 ## websockets
 ### used by the webhook service and flask-socketio for the web interface
-gevent==20.12.1
+gevent==21.1.2
 ### used by flask-socketio with gevent (listed here because multiple libs are usable, force this one)
 gevent-websocket==0.10.1
 flask-socketio==5.0.1
