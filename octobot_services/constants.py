@@ -65,7 +65,6 @@ DEFAULT_SERVER_PORT = 5001
 
 # Webhook
 CONFIG_WEBHOOK = "webhook"
-CONFIG_ENABLE_NGROK = True
 CONFIG_NGROK_TOKEN = "ngrok-token"
 CONFIG_WEBHOOK_SERVER_IP = "webhook-bind-ip"
 CONFIG_WEBHOOK_SERVER_PORT = "webhook-bind-port"
