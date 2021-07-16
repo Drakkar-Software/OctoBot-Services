@@ -51,8 +51,8 @@ class ServiceFactory:
             return await self._perform_checkup(service)
         else:
             if service.get_should_warn():
-                self.logger.warning(f"{service.get_name()} can't be initialized: configuration "
-                                    f"is missing, wrong or incomplete !")
+                self.logger.info(f"{service.get_name()} can't be initialized: configuration "
+                                 f"is missing, wrong or incomplete. This is normal if you did not configure it yet.")
         return False
 
     async def _perform_checkup(self, service) -> bool:
