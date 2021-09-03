@@ -1,14 +1,14 @@
 # Drakkar-Software requirements
 Async-Channel>=2.0.12, <2.1
-OctoBot-Commons>=1.6.7, <1.7
-OctoBot-Trading>=1.13.4, <1.14
+OctoBot-Commons>=1.6.11, <1.7
+OctoBot-Trading>=1.13.13, <1.14
 
 # Services
 # Reddit
 asyncpraw==7.3.1
 # Telegram
 python-telegram-bot==13.7.0
-telethon==1.21.1
+telethon==1.23.0
 # Twitter
 Python-Twitter==3.5
 # Google
