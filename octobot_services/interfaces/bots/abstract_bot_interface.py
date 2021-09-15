@@ -339,6 +339,10 @@ class AbstractBotInterface(interfaces.AbstractInterface):
         self.paused = False
 
     @staticmethod
+    def set_command_restart():
+        interfaces.get_bot_api().restart_bot()
+
+    @staticmethod
     def _split_messages_if_too_long(message, max_length, preferred_separator):
         if len(message) >= max_length:
             # split message using preferred_separator as separator
