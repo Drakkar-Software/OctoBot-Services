@@ -18,6 +18,8 @@ pyngrok==5.0.5
 # Web
 ## http server
 flask==1.1.2
+## flask minification
+flask-compress==1.10.1
 ## flask user authentication management
 flask-login==0.5.0
 ## user form validators
