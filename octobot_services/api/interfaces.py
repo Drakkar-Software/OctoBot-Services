@@ -13,6 +13,8 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+import asyncio
+
 import octobot_commons.channels_name as channels_names
 import async_channel.channels as channels
 import octobot_services.interfaces as interfaces
@@ -31,15 +33,20 @@ def is_enabled(interface_class: interfaces.AbstractInterface) -> bool:
     return interface_class.enabled
 
 
-async def send_user_command(bot_id, subject, action, data) -> bool:
+async def send_user_command(bot_id, subject, action, data, wait_for_processing=False) -> bool:
     try:
-        await channels.get_chan(channels_names.OctoBotUserChannelsName.USER_COMMANDS_CHANNEL.value).\
-            get_internal_producer().send(
-                bot_id=bot_id,
-                subject=subject,
-                action=action,
-                data=data
-            )
+        channel = channels.get_chan(channels_names.OctoBotUserChannelsName.USER_COMMANDS_CHANNEL.value)
+        await channel.get_internal_producer().send(
+            bot_id=bot_id,
+            subject=subject,
+            action=action,
+            data=data
+        )
+        if wait_for_processing:
+            producers = channel.producers
+            if channel.internal_producer is not None:
+                producers.append(channel.internal_producer)
+            await asyncio.gather(*(producer.wait_for_processing() for producer in producers))
         return True
     except KeyError:
         return False

@@ -18,7 +18,7 @@ import async_channel.producer as producer
 import async_channel.consumer as consumer
 
 
-class UserCommandsChannelConsumer(consumer.Consumer):
+class UserCommandsChannelConsumer(consumer.SupervisedConsumer):
     pass
 
 
