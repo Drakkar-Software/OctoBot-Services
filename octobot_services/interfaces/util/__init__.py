@@ -17,6 +17,7 @@
 from octobot_services.interfaces.util import bot
 from octobot_services.interfaces.util import util
 from octobot_services.interfaces.util import order
+from octobot_services.interfaces.util import position
 from octobot_services.interfaces.util import trader
 from octobot_services.interfaces.util import portfolio
 from octobot_services.interfaces.util import profitability
@@ -40,6 +41,10 @@ from octobot_services.interfaces.util.order import (
     get_all_open_orders,
     cancel_orders,
     cancel_all_open_orders,
+)
+from octobot_services.interfaces.util.position import (
+    get_all_positions,
+    close_positions,
 )
 from octobot_services.interfaces.util.trader import (
     has_trader,
@@ -97,4 +102,6 @@ __all__ = [
     "trigger_portfolios_refresh",
     "get_global_profitability",
     "get_reference_market",
+    "get_all_positions",
+    "close_positions",
 ]
