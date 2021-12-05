@@ -65,6 +65,8 @@ from octobot_services.interfaces.util import (
     trigger_portfolios_refresh,
     get_global_profitability,
     get_reference_market,
+    get_all_positions,
+    close_positions,
 )
 from octobot_services.interfaces.web import (
     AbstractWebInterface,
@@ -108,5 +110,7 @@ __all__ = [
     "LOGGER",
     "EOL",
     "NO_TRADER_MESSAGE",
-    "NO_CURRENCIES_MESSAGE"
+    "NO_CURRENCIES_MESSAGE",
+    "get_all_positions",
+    "close_positions",
 ]
