@@ -13,6 +13,8 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+import decimal
+
 import octobot_commons.constants as constants
 
 import octobot_services.interfaces as interfaces
@@ -82,15 +84,15 @@ def _get_portfolios():
 
 
 def _merge_portfolios(base_portfolio, to_merge_portfolio):
-    for currency, amounts in to_merge_portfolio.items():
+    for currency, asset in to_merge_portfolio.items():
         if currency not in base_portfolio:
             base_portfolio[currency] = {
-                constants.PORTFOLIO_AVAILABLE: 0,
-                constants.PORTFOLIO_TOTAL: 0
+                constants.PORTFOLIO_AVAILABLE: decimal.Decimal(0),
+                constants.PORTFOLIO_TOTAL: decimal.Decimal(0)
             }
 
-        base_portfolio[currency][constants.PORTFOLIO_AVAILABLE] += amounts[constants.PORTFOLIO_AVAILABLE]
-        base_portfolio[currency][constants.PORTFOLIO_TOTAL] += amounts[constants.PORTFOLIO_TOTAL]
+        base_portfolio[currency][constants.PORTFOLIO_AVAILABLE] += asset.available
+        base_portfolio[currency][constants.PORTFOLIO_TOTAL] += asset.total
 
 
 def get_global_portfolio_currencies_amounts():
