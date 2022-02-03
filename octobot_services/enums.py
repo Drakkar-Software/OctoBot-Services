@@ -27,4 +27,5 @@ class NotificationCategory(enum.Enum):
     GLOBAL_INFO = "global-info"
     PRICE_ALERTS = "price-alerts"
     TRADES = "trades"
+    TRADING_SCRIPT_ALERTS = "trading-script-alerts"
     OTHER = "other"
