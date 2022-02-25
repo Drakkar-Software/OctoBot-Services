@@ -1,7 +1,7 @@
 # Drakkar-Software requirements
 Async-Channel>=2.0.13, <2.1
 OctoBot-Commons>=1.6.20, <1.7
-OctoBot-Trading>=2.1.0, <2.2
+OctoBot-Trading>=2.1.2, <2.2
 
 # Services
 # Reddit
@@ -17,7 +17,9 @@ simplifiedpytrends>=1.1.2
 pyngrok==5.0.5
 # Web
 ## http server
-flask==1.1.4
+flask==2.0.3
+# Flask templates
+jinja2>=3.0.3
 ## flask minification
 flask-compress==1.10.1
 ## flask cache
@@ -25,8 +27,8 @@ flask-caching==1.10.1
 ## flask user authentication management
 flask-login==0.5.0
 ## user form validators
-WTForms==2.3.3
-Flask-WTF==0.14.3
+WTForms==3.0.1
+Flask-WTF==1.0.0
 ## websockets
 ### used by the webhook service and flask-socketio for the web interface
 gevent==21.1.2
