@@ -1,6 +1,6 @@
 # Drakkar-Software requirements
 Async-Channel>=2.0.13, <2.1
-OctoBot-Commons>=1.6.20, <1.7
+OctoBot-Commons>=1.6.20, <1.8
 OctoBot-Trading>=2.1.2, <2.2
 
 # Services
