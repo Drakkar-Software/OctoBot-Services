@@ -26,7 +26,7 @@ import octobot_services.enums as enums
 
 class _OrderNotification(notifications.Notification):
     def __init__(self, text, evaluator_notification: notifications.Notification):
-        super().__init__("", text, "",
+        super().__init__("", text, "", enums.NotificationSound.NO_SOUND,
                          common_enums.MarkdownFormat.IGNORE,
                          enums.NotificationLevel.INFO,
                          enums.NotificationCategory.TRADES,

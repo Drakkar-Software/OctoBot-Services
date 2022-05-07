@@ -30,12 +30,13 @@ def create_notifier_factory(config) -> notifiers.NotifierFactory:
     return notifiers.NotifierFactory(config)
 
 
-def create_notification(text: str, title="", markdown_text="",
+def create_notification(text: str, title="", markdown_text="", sound=enums.NotificationSound.NO_SOUND,
                         markdown_format: common_enums.MarkdownFormat = common_enums.MarkdownFormat.IGNORE,
                         level: enums.NotificationLevel = enums.NotificationLevel.INFO,
                         category: enums.NotificationCategory = enums.NotificationCategory.GLOBAL_INFO,
                         linked_notification=None) -> notifications.Notification:
-    return notifications.Notification(text, title, markdown_text, markdown_format, level, category, linked_notification)
+    return notifications.Notification(text, title, markdown_text, sound, markdown_format, level, category,
+                                      linked_notification)
 
 
 async def send_notification(notification: notifications.Notification) -> None:
