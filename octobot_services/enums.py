@@ -29,3 +29,8 @@ class NotificationCategory(enum.Enum):
     TRADES = "trades"
     TRADING_SCRIPT_ALERTS = "trading-script-alerts"
     OTHER = "other"
+
+
+class NotificationSound(enum.Enum):
+    NO_SOUND = None
+    FINISHED_PROCESSING = "finished_processing.mp3"

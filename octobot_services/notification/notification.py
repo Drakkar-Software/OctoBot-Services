@@ -19,7 +19,7 @@ import octobot_services.enums as enums
 
 
 class Notification:
-    def __init__(self, text: str, title: str, markdown_text: str,
+    def __init__(self, text: str, title: str, markdown_text: str, sound: enums.NotificationSound,
                  markdown_format: common_enums.MarkdownFormat,
                  level: enums.NotificationLevel, category: enums.NotificationCategory,
                  linked_notification):
@@ -30,6 +30,7 @@ class Notification:
         self.markdown_format = markdown_format
         self.linked_notification = linked_notification
         self.category = category
+        self.sound = sound
 
         # Used to identify previous notification related elements when necessary ex: a tweet to reply to
         self.metadata = {}
