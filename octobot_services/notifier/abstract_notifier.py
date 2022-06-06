@@ -68,14 +68,15 @@ class AbstractNotifier(abstract_service_user.AbstractServiceUser, util.ExchangeW
             self.logger.exception(e, True, f"Exception when handling notification: {e}")
 
     async def _initialize_impl(self, backtesting_enabled, edited_config) -> bool:
+        # make sure to always create the notification channel
+        channel = await self._create_notification_channel_if_not_existing()
         if await abstract_service_user.AbstractServiceUser._initialize_impl(self, backtesting_enabled, edited_config):
             self.services = [service.instance() for service in self.REQUIRED_SERVICES]
-            await self._create_and_subscribe_to_notification_channel()
+            await self._subscribe_to_notification_channel(channel)
             return True
         return False
 
-    async def _create_and_subscribe_to_notification_channel(self):
-        channel = await self._create_notification_channel_if_not_existing()
+    async def _subscribe_to_notification_channel(self, channel):
         await channel.new_consumer(self._notification_callback)
         self.logger.debug("Registered as notification consumer")
 
