@@ -17,15 +17,15 @@ simplifiedpytrends>=1.1.2
 pyngrok==5.0.5
 # Web
 ## http server
-flask==2.1.2
+flask==2.1.2    # <= 2.1.2 from flask-caching==2.0.0, bump when updating flask-caching
 # Flask templates
 jinja2>=3.1.2
 ## flask minification
 flask-compress==1.12
 ## flask cache
-flask-caching==1.10.1
+flask-caching==2.0.0
 ## flask user authentication management
-flask-login==0.6.1
+flask-login==0.6.2
 ## user form validators
 WTForms==3.0.1
 Flask-WTF==1.0.1
@@ -34,7 +34,7 @@ Flask-WTF==1.0.1
 gevent==21.12.0
 ### used by flask-socketio with gevent (listed here because multiple libs are usable, force this one)
 gevent-websocket==0.10.1
-flask-socketio==5.1.2
+flask-socketio==5.2.0
 
 # Analysis tools
 newspaper3k==0.2.8

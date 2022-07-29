@@ -22,10 +22,10 @@ def test_web_imports():
     import flask
     import flask_caching
     import flask_compress
-    import flask_login
     import flask_socketio
     import gevent
     import geventwebsocket
+    import flask_login
     import wtforms
     import flask_wtf
 
