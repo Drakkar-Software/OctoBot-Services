@@ -46,9 +46,9 @@ def _filter_exchange_manager(exchange_managers, trading_exchanges_only):
     return exchange_managers
 
 
-def run_in_bot_main_loop(coroutine, blocking=True):
+def run_in_bot_main_loop(coroutine, blocking=True, log_exceptions=True):
     if blocking:
-        return interfaces.get_bot_api().run_in_main_asyncio_loop(coroutine)
+        return interfaces.get_bot_api().run_in_main_asyncio_loop(coroutine, log_exceptions=log_exceptions)
     else:
         threading.Thread(target=interfaces.get_bot_api().run_in_main_asyncio_loop,
                          args=(coroutine,),
