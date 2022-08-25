@@ -5,25 +5,25 @@ OctoBot-Trading>=2.2.0, <2.3
 
 # Services
 # Reddit
-asyncpraw==7.3.1
+asyncpraw==7.5.0
 # Telegram
-python-telegram-bot==13.7.0
+python-telegram-bot==13.13
 telethon==1.24.0
 # Twitter
 Python-Twitter==3.5
 # Google
 simplifiedpytrends>=1.1.2
 # Ngrok
-pyngrok==5.0.5
+pyngrok==5.1.0
 # Web
 ## http server
-flask==2.1.2    # <= 2.1.2 from flask-caching==2.0.0, bump when updating flask-caching
+flask==2.2.2
 # Flask templates
 jinja2>=3.1.2
 ## flask minification
 flask-compress==1.12
 ## flask cache
-flask-caching==2.0.0
+flask-caching==2.0.1
 ## flask user authentication management
 flask-login==0.6.2
 ## user form validators
@@ -34,7 +34,7 @@ Flask-WTF==1.0.1
 gevent==21.12.0
 ### used by flask-socketio with gevent (listed here because multiple libs are usable, force this one)
 gevent-websocket==0.10.1
-flask-socketio==5.2.0
+flask-socketio==5.3.0
 
 # Analysis tools
 newspaper3k==0.2.8
