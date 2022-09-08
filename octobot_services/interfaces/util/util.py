@@ -16,6 +16,7 @@
 import threading
 
 import octobot_commons.logging as logging
+import octobot_commons.constants as commons_constants
 
 import octobot_trading.api as trading_api
 
@@ -46,13 +47,18 @@ def _filter_exchange_manager(exchange_managers, trading_exchanges_only):
     return exchange_managers
 
 
-def run_in_bot_main_loop(coroutine, blocking=True, log_exceptions=True):
+def run_in_bot_main_loop(coroutine, blocking=True, log_exceptions=True,
+                         timeout=commons_constants.DEFAULT_FUTURE_TIMEOUT):
     if blocking:
-        return interfaces.get_bot_api().run_in_main_asyncio_loop(coroutine, log_exceptions=log_exceptions)
+        return interfaces.get_bot_api().run_in_main_asyncio_loop(coroutine, log_exceptions=log_exceptions,
+                                                                 timeout=timeout)
     else:
-        threading.Thread(target=interfaces.get_bot_api().run_in_main_asyncio_loop,
-                         args=(coroutine,),
-                         name=f"run_in_bot_main_loop {coroutine.__name__}").start()
+        threading.Thread(
+            target=interfaces.get_bot_api().run_in_main_asyncio_loop,
+            name=f"run_in_bot_main_loop {coroutine.__name__}",
+            args=(coroutine,),
+            kwargs={"timeout": timeout}
+         ).start()
 
 
 def run_in_bot_async_executor(coroutine):
