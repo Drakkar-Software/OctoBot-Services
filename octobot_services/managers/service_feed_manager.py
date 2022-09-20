@@ -13,6 +13,7 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+import octobot_commons.logging as logging
 import octobot_services.service_feeds as service_feeds
 
 
@@ -29,4 +30,6 @@ class ServiceFeedManager:
 
     @staticmethod
     async def stop_service_feed(service_feed: service_feeds.AbstractServiceFeed):
+        logging.get_logger(ServiceFeedManager.__name__).debug(f"Stopping {service_feed.get_name()} ...")
         await service_feed.stop()
+        logging.get_logger(ServiceFeedManager.__name__).debug(f"Stopped {service_feed.get_name()}")
