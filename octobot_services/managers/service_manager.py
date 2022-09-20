@@ -13,13 +13,16 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+import octobot_commons.logging as logging
 import octobot_services.services as services
 
 
 def stop_services():
     for service_instance in _get_service_instances():
         try:
+            logging.get_logger(__name__).debug(f"Stopping {service_instance.get_name()} ...")
             service_instance.stop()
+            logging.get_logger(__name__).debug(f"Stopped {service_instance.get_name()}")
         except Exception as e:
             raise e
 

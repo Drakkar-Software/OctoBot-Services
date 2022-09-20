@@ -13,6 +13,7 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+import octobot_commons.logging as logging
 
 
 async def start_interfaces(interfaces: list):
@@ -29,4 +30,6 @@ async def start_interface(interface):
 
 async def stop_interfaces(interfaces: list):
     for interface in interfaces:
+        logging.get_logger(__name__).debug(f"Stopping {interface.get_name()} ...")
         await interface.stop()
+        logging.get_logger(__name__).debug(f"Stopped {interface.get_name()}")
