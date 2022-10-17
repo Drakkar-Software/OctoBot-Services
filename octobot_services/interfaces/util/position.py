@@ -14,6 +14,7 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 import octobot_trading.api as trading_api
+import octobot_trading.enums as trading_enums
 
 import octobot_services.interfaces as interfaces
 
@@ -32,11 +33,17 @@ def get_all_positions():
     return real_positions, simulated_positions
 
 
-def close_positions(position_ids):
+def close_positions(positions_descs):
     removed_count = 0
-    if position_ids:
-        for position_id in position_ids:
+    if positions_descs:
+        for positions_desc in positions_descs:
             for exchange_manager in interfaces.get_exchange_managers():
                 if trading_api.is_trader_existing_and_enabled(exchange_manager):
-                    pass  # TODO
+                    removed_count += 1 if interfaces.run_in_bot_main_loop(
+                        trading_api.close_position(
+                            exchange_manager,
+                            positions_desc["symbol"],
+                            trading_enums.PositionSide(positions_desc["side"]),
+                        )
+                    ) else 0
     return removed_count
