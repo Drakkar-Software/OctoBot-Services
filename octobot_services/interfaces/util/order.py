@@ -39,7 +39,7 @@ def cancel_orders(order_ids):
             for exchange_manager in interfaces.get_exchange_managers():
                 if trading_api.is_trader_existing_and_enabled(exchange_manager):
                     removed_count += 1 if interfaces.run_in_bot_main_loop(
-                        trading_api.cancel_order_with_id(exchange_manager, order_id)) else 0
+                        trading_api.cancel_order_with_id(exchange_manager, order_id, wait_for_cancelling=False)) else 0
     return removed_count
 
 
