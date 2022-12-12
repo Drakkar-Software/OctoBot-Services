@@ -106,7 +106,7 @@ class AbstractNotifier(abstract_service_user.AbstractServiceUser, util.ExchangeW
             if order_status is trading_enums.OrderStatus.EXPIRED or \
                 order_status is trading_enums.OrderStatus.CANCELED or \
                     (order_status is trading_enums.OrderStatus.CLOSED
-                     and dict_order[trading_enums.ExchangeConstantsOrderColumns.FILLED.value] == 0):
+                     and dict_order[trading_enums.ExchangeConstantsOrderColumns.FILLED_AMOUNT.value] == 0):
                 notification = notifications.OrderEndNotification(linked_notification, None, exchange, [dict_order],
                                                                   None, None, None, False, is_simulated)
             elif order_status in (trading_enums.OrderStatus.CLOSED, trading_enums.OrderStatus.FILLED):
