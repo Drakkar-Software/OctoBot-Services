@@ -26,6 +26,8 @@ flask-compress==1.13
 flask-caching==2.0.1
 ## flask user authentication management
 flask-login==0.6.2
+## flask CORS management
+flask-cors==3.0.10
 ## user form validators
 WTForms==3.0.1
 Flask-WTF==1.0.1
