@@ -103,7 +103,8 @@ class AbstractNotifier(abstract_service_user.AbstractServiceUser, util.ExchangeW
             self.previous_notifications_by_identifier[order_identifier] = notification
         else:
             is_simulated = trading_api.is_trader_simulated(exchange_manager)
-            if order_status is trading_enums.OrderStatus.CANCELED or \
+            if order_status is trading_enums.OrderStatus.EXPIRED or \
+                order_status is trading_enums.OrderStatus.CANCELED or \
                     (order_status is trading_enums.OrderStatus.CLOSED
                      and dict_order[trading_enums.ExchangeConstantsOrderColumns.FILLED.value] == 0):
                 notification = notifications.OrderEndNotification(linked_notification, None, exchange, [dict_order],
