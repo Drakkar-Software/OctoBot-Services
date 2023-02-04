@@ -17,7 +17,7 @@ import enum
 
 
 class NotificationLevel(enum.Enum):
-    DANGER = "danger"
+    ERROR = "error"
     WARNING = "warning"
     INFO = "info"
     SUCCESS = "success"
