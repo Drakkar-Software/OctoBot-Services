@@ -14,6 +14,9 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 import octobot_trading.api as trading_api
+import octobot_trading.errors as trading_errors
+
+import octobot_commons.logging as logging
 
 import octobot_services.interfaces as interfaces
 
@@ -38,8 +41,13 @@ def cancel_orders(order_ids):
         for order_id in order_ids:
             for exchange_manager in interfaces.get_exchange_managers():
                 if trading_api.is_trader_existing_and_enabled(exchange_manager):
-                    removed_count += 1 if interfaces.run_in_bot_main_loop(
-                        trading_api.cancel_order_with_id(exchange_manager, order_id, wait_for_cancelling=False)) else 0
+                    try:
+                        removed_count += 1 if interfaces.run_in_bot_main_loop(
+                            trading_api.cancel_order_with_id(exchange_manager, order_id, wait_for_cancelling=False)
+                        ) else 0
+                    except (trading_errors.OrderCancelError, trading_errors.UnexpectedExchangeSideOrderStateError) \
+                            as err:
+                        logging.get_logger("InterfaceOrderUtil").error(f"Skipping order cancel: {err}")
     return removed_count
 
 
