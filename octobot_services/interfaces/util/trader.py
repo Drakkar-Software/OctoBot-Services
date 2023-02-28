@@ -95,9 +95,9 @@ def get_trades_history(bot_api=None, symbol=None, independent_backtesting=None, 
                                                              independent_backtesting=independent_backtesting):
         if trading_api.is_trader_existing_and_enabled(exchange_manager):
             if trading_api.is_trader_simulated(exchange_manager):
-                simulated_trades_history += trading_api.get_trade_history(exchange_manager, symbol, since, as_dict)
+                simulated_trades_history += trading_api.get_trade_history(exchange_manager, None, symbol, since, as_dict)
             else:
-                real_trades_history += trading_api.get_trade_history(exchange_manager, symbol, since, as_dict)
+                real_trades_history += trading_api.get_trade_history(exchange_manager, None, symbol, since, as_dict)
     return real_trades_history, simulated_trades_history
 
 
