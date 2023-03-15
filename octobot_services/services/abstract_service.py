@@ -103,7 +103,7 @@ class AbstractService(singleton.Singleton):
         return True
 
     # implement locally if the service has thread(s) to stop
-    def stop(self):
+    async def stop(self):
         pass
 
     # implement locally if the service shouldn't raise warning at startup if configuration is not set

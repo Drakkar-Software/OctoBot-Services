@@ -72,10 +72,13 @@ async def _create_services():
 if __name__ == '__main__':
     fileConfig("logs/logging_config.ini")
 
-    logging.info("** Starting services **")
-    asyncio.run(_create_services())
+    async def start_stop():
+        logging.info("** Starting services **")
+        await _create_services()
 
-    logging.info("** Stopping services **")
-    stop_services()
+        logging.info("** Stopping services **")
+        await stop_services()
+
+    asyncio.run(start_stop)
 
     logging.info("** End of services checkup **")
