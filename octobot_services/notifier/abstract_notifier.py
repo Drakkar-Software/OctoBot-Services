@@ -35,6 +35,7 @@ class AbstractNotifier(abstract_service_user.AbstractServiceUser, util.ExchangeW
     NOTIFICATION_TYPE_KEY = None
     # The service required to run this notifier
     REQUIRED_SERVICES = None
+    USE_MAIN_LOOP = False
 
     def __init__(self, config):
         abstract_service_user.AbstractServiceUser.__init__(self, config)
@@ -51,19 +52,25 @@ class AbstractNotifier(abstract_service_user.AbstractServiceUser, util.ExchangeW
         if self.is_initialized and exchange_id not in self.registered_exchanges_ids:
             await self._subscribe_to_order_channel(exchange_id)
 
-    # Override this method to use a notification when received
+    # Override this method to consume a notification when received
     @abc.abstractmethod
     async def _handle_notification(self, notification: notifications.Notification):
         raise NotImplementedError(f"_handle_notification is not implemented")
 
-    def _send_notification_from_executor(self, notification: notifications.Notification):
+    async def _send_notification(self, notification: notifications.Notification):
         self.logger.debug(f"Publishing notification: {notification}")
-        asyncio.run(self._handle_notification(notification))
+        await self._handle_notification(notification)
+
+    def _send_notification_from_executor(self, notification: notifications.Notification):
+        asyncio.run(self._send_notification(notification))
 
     async def _notification_callback(self, notification: notifications.Notification = None):
         try:
             if self._is_notification_category_enabled(notification):
-                await self.loop.run_in_executor(self.executors, self._send_notification_from_executor, notification)
+                if self.USE_MAIN_LOOP:
+                    await self._send_notification(notification)
+                else:
+                    await self.loop.run_in_executor(self.executors, self._send_notification_from_executor, notification)
         except Exception as e:
             self.logger.exception(e, True, f"Exception when handling notification: {e}")
 
