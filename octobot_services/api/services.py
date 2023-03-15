@@ -25,5 +25,5 @@ def create_service_factory(config) -> services.ServiceFactory:
     return services.ServiceFactory(config)
 
 
-def stop_services() -> None:
-    managers.stop_services()
+async def stop_services() -> None:
+    await managers.stop_services()
