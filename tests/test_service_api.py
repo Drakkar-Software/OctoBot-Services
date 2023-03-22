@@ -14,13 +14,16 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
+import pytest
+
 from octobot_services.api.services import stop_services, get_available_services
 from octobot_services.api.service_feeds import create_service_feed_factory
 
 
-def test_init_services():
+@pytest.mark.asyncio
+async def test_init_services():
     get_available_services()
-    stop_services()
+    await stop_services()
 
 
 def test_init_service_feeds():
