@@ -14,6 +14,7 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 import abc
+from octobot_commons import number_util
 
 import octobot_commons.constants as common_constants
 import octobot_commons.pretty_printer as pretty_printer
@@ -24,6 +25,7 @@ import octobot_trading.constants as trading_constants
 
 import octobot_services.interfaces as interfaces
 import octobot_services.constants as constants
+import octobot_commons.constants as commons_constants
 
 
 class AbstractBotInterface(interfaces.AbstractInterface):
@@ -233,12 +235,19 @@ class AbstractBotInterface(interfaces.AbstractInterface):
             return f"An error occurred: {e.__class__.__name__}"
 
     @staticmethod
-    def _print_portfolio(current_val, ref_market, portfolio, trader_str, markdown=False):
+    def _print_portfolio(
+        current_val, ref_market, portfolio, currency_values, trader_str, markdown=False
+    ):
         _, bold, code = pretty_printer.get_markers(markdown)
-        portfolios_string = f"{bold}{trader_str}{bold}Portfolio value : " \
-                            f"{bold}{pretty_printer.get_min_string_from_number(current_val)} {ref_market}{bold}" \
-                            f"{interfaces.EOL}"
-        portfolio_str = pretty_printer.global_portfolio_pretty_print(portfolio, markdown=markdown)
+        portfolios_string = (
+            f"{bold}{trader_str}{bold}Portfolio value : "
+            f"{bold}{pretty_printer.get_min_string_from_number(current_val)} {ref_market}{bold}"
+            f"{interfaces.EOL}"
+        )
+        portfolio_str = pretty_printer.global_portfolio_pretty_print(
+            global_portfolio=portfolio, currency_values=currency_values, 
+            ref_market_name=ref_market, markdown=markdown)
+
         if not portfolio_str:
             portfolio_str = "Nothing there."
         portfolios_string += f"{bold}{trader_str}{bold}Portfolio : {interfaces.EOL}{code}{portfolio_str}{code}"
@@ -250,17 +259,28 @@ class AbstractBotInterface(interfaces.AbstractInterface):
         portfolio_real_current_value, portfolio_simulated_current_value = interfaces.get_portfolio_current_value()
         reference_market = interfaces.get_reference_market()
         real_global_portfolio, simulated_global_portfolio = interfaces.get_global_portfolio_currencies_amounts()
+        currency_values = interfaces.get_global_portfolio_currencies_values()
 
         portfolios_string = ""
         if has_real_trader:
-            portfolios_string += AbstractBotInterface._print_portfolio(portfolio_real_current_value, reference_market,
-                                                                       real_global_portfolio,
-                                                                       trading_constants.REAL_TRADER_STR, markdown)
+            portfolios_string += AbstractBotInterface._print_portfolio(
+                portfolio_real_current_value,
+                reference_market,
+                real_global_portfolio,
+                currency_values,
+                trading_constants.REAL_TRADER_STR,
+                markdown,
+            )
 
         if has_simulated_trader:
-            portfolio_str = AbstractBotInterface._print_portfolio(portfolio_simulated_current_value, reference_market,
-                                                                  simulated_global_portfolio,
-                                                                  trading_constants.SIMULATOR_TRADER_STR, markdown)
+            portfolio_str = AbstractBotInterface._print_portfolio(
+                portfolio_simulated_current_value,
+                reference_market,
+                simulated_global_portfolio,
+                currency_values,
+                trading_constants.SIMULATOR_TRADER_STR,
+                markdown,
+            )
             portfolios_string += f"{interfaces.EOL}{portfolio_str}"
 
         if not portfolios_string:

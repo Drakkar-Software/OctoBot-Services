@@ -63,6 +63,7 @@ from octobot_services.interfaces.util.portfolio import (
     get_portfolio_holdings,
     get_portfolio_current_value,
     get_global_portfolio_currencies_amounts,
+    get_global_portfolio_currencies_values,
     trigger_portfolios_refresh,
 )
 from octobot_services.interfaces.util.profitability import (
@@ -99,6 +100,7 @@ __all__ = [
     "get_portfolio_holdings",
     "get_portfolio_current_value",
     "get_global_portfolio_currencies_amounts",
+    "get_global_portfolio_currencies_values",
     "trigger_portfolios_refresh",
     "get_global_profitability",
     "get_reference_market",
