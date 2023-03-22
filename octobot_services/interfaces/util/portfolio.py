@@ -18,6 +18,7 @@ import decimal
 import octobot_commons.constants as constants
 
 import octobot_services.interfaces as interfaces
+import octobot_trading
 import octobot_trading.api as trading_api
 
 
@@ -108,6 +109,12 @@ def get_global_portfolio_currencies_amounts():
 
     return real_global_portfolio, simulated_global_portfolio
 
+
+def get_global_portfolio_currencies_values() -> dict:
+    return trading_api.get_global_portfolio_currencies_values(
+        interfaces.get_exchange_managers()
+        )
+                
 
 def trigger_portfolios_refresh():
     at_least_one = False
