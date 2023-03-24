@@ -250,7 +250,7 @@ class AbstractBotInterface(interfaces.AbstractInterface):
 
         if not portfolio_str:
             portfolio_str = "Nothing there."
-        portfolios_string += f"{bold}{trader_str}{bold}Portfolio : {interfaces.EOL}{code}{portfolio_str}{code}"
+        portfolios_string += f"{interfaces.EOL}{code}{portfolio_str}{code}"
         return portfolios_string
 
     @staticmethod
