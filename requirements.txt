@@ -16,6 +16,8 @@ telethon==1.24.0
 simplifiedpytrends>=1.1.2
 # Ngrok
 pyngrok==5.2.1
+# chat gpt
+openai==0.27.2
 # Web
 ## http server
 flask==2.2.3
