@@ -36,7 +36,7 @@ class ServiceFactory:
         :return: True if the created service is working properly, False otherwise
         """
         service_instance = service_class.instance()
-        if service_class.get_has_been_created():
+        if service_instance.get_has_been_created():
             return service_instance.is_healthy()
         else:
             return await self._create_service(service_instance, backtesting_enabled, edited_config)
@@ -74,4 +74,4 @@ class ServiceFactory:
 
     @staticmethod
     def has_already_been_created(service_class):
-        return service_class.get_has_been_created()
+        return service_class.instance().get_has_been_created()
