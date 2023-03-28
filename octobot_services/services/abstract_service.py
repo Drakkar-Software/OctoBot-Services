@@ -13,7 +13,6 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-
 import abc
 
 import octobot_commons.configuration as configuration
@@ -26,7 +25,6 @@ class AbstractService(singleton.Singleton):
     __metaclass__ = abc.ABCMeta
 
     BACKTESTING_ENABLED = False
-    _has_been_created = False
 
     def __init__(self):
         super().__init__()
@@ -35,14 +33,13 @@ class AbstractService(singleton.Singleton):
         self.edited_config = None
         self._created = True
         self._healthy = False
+        self._has_been_created = False
 
-    @classmethod
-    def set_has_been_created(cls, value):
-        cls._has_been_created = value
+    def set_has_been_created(self, value):
+        self._has_been_created = value
 
-    @classmethod
-    def get_has_been_created(cls):
-        return cls._has_been_created
+    def get_has_been_created(self):
+        return self._has_been_created
 
     def is_healthy(self):
         return self._healthy

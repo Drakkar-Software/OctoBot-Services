@@ -21,6 +21,7 @@ from octobot_services.api import notification
 
 from octobot_services.api.services import (
     get_available_services,
+    get_service,
     create_service_factory,
     stop_services,
 )
@@ -58,6 +59,7 @@ LOGGER_TAG = "ServicesApi"
 
 __all__ = [
     "get_available_services",
+    "get_service",
     "create_service_factory",
     "stop_services",
     "initialize_global_project_data",
