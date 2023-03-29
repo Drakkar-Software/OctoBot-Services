@@ -31,3 +31,9 @@ class InvalidRequestError(Exception):
     """
     Raised when an invalid request is submitted to a service
     """
+
+
+class RateLimitError(Exception):
+    """
+    Raised when an the rate limit has been reached for the given request
+    """
