@@ -14,11 +14,11 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 import abc
-from octobot_commons import number_util
 
 import octobot_commons.constants as common_constants
 import octobot_commons.pretty_printer as pretty_printer
 import octobot_commons.timestamp_util as timestamp_util
+import octobot_commons.dict_util as dict_util
 
 import octobot_trading.api as trading_api
 import octobot_trading.constants as trading_constants
@@ -343,7 +343,14 @@ class AbstractBotInterface(interfaces.AbstractInterface):
 
     @staticmethod
     def set_command_risk(new_risk):
-        return interfaces.set_risk(new_risk)
+        updated_risk = interfaces.set_risk(new_risk)
+        risk_config = {
+            commons_constants.CONFIG_TRADING: {
+                commons_constants.CONFIG_RISK: float(updated_risk)
+            }
+        }
+        AbstractBotInterface._update_edited_config(risk_config)
+        return updated_risk
 
     @staticmethod
     def set_command_stop():
@@ -383,3 +390,9 @@ class AbstractBotInterface(interfaces.AbstractInterface):
                 return messages_list
         else:
             return [message]
+
+    @staticmethod
+    def _update_edited_config(partial_config_update):
+        config = interfaces.get_edited_config(dict_only=False)
+        dict_util.nested_update_dict(config.config, partial_config_update)
+        config.save()
