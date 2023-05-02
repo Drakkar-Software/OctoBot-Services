@@ -15,12 +15,12 @@ telethon==1.24.0
 # Google
 simplifiedpytrends>=1.1.2
 # Ngrok
-pyngrok==5.2.1
+pyngrok==6.0.0
 # chat gpt
-openai==0.27.2
+openai==0.27.6
 # Web
 ## http server
-flask==2.2.3
+flask==2.3.2
 # Flask templates
 jinja2>=3.1.2
 ## flask minification
