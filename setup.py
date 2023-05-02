@@ -14,15 +14,12 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 # from distutils.extension import Extension
-
 from setuptools import find_packages
 from setuptools import setup
 
 from octobot_services import PROJECT_NAME, VERSION
 
 PACKAGES = find_packages(exclude=["tests"])
-
-packages_list = []
 
 # long description from README file
 with open('README.md', encoding='utf-8') as f:
@@ -37,7 +34,7 @@ setup(
     url='https://github.com/Drakkar-Software/OctoBot-Services',
     license='LGPL-3.0',
     author='Drakkar-Software',
-    author_email='drakkar-software@protonmail.com',
+    author_email='contact@drakkar.software',
     description='OctoBot project services package',
     packages=PACKAGES,
     include_package_data=True,
