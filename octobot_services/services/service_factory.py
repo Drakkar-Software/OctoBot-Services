@@ -58,12 +58,13 @@ class ServiceFactory:
     async def _perform_checkup(self, service) -> bool:
         try:
             await service.prepare()
-            if constants.CONFIG_CATEGORY_SERVICES not in self.config:
-                self.config[constants.CONFIG_CATEGORY_SERVICES] = {}
-            if service.get_type() not in self.config[constants.CONFIG_CATEGORY_SERVICES]:
-                self.config[constants.CONFIG_CATEGORY_SERVICES][service.get_type()] = {}
-            self.config[constants.CONFIG_CATEGORY_SERVICES][service.get_type()][constants.CONFIG_SERVICE_INSTANCE] = \
-                service
+            if self.config:
+                if constants.CONFIG_CATEGORY_SERVICES not in self.config:
+                    self.config[constants.CONFIG_CATEGORY_SERVICES] = {}
+                if service.get_type() not in self.config[constants.CONFIG_CATEGORY_SERVICES]:
+                    self.config[constants.CONFIG_CATEGORY_SERVICES][service.get_type()] = {}
+                self.config[constants.CONFIG_CATEGORY_SERVICES][service.get_type()][
+                    constants.CONFIG_SERVICE_INSTANCE] = service
             if await service.say_hello():
                 return service.is_healthy()
             else:
