@@ -299,7 +299,7 @@ class AbstractBotInterface(interfaces.AbstractInterface):
         profitability_string = ""
         if has_real_trader:
             real_profitability_pretty = pretty_printer.portfolio_profitability_pretty_print(
-                real_global_profitability, None, interfaces.get_reference_market())
+                real_global_profitability, real_percent_profitability, interfaces.get_reference_market())
             profitability_string = \
                 f"{bold}{trading_constants.REAL_TRADER_STR}{bold}Global profitability : {code}{real_profitability_pretty}" \
                 f"({pretty_printer.get_min_string_from_number(real_percent_profitability, 2)}%){code}, market: {code}" \
