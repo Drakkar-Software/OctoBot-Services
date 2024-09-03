@@ -34,7 +34,7 @@ flask-login==0.6.3
 # used with flask-login==0.6.2. Waiting for a flask-login update to be able to bump werkzeug
 werkzeug == 3.0.3
 ## flask CORS management
-flask-cors==4.0.1
+flask-cors==5.0.0
 ## user form validators
 WTForms==3.1.2
 Flask-WTF==1.2.1
