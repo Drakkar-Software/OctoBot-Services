@@ -13,23 +13,16 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+import dataclasses
 
-from octobot_services.services import service_factory
-from octobot_services.services import abstract_service
-from octobot_services.services import read_only_info
+import octobot_services.enums
 
-from octobot_services.services.service_factory import (
-    ServiceFactory,
-)
-from octobot_services.services.abstract_service import (
-    AbstractService,
-)
-from octobot_services.services.read_only_info import (
-    ReadOnlyInfo,
-)
 
-__all__ = [
-    "ServiceFactory",
-    "AbstractService",
-    "ReadOnlyInfo",
-]
+@dataclasses.dataclass
+class ReadOnlyInfo:
+    name: str
+    value: str
+    type: octobot_services.enums.ReadOnlyInfoType
+    path: str = ""
+    configuration_title: str = ""
+    configuration_path: str = ""

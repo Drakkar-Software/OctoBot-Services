@@ -95,6 +95,8 @@ CONFIG_TREND_HISTORY_TIME = "relevant_history_months"
 CONFIG_TRADING_VIEW = "trading-view"
 CONFIG_REQUIRE_TRADING_VIEW_TOKEN = "require-token"
 CONFIG_TRADING_VIEW_TOKEN = "token"
+CONFIG_TRADING_VIEW_USE_EMAIL_ALERTS = "use-email-alerts"
+TRADING_VIEW_USING_EMAIL_INSTEAD_OF_WEBHOOK = "Using email alerts instead of webhook"
 
 # Twitter
 CONFIG_TWITTERS_ACCOUNTS = "accounts"
