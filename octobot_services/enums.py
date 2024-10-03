@@ -34,3 +34,9 @@ class NotificationCategory(enum.Enum):
 class NotificationSound(enum.Enum):
     NO_SOUND = None
     FINISHED_PROCESSING = "finished_processing.mp3"
+
+
+class ReadOnlyInfoType(enum.Enum):
+    COPYABLE = "copyable"
+    CLICKABLE = "clickable"
+    READONLY = "readonly"
