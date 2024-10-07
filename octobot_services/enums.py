@@ -39,4 +39,5 @@ class NotificationSound(enum.Enum):
 class ReadOnlyInfoType(enum.Enum):
     COPYABLE = "copyable"
     CLICKABLE = "clickable"
+    CTA = "cta"
     READONLY = "readonly"
