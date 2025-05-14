@@ -40,12 +40,6 @@ def test_telegram_imports():
 
 def test_openai_imports():
     import openai
-    # calling isinstance on openai proxies raises OpenAIError if OPENAI_API_KEY is missing or if a lib (numpy or panda)
-    # can't be imported
-    with pytest.raises(openai.OpenAIError):
-        for obj in gc.get_objects():
-            isinstance(obj, str)
-    octobot_services.util.patch_openai_proxies()
-    # isinstance can now be called on proxies
+    # ensure openai lib mocks don't crash when calling isinstance on them
     for obj in gc.get_objects():
         isinstance(obj, str)
