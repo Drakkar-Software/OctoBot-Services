@@ -17,6 +17,7 @@ import enum
 
 
 class NotificationLevel(enum.Enum):
+    CRITICAL = "critical"
     ERROR = "error"
     WARNING = "warning"
     INFO = "info"
