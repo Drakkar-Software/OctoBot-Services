@@ -324,7 +324,7 @@ class AbstractBotInterface(interfaces.AbstractInterface):
     @staticmethod
     def get_command_ping():
         return f"I'm alive since " \
-               f"{timestamp_util.convert_timestamp_to_datetime(interfaces.get_bot_api().get_start_time(), '%Y-%m-%d %H:%M:%S')}."
+               f"{timestamp_util.convert_timestamp_to_datetime(interfaces.get_bot_api().get_start_time(), '%Y-%m-%d %H:%M:%S', local_timezone=True)}."
 
     @staticmethod
     def get_command_version():
