@@ -17,6 +17,7 @@ import abc
 
 import octobot_commons.configuration as configuration
 import octobot_commons.singleton as singleton
+import octobot_commons.logging as logging
 
 import octobot_services.constants as constants
 import octobot_services.services.read_only_info as read_only_info
@@ -29,13 +30,13 @@ class AbstractService(singleton.Singleton):
 
     def __init__(self):
         super().__init__()
-        self.logger = None
-        self.config = None
-        self.edited_config = None
-        self.creation_error_message = None
-        self._created = True
-        self._healthy = False
-        self._has_been_created = False
+        self.logger: logging.BotLogger = None
+        self.config: dict = None
+        self.edited_config: dict = None
+        self.creation_error_message: str = None
+        self._created: bool = True
+        self._healthy: bool = False
+        self._has_been_created: bool = False
 
     def set_has_been_created(self, value):
         self._has_been_created = value
