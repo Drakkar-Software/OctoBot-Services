@@ -50,7 +50,7 @@ async def async_cancel_orders(order_ids):
                             await trading_api.cancel_order_with_id(
                                 exchange_manager, order_id, wait_for_cancelling=False
                             )
-                        ) else 0
+                        )[0] else 0
                     except (trading_errors.OrderCancelError, trading_errors.UnexpectedExchangeSideOrderStateError) \
                             as err:
                         logging.get_logger("InterfaceOrderUtil").error(f"Skipping order cancel: {err}")
