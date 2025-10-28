@@ -47,6 +47,7 @@ class AbstractServiceFeed(abstract_service_user.AbstractServiceUser,
         self.bot_id = bot_id
         self.services = None
         self.should_stop = False
+        self.data_cache = None
 
     # Override update_feed_config if any need in the extending feed
     def update_feed_config(self, config):
