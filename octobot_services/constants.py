@@ -121,6 +121,31 @@ CONFIG_REDDIT_CLIENT_SECRET = "client-secret"
 CONFIG_REDDIT_PASSWORD = "password"
 CONFIG_REDDIT_USERNAME = "username"
 
+# Coindesk
+CONFIG_COINDESK = "coindesk"
+CONFIG_COINDESK_API_KEY = "api-key"
+CONFIG_COINDESK_LANGUAGE = "lang"
+CONFIG_COINDESK_REFRESH_TIME_FRAME = "refresh_time_frame"
+CONFIG_COINDESK_TOPICS = "topics"
+COINDESK_TOPIC_MARKETCAP = "topic_marketcap"
+COINDESK_TOPIC_NEWS = "topic_news"
+COINDESK_DATA_KEY = "data"
+
+# Lunarcrush
+CONFIG_LUNARCRUSH = "lunarcrush"
+CONFIG_LUNARCRUSH_API_KEY = "api-key"
+CONFIG_LUNARCRUSH_REFRESH_TIME_FRAME = "refresh_time_frame"
+CONFIG_LUNARCRUSH_COINS = "coins"
+LUNARCRUSH_COIN_METRICS = "coin_metrics"
+LUNARCRUSH_DATA_KEY = "data"
+
+# Alternative.me
+CONFIG_ALTERNATIVE_ME = "alternative_me"
+CONFIG_ALTERNATIVE_ME_TOPICS = "topics"
+CONFIG_ALTERNATIVE_ME_REFRESH_TIME_FRAME = "refresh_time_frame"
+ALTERNATIVE_ME_TOPIC_FEAR_AND_GREED = "topic_fear_and_greed"
+ALTERNATIVE_ME_DATA_KEY = "data"
+
 # Notifications
 CONFIG_CATEGORY_NOTIFICATION = "notification"
 CONFIG_NOTIFICATION_TYPE = "notification-type"
