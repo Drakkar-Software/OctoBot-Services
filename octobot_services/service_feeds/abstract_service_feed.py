@@ -14,6 +14,7 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 import abc
+import typing
 
 import async_channel.channels as channels
 
@@ -120,6 +121,15 @@ class AbstractServiceFeed(abstract_service_user.AbstractServiceUser,
             self.logger.info("Nothing to monitor, feed is closing.")
             self.is_running = False
         return True
+
+    def get_data_cache(self, current_time: float, key: typing.Optional[str] = None):
+        if self.data_cache is None:
+            return None
+
+        if key is not None:
+            return self.data_cache.get(key, None)
+
+        return self.data_cache
 
     async def _async_run(self) -> bool:
         self.logger.info("Initializing feed reception ...")
