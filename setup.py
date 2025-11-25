@@ -26,6 +26,7 @@ with open('README.md', encoding='utf-8') as f:
     DESCRIPTION = f.read()
 
 REQUIRED = open('requirements.txt').readlines()
+FULL_REQUIRED = open('full_requirements.txt').readlines()
 REQUIRES_PYTHON = '>=3.8'
 
 setup(
@@ -44,6 +45,9 @@ setup(
     zip_safe=False,
     data_files=[],
     install_requires=REQUIRED,
+    extras_require={
+        'full': FULL_REQUIRED,
+    },
     python_requires=REQUIRES_PYTHON,
     classifiers=[
         'Development Status :: 5 - Production/Stable',
