@@ -38,6 +38,8 @@ gevent==25.5.1
 ### used by flask-socketio with gevent (listed here because multiple libs are usable, force this one)
 gevent-websocket==0.10.1
 flask-socketio==5.5.1
+# chatgpt
+openai==1.99.9
 
 # Analysis tools
 vaderSentiment==3.3.2
