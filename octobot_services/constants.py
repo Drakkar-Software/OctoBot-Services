@@ -146,12 +146,16 @@ CONFIG_ALTERNATIVE_ME_REFRESH_TIME_FRAME = "refresh_time_frame"
 ALTERNATIVE_ME_TOPIC_FEAR_AND_GREED = "topic_fear_and_greed"
 ALTERNATIVE_ME_DATA_KEY = "data"
 
+# Exchange
+CONFIG_EXCHANGE = "exchange"
+CONFIG_EXCHANGE_PROFILES = "profiles"
+CONFIG_EXCHANGE_PROFILE_ID = "id"
+
 # Notifications
 CONFIG_CATEGORY_NOTIFICATION = "notification"
 CONFIG_NOTIFICATION_TYPE = "notification-type"
 
 # Interfaces
-
 PAID_FEES_STR = "Paid fees"
 
 # external resources

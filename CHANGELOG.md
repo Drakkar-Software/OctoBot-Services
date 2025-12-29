@@ -4,11 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.6.30] - 2024-11-27
+## [1.6.31] - 2026-01-22
+### Added 
+- Add exchange service constants
+
+## [1.6.30] - 2025-11-27
 ### Updated 
 [Requirements] moved openai to the [full] requirements
 
-## [1.6.29] - 2024-11-26
+## [1.6.29] - 2025-11-26
 ### Added 
 [Requirements] [full] requirements installation
 
