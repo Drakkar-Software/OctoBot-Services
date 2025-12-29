@@ -123,7 +123,7 @@ class AbstractServiceFeed(abstract_service_user.AbstractServiceUser,
 
     async def _async_run(self) -> bool:
         self.logger.info("Initializing feed reception ...")
-        self.services = [service.instance() for service in self.REQUIRED_SERVICES]
+        self.services = [service.instance() for service in self.REQUIRED_SERVICES] if self.REQUIRED_SERVICES else []
         return await self._run()
 
     async def resume(self) -> bool:

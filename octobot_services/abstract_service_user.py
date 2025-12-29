@@ -43,6 +43,8 @@ class AbstractServiceUser(util.InitializableWithPostAction):
                 else:
                     self.get_logger().error(f"Required service {self.REQUIRED_SERVICES} is not an available service")
             return True
+        elif self.REQUIRED_SERVICES is False:
+            return True # When no services are required
         elif self.REQUIRED_SERVICES is None:
             self.get_logger().error(f"Required service is not set, set it at False if no service is required")
         return False
@@ -64,6 +66,8 @@ class AbstractServiceUser(util.InitializableWithPostAction):
             return False
 
     def has_required_services_configuration(self):
+        if self.REQUIRED_SERVICES is None or self.REQUIRED_SERVICES is False:
+            return True
         return all(service.instance().has_required_configuration() for service in self.REQUIRED_SERVICES)
 
     @classmethod
