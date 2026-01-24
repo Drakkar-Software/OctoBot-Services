@@ -39,7 +39,7 @@ gevent==25.5.1
 gevent-websocket==0.10.1
 flask-socketio==5.5.1
 # chatgpt
-openai==1.99.9
+openai==2.15.0
 # agents
 pydantic==2.12.5
 # Coingecko
