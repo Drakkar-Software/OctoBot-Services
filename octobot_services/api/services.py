@@ -13,6 +13,7 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+import octobot_services.api.service_feeds as service_feeds_api
 import octobot_services.managers as managers
 import octobot_services.services as services
 import octobot_services.interfaces as interfaces
@@ -31,8 +32,56 @@ def _service_async_lock(service_class):
         return _SERVICE_ASYNC_LOCKS[service_class.__name__]
 
 
-def get_available_services() -> list:
+def get_available_services() -> list[type[services.AbstractService]]:
     return services.ServiceFactory.get_available_services()
+
+def get_available_ai_services() -> list[type[services.AbstractAIService]]:
+    return services.ServiceFactory.get_available_ai_services()
+
+def get_available_web_search_services() -> list[type[services.AbstractWebSearchService]]:
+    return services.ServiceFactory.get_available_web_search_services()
+
+
+def get_available_backtestable_services() -> list:
+    return [
+        service_class for service_class in services.ServiceFactory.get_available_services()
+        if service_class.BACKTESTING_ENABLED
+    ]
+
+async def _get_available_service_instance(
+    get_available_services_func,
+    service_type_name: str,
+    is_backtesting: bool = False
+):
+    available_services = get_available_services_func()
+    for service_class in available_services:
+        try:
+            return await get_service(service_class, is_backtesting, None)
+        except errors.CreationError:
+            # Service is not running/initialized, skip it
+            continue
+    raise errors.CreationError(f"No {service_type_name} is currently running or available.")
+
+async def get_ai_service(is_backtesting=False) -> services.AbstractAIService:
+    return await _get_available_service_instance(
+        get_available_ai_services,
+        "AI service",
+        is_backtesting
+    )
+
+async def get_web_search_service(is_backtesting=False) -> services.AbstractWebSearchService:
+    return await _get_available_service_instance(
+        get_available_web_search_services,
+        "web search service",
+        is_backtesting
+    )
+
+
+def is_service_available_in_backtesting(service_class) -> bool:
+    return (
+        service_class.BACKTESTING_ENABLED
+        or service_feeds_api.is_service_used_by_backtestable_feed(service_class)
+    )
 
 
 async def get_service(service_class, is_backtesting, config=None):
@@ -47,7 +96,7 @@ async def get_service(service_class, is_backtesting, config=None):
         )
         if created:
             service = service_class.instance()
-            if is_backtesting and not service.BACKTESTING_ENABLED:
+            if is_backtesting and not is_service_available_in_backtesting(service_class):
                 raise errors.UnavailableInBacktestingError(
                     f"{service_class.__name__} service is not available in backtesting"
                 )

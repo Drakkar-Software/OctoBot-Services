@@ -19,6 +19,7 @@ import octobot_commons.channels_name as channels_names
 import async_channel.channels as channels
 import octobot_services.interfaces as interfaces
 import octobot_services.managers as managers
+import octobot_services.api.service_feeds as service_feeds_api
 
 
 def initialize_global_project_data(bot_api: object, project_name: str, project_version: str) -> None:
@@ -53,7 +54,12 @@ async def send_user_command(bot_id, subject, action, data, wait_for_processing=F
 
 
 def is_enabled_in_backtesting(interface_class) -> bool:
-    return all(service.BACKTESTING_ENABLED for service in interface_class.REQUIRED_SERVICES)
+    if not interface_class.REQUIRED_SERVICES:
+        return True
+    return all(
+        service_feeds_api.is_service_used_by_backtestable_feed(service)
+        for service in interface_class.REQUIRED_SERVICES
+    )
 
 
 def is_interface_relevant(config, interface_class, backtesting_enabled):

@@ -17,6 +17,7 @@
 from octobot_services.services import service_factory
 from octobot_services.services import abstract_service
 from octobot_services.services import abstract_ai_service
+from octobot_services.services import abstract_web_search_service
 from octobot_services.services import read_only_info
 
 from octobot_services.services.service_factory import (
@@ -28,6 +29,11 @@ from octobot_services.services.abstract_service import (
 from octobot_services.services.abstract_ai_service import (
     AbstractAIService,
 )
+from octobot_services.services.abstract_web_search_service import (
+    AbstractWebSearchService,
+    WebSearchResult,
+    WebSearchResponse,
+)
 from octobot_services.services.read_only_info import (
     ReadOnlyInfo,
 )
@@ -36,5 +42,8 @@ __all__ = [
     "ServiceFactory",
     "AbstractService",
     "AbstractAIService",
+    "AbstractWebSearchService",
+    "WebSearchResult",
+    "WebSearchResponse",
     "ReadOnlyInfo",
 ]

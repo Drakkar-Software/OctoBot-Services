@@ -36,6 +36,9 @@ class AbstractServiceFeed(abstract_service_user.AbstractServiceUser,
     # Set simulator class when available in order to use it in backtesting for this feed
     SIMULATOR_CLASS = None
 
+    # Whether this feed supports historical data collection for backtesting
+    BACKTESTING_ENABLED = False
+
     _SLEEPING_TIME_BEFORE_RECONNECT_ATTEMPT_SEC = 10
     DELAY_BETWEEN_STREAMS_QUERIES = 5
     REQUIRED_SERVICE_ERROR_MESSAGE = "Required services are not ready, service feed can't start"
@@ -145,3 +148,39 @@ class AbstractServiceFeed(abstract_service_user.AbstractServiceUser,
         if self.is_running:
             self.should_stop = True
             self.is_running = False
+
+    async def get_historical_data(
+        self,
+        start_timestamp,
+        end_timestamp,
+        symbols=None,
+        source=None,
+        **kwargs
+    ) -> typing.AsyncIterator[list[dict]]:
+        """
+        Fetch historical data from the feed for the given time range.
+        Override this method in feeds that support historical data collection.
+
+        :param start_timestamp: milliseconds timestamp (int/float) for start of range
+        :param end_timestamp: milliseconds timestamp (int/float) for end of range
+        :param symbols: optional list of symbols to filter by
+        :param source: optional source/topic to fetch
+        :param kwargs: additional feed-specific parameters
+        :return: async generator yielding batches (lists) of event dicts
+        :rtype: typing.AsyncIterator[list[dict]]
+
+        Each event dict should have at least:
+        - timestamp: milliseconds timestamp (int/float)
+        - payload: dict with event data
+        - channel: optional str
+        - symbol: optional str
+        """
+        raise NotImplementedError("get_historical_data is not implemented for this feed")
+
+    @classmethod
+    def get_historical_sources(cls) -> list:
+        """
+        Return the list of source/topic ids supported by get_historical_data.
+        Override in feeds that support historical data to return their source ids.
+        """
+        return []

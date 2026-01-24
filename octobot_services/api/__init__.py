@@ -21,6 +21,12 @@ from octobot_services.api import notification
 
 from octobot_services.api.services import (
     get_available_services,
+    get_available_backtestable_services,
+    get_available_ai_services,
+    get_available_web_search_services,
+    get_ai_service,
+    get_web_search_service,
+    is_service_available_in_backtesting,
     get_service,
     create_service_factory,
     stop_services,
@@ -39,6 +45,8 @@ from octobot_services.api.interfaces import (
 from octobot_services.api.service_feeds import (
     create_service_feed_factory,
     get_service_feed,
+    get_available_backtestable_feeds,
+    is_service_used_by_backtestable_feed,
     start_service_feed,
     stop_service_feed,
     clear_bot_id_feeds,
@@ -59,6 +67,12 @@ LOGGER_TAG = "ServicesApi"
 
 __all__ = [
     "get_available_services",
+    "get_available_backtestable_services",
+    "get_available_ai_services",
+    "get_available_web_search_services",
+    "get_ai_service",
+    "get_web_search_service",
+    "is_service_available_in_backtesting",
     "get_service",
     "create_service_factory",
     "stop_services",
@@ -73,6 +87,8 @@ __all__ = [
     "stop_interfaces",
     "create_service_feed_factory",
     "get_service_feed",
+    "get_available_backtestable_feeds",
+    "is_service_used_by_backtestable_feed",
     "start_service_feed",
     "stop_service_feed",
     "clear_bot_id_feeds",
