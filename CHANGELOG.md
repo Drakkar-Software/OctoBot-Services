@@ -4,10 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.7.4] - 2026-02-02
+## [1.8.0] - 2026-02-02
 ### Added
 - pydantic to requirements
 - add AbstractAIService
+- add AbstractWebSearchService
+- MCP server interface
+### Updated
+- OpenAI dependency
 
 ## [1.7.3] - 2026-01-29
 ### Added
@@ -68,7 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.6.21] - 2023-10-21
 ### Added
-[Constant] add CONIG_LLM_CUSTOM_BASE_URL
+[Constant] add CONFIG_LLM_CUSTOM_BASE_URL
 
 ## [1.6.20] - 2023-10-07
 ### Added

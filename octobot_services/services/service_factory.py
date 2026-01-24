@@ -14,6 +14,8 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
+import typing
+
 import octobot_commons.logging as logging
 
 import octobot_services.constants as constants
@@ -27,9 +29,17 @@ class ServiceFactory:
 
     @staticmethod
     def get_available_services() -> list:
-        return [service_class for service_class in services.AbstractService.__subclasses__()]
+        return [service_class for service_class in services.AbstractService.__subclasses__() if service_class is not services.AbstractAIService and service_class is not services.AbstractWebSearchService]
 
-    async def create_or_get_service(self, service_class, backtesting_enabled, edited_config) -> (bool, str):
+    @staticmethod
+    def get_available_ai_services() -> list:
+        return [service_class for service_class in services.AbstractAIService.__subclasses__()]
+
+    @staticmethod
+    def get_available_web_search_services() -> list:
+        return [service_class for service_class in services.AbstractWebSearchService.__subclasses__()]
+
+    async def create_or_get_service(self, service_class, backtesting_enabled, edited_config) -> typing.Tuple[bool, str]:
         """
         create_or_get_service will create a service instance if it doesn't exist, check the existing one otherwise
         :param service_class: the class of the service to create
@@ -45,7 +55,6 @@ class ServiceFactory:
             )
 
     async def _create_service(self, service, backtesting_enabled, edited_config) -> bool:
-        service.is_backtesting_enabled = backtesting_enabled
         service.set_has_been_created(True)
         service.logger = logging.get_logger(service.get_name())
         service.config = self.config

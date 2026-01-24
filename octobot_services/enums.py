@@ -42,3 +42,8 @@ class ReadOnlyInfoType(enum.Enum):
     CLICKABLE = "clickable"
     CTA = "cta"
     READONLY = "readonly"
+
+
+class AIModelPolicy(enum.Enum):
+    FAST = "fast"
+    REASONING = "reasoning"

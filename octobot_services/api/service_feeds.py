@@ -13,8 +13,23 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+import octobot_commons.tentacles_management as tentacles_management
+
 import octobot_services.managers as managers
 import octobot_services.service_feeds as service_feeds
+
+
+def get_available_backtestable_feeds() -> list:
+    feeds = tentacles_management.get_all_classes_from_parent(service_feeds.AbstractServiceFeed)
+    return [feed for feed in feeds if feed.BACKTESTING_ENABLED]
+
+
+def is_service_used_by_backtestable_feed(service_class) -> bool:
+    backtestable = get_available_backtestable_feeds()
+    for feed in backtestable:
+        if feed.REQUIRED_SERVICES and service_class in feed.REQUIRED_SERVICES:
+            return True
+    return False
 
 
 def create_service_feed_factory(config, main_async_loop, bot_id) -> service_feeds.ServiceFeedFactory:

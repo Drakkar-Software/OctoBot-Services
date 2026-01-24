@@ -82,10 +82,25 @@ CONFIG_GPT = "GPT"
 CONFIG_OPENAI_SECRET_KEY = "openai-secret-key"
 CONFIG_LLM_CUSTOM_BASE_URL = "llm-custom-base-url"
 CONFIG_LLM_MODEL = "llm-model"
+CONFIG_LLM_MODEL_FAST = "llm-model-fast"
+CONFIG_LLM_MODEL_REASONING = "llm-model-reasoning"
 CONFIG_LLM_DAILY_TOKENS_LIMIT = "llm-daily-tokens-limit"
+CONFIG_LLM_SHOW_REASONING = "llm-show-reasoning"
+CONFIG_LLM_REASONING_EFFORT = "llm-reasoning-effort"
+CONFIG_LLM_MCP_SERVERS = "llm-mcp-servers"
+CONFIG_LLM_AUTO_INJECT_MCP_TOOLS = "llm-auto-inject-mcp-tools"
 ENV_OPENAI_SECRET_KEY = "OPENAI_SECRET_KEY"
 ENV_GPT_MODEL = "GPT_MODEL"
 ENV_GPT_DAILY_TOKENS_LIMIT = "GPT_DAILY_TOKEN_LIMIT"
+
+# MCP
+CONFIG_MCP = "mcp"
+CONFIG_MCP_IP = "ip"
+CONFIG_MCP_PORT = "port"
+ENV_MCP_PORT = "MCP_PORT"
+ENV_MCP_ADDRESS = "MCP_ADDRESS"
+DEFAULT_MCP_IP = '127.0.0.1'
+DEFAULT_MCP_PORT = 3001
 
 # Google
 CONFIG_GOOGLE = "google"
@@ -122,6 +137,16 @@ CONFIG_BIRD_ACCOUNT = "account"
 CONFIG_TAVILY = "tavily"
 CONFIG_TAVILY_API_KEY = "api-key"
 CONFIG_TAVILY_PROJECT_ID = "project-id"
+
+# SearXNG (self-hosted web search)
+CONFIG_SEARXNG = "searxng"
+CONFIG_SEARXNG_URL = "url"
+CONFIG_SEARXNG_PORT = "port"
+CONFIG_SEARXNG_CATEGORIES = "categories"
+CONFIG_SEARXNG_LANGUAGE = "language"
+CONFIG_SEARXNG_TIME_RANGE = "time_range"
+CONFIG_SEARXNG_SAFE_SEARCH = "safe_search"
+CONFIG_SEARXNG_ENGINES = "engines"
 
 # Reddit
 CONFIG_REDDIT = "reddit"

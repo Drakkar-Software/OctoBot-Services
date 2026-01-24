@@ -14,6 +14,7 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 import abc
+import typing
 
 import octobot_commons.configuration as configuration
 import octobot_commons.singleton as singleton
@@ -30,10 +31,10 @@ class AbstractService(singleton.Singleton):
 
     def __init__(self):
         super().__init__()
-        self.logger: logging.BotLogger = None
-        self.config: dict = None
-        self.edited_config: dict = None
-        self.creation_error_message: str = None
+        self.logger: typing.Optional[logging.BotLogger] = None
+        self.config: typing.Optional[dict] = None
+        self.edited_config: typing.Optional[dict] = None
+        self.creation_error_message: typing.Optional[str] = None
         self._created: bool = True
         self._healthy: bool = False
         self._has_been_created: bool = False
