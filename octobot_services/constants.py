@@ -113,6 +113,16 @@ CONFIG_TW_API_SECRET = "api-secret"
 CONFIG_TW_ACCESS_TOKEN = "access-token"
 CONFIG_TW_ACCESS_TOKEN_SECRET = "access-token-secret"
 
+# Bird (Bird CLI - read-only Twitter/X)
+CONFIG_BIRD = "bird"
+CONFIG_BIRD_CLI_PATH = "cli-path"
+CONFIG_BIRD_ACCOUNT = "account"
+
+# Tavily (Tavily API - web search)
+CONFIG_TAVILY = "tavily"
+CONFIG_TAVILY_API_KEY = "api-key"
+CONFIG_TAVILY_PROJECT_ID = "project-id"
+
 # Reddit
 CONFIG_REDDIT = "reddit"
 CONFIG_REDDIT_SUBREDDITS = "subreddits"
